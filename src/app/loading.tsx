@@ -1,0 +1,1 @@
+export default function Loading() { return <main className="loading-shell" aria-busy="true"><p className="wordmark">StudAb27</p><div className="skeleton" /><div className="skeleton" /><p>Opening your workspace…</p></main>; }

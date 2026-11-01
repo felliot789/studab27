@@ -1,0 +1,51 @@
+name: Schola Watchtower
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */12 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: schola-watchtower
+  cancel-in-progress: false
+
+jobs:
+  official-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install PDF text reader
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Restore previous public baselines
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/public/watchtower_state.json
+            private/watchtower/snapshots
+          key: schola-public-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: schola-public-
+      - name: Check worker and data
+        run: |
+          python3 -m unittest discover -s tests
+          python3 scripts/validate-data.py
+      - name: Monitor public sources only
+        run: python3 -m schola.watcher --public
+      - name: Preserve baselines for the next scan
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/public/watchtower_state.json
+            private/watchtower/snapshots
+          key: schola-public-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Save public observations
+        uses: actions/upload-artifact@v4
+        with:
+          name: schola-public-observations
+          path: data/public/watchtower_state.json
+          retention-days: 30

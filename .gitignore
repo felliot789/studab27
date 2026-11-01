@@ -1,0 +1,22 @@
+# Local vault and personal exports
+/private/
+*.local.*
+.env
+.env.*
+!.env.example
+
+# Dependencies, builds, monitoring output and local tools
+node_modules/
+.next/
+out/
+dist/
+coverage/
+__pycache__/
+*.pyc
+.venv/
+*.tsbuildinfo
+/graphify-out/
+/.impeccable/
+/artifacts/
+*.log
+.DS_Store

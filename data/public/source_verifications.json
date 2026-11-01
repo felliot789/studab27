@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ubc-2027",
+    "routeId": "route-02-canada-university-of-british-co",
+    "checkedAt": "2026-11-01",
+    "cycle": "2027",
+    "title": "UBC deadline corrected",
+    "summary": "Admission and award applications close November 15, 2026, 11:59 p.m. PST (November 16, 14:59 WIB). The seed’s December 1 date is superseded.",
+    "sourceUrl": "https://undergraduatescholarships.ubc.ca/prog/2027_international_scholars_program_application/",
+    "deadlineAt": "2026-11-15T23:59:00-08:00",
+    "deadlineLabel": "UBC admission + award applications",
+    "verifiedField": "deadline only"
+  },
+  {
+    "id": "pearson-2027",
+    "routeId": "route-03-canada-university-of-toronto",
+    "checkedAt": "2026-11-01",
+    "cycle": "2027",
+    "title": "Pearson has earlier prerequisites",
+    "summary": "2027 entry: school nomination October 9; admission application October 16; scholarship and documents November 6, 2026. Check previous submissions before deciding. Exact deadline clock and zone are not given. AI-created award submission content is prohibited.",
+    "sourceUrl": "https://future.utoronto.ca/pearson-scholarships",
+    "deadlineDate": "2026-11-06",
+    "deadlineLabel": "Pearson scholarship + documents",
+    "verifiedField": "deadlines and award-content policy"
+  },
+  {
+    "id": "hkust-2027",
+    "routeId": "route-08-hong-kong-hkust",
+    "checkedAt": "2026-11-01",
+    "cycle": "2027",
+    "title": "HKUST accepts forthcoming examinations",
+    "summary": "Priority closes November 25, 2026; rolling applications begin November 26 and close June 30, 2027. The application guide allows later score updates, but treatment of December SAT results in priority scholarship review remains unconfirmed. Cutoff time and zone unconfirmed.",
+    "sourceUrl": "https://join.hkust.edu.hk/admissions/international-qualifications",
+    "secondaryUrl": "https://join.hkust.edu.hk/oas/de_guide.pdf",
+    "deadlineDate": "2026-11-25",
+    "deadlineLabel": "HKUST priority round",
+    "verifiedField": "application dates; score-update mechanics"
+  },
+  {
+    "id": "polito-2027",
+    "routeId": "route-14-italy-politecnico-di-torino",
+    "checkedAt": "2026-11-01",
+    "cycle": "2027",
+    "title": "PoliTO testing pathway is changing",
+    "summary": "The 2027/28 calls are still being defined; an official notice announces CISIA testing from 2027/28. SAT acceptance or exemption for this cycle remains unknown.",
+    "sourceUrl": "https://www.polito.it/didattica/iscriversi-studiare-laurearsi/iscrizione/corsi-di-laurea/bandi-regolamenti-e-graduatorie",
+    "secondaryUrl": "https://www.polito.it/didattica/iscriversi-studiare-laurearsi/iscrizione/corsi-di-laurea/test-di-ammissione",
+    "verifiedField": "call publication status only"
+  },
+  {
+    "id": "sat-december-2026",
+    "checkedAt": "2026-11-01",
+    "cycle": "2027",
+    "title": "December SAT dates checked",
+    "summary": "December 5 test; regular registration November 20 and late registration November 24, both 11:59 p.m. U.S. ET. December 18 student score release; college processing can take longer.",
+    "sourceUrl": "https://satsuite.collegeboard.org/sat/dates-deadlines",
+    "secondaryUrl": "https://satsuite.collegeboard.org/scores/score-release-dates",
+    "deadlineAt": "2026-11-20T23:59:00-05:00",
+    "deadlineLabel": "SAT regular registration",
+    "verifiedField": "test, registration, score-release dates"
+  }
+]

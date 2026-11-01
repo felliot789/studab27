@@ -1,0 +1,458 @@
+[
+  {
+    "routeId": "route-01-brunei-government-of-brunei---u",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-02-canada-university-of-british-co",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-03-canada-university-of-toronto",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-04-china-shanghai-jiao-tong-unive",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-05-china-university-of-science-an",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-06-hong-kong-chinese-university-of-ho",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-07-hong-kong-city-university-of-hong-",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-08-hong-kong-hkust",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-09-hong-kong-hong-kong-polytechnic-un",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-10-hong-kong-hong-kong-university-of-",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-11-hong-kong-university-of-hong-kong",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-12-hungary-stipendium-hungaricum",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-13-italy-politecnico-di-milano",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-14-italy-politecnico-di-torino",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-15-italy-university-of-bologna",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-16-italy-university-of-padua",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-17-italy-university-of-padua",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-18-italy-university-of-pisa",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-19-qatar-qatar-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-20-romania-romanian-mfa-scholarship",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-21-singapore-nanyang-technological-un",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-22-singapore-national-university-of-s",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-23-singapore-national-university-of-s",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-24-singapore-national-university-of-s",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-25-singapore-singapore-university-of-",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-26-singapore-singapore-university-of-",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-27-south-korea-dgist",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-28-south-korea-gist",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-29-south-korea-gks-u",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-30-south-korea-kaist",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-31-south-korea-postech",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-32-south-korea-unist",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-33-taiwan-nycu",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-34-taiwan-national-taiwan-universi",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-35-t\u00fcrkiye-t\u00fcrkiye-scholarships",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-36-uae-american-university-of-s",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-37-uae-nyu-abu-dhabi",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-38-united-kingdom-oxford-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-39-united-kingdom-university-college-londo",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-40-united-states-brown-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-41-united-states-columbia-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-42-united-states-cornell-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-43-united-states-dartmouth-college",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-44-united-states-duke-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-45-united-states-harvard-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-46-united-states-lafayette-college",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-47-united-states-lehigh-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-48-united-states-mit",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-49-united-states-princeton-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-50-united-states-rice-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-51-united-states-stanford-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-52-united-states-university-of-miami",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-53-united-states-university-of-notre-dame",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-54-united-states-vanderbilt-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-55-united-states-villanova-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-56-united-states-washington-and-lee-unive",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-57-united-states-yale-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: add your own research",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "audit-november",
+    "category": "DECISION_GATE",
+    "title": "Check the November application decisions",
+    "description": "Confirm whether earlier Pearson steps were submitted. UBC admissions and award applications are due November 15. HKUST allows forthcoming scores, but priority-round treatment of later SAT results still needs checking.",
+    "minutes": 15,
+    "priority": 1,
+    "routeIds": [
+      "route-03-canada-university-of-toronto",
+      "route-02-canada-university-of-british-co",
+      "route-08-hong-kong-hkust"
+    ],
+    "requiresActiveRoute": true,
+    "steps": [
+      "Check nomination and admission receipts for Pearson; do not assume the route is closed.",
+      "Check UBC nomination, teacher referee, and the separate award application.",
+      "Record a route status only after you decide."
+    ],
+    "sources": [
+      "https://undergraduatescholarships.ubc.ca/prog/2027_international_scholars_program_application/"
+    ]
+  },
+  {
+    "id": "sat-registration",
+    "category": "DOC_BRICK_STEP",
+    "title": "Find your December SAT registration ticket",
+    "description": "Open your College Board account and confirm the December 5 test date and assigned test center. Save the ticket in your profile evidence folder.",
+    "minutes": 10,
+    "priority": 2,
+    "routeIds": [],
+    "brickId": "profile",
+    "steps": [
+      "Check the test date and location on your ticket.",
+      "Save a PDF or screenshot in 05_Profile_Evidence.",
+      "If a device loan is needed, check the earlier request cutoff."
+    ],
+    "sources": [
+      "https://satsuite.collegeboard.org/sat/dates-deadlines"
+    ]
+  },
+  {
+    "id": "polito-call",
+    "category": "VERIFY_RULE",
+    "title": "Check the new PoliTO testing rules",
+    "description": "The 2027/28 call is still being defined and the testing system is changing. Find the current official engineering call before relying on an older SAT exemption.",
+    "minutes": 15,
+    "priority": 3,
+    "routeIds": [
+      "route-14-italy-politecnico-di-torino"
+    ],
+    "requiresActiveRoute": true,
+    "steps": [
+      "Open the official 2027/28 calls page.",
+      "Look for the exact engineering program, entry cycle, and accepted test.",
+      "Keep SAT acceptance unknown until a current call confirms it."
+    ],
+    "sources": [
+      "https://www.polito.it/didattica/iscriversi-studiare-laurearsi/iscrizione/corsi-di-laurea/bandi-regolamenti-e-graduatorie"
+    ]
+  },
+  {
+    "id": "korea-pregrad",
+    "category": "VERIFY_RULE",
+    "title": "Check one Korean program’s graduation rule",
+    "description": "Choose KAIST, POSTECH, DGIST, or GIST. Find whether the relevant 2027 intake accepts an expected-graduation school letter from a June graduate.",
+    "minutes": 15,
+    "priority": 4,
+    "routeIds": [
+      "route-30-south-korea-kaist",
+      "route-31-south-korea-postech",
+      "route-27-south-korea-dgist",
+      "route-28-south-korea-gist"
+    ],
+    "requiresActiveRoute": true,
+    "steps": [
+      "Choose one program and its exact intake.",
+      "Locate expected-graduation and final-document requirements.",
+      "Save the source and record what still needs clarification."
+    ]
+  },
+  {
+    "id": "income-inventory",
+    "category": "DOC_BRICK_STEP",
+    "title": "Ask which family financial documents exist",
+    "description": "Make a simple inventory with your parents before translation or legalization work. Store all answers in the financial document folder.",
+    "minutes": 15,
+    "priority": 5,
+    "routeIds": [],
+    "brickId": "financial",
+    "steps": [
+      "Ask which income or tax records are already digital.",
+      "Ask which property and household records are available.",
+      "List missing items; verify the regional aid call before ordering translations."
+    ]
+  }
+]

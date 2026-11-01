@@ -1,0 +1,21 @@
+{
+  "projectTitle": "Study abroad \u2014 demo",
+  "mission": "Find an engineering route with sustainable funding and a manageable application plan.",
+  "snapshot": {
+    "school": "Example Public High School",
+    "curriculum": "Indonesian National Curriculum",
+    "citizenship": "Indonesian",
+    "expectedGraduation": "June 2027",
+    "ieltsAcademicOverall": 7,
+    "maxFamilyContributionIdrMPerMonth": 5,
+    "satPlan": {
+      "firstOfficialAttemptDate": "2026-12-05",
+      "targetTotal": 1480,
+      "scoreReleaseDate": "2026-12-18"
+    },
+    "targetFields": [
+      "Mechanical Engineering",
+      "Electrical Engineering"
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "school",
+    "folder": "03_School_Documents",
+    "title": "School documents",
+    "description": "One clean school pack, reused across applications.",
+    "items": [
+      {
+        "id": "transcript",
+        "label": "Locate Semester 1–5 transcripts"
+      },
+      {
+        "id": "graduation-letter",
+        "label": "Ask when an expected-graduation letter is available"
+      },
+      {
+        "id": "nomination",
+        "label": "Check counselor nomination availability"
+      },
+      {
+        "id": "references",
+        "label": "List two potential recommendation writers"
+      }
+    ]
+  },
+  {
+    "id": "profile",
+    "folder": "05_Profile_Evidence",
+    "title": "Profile evidence",
+    "description": "Proof of tests, technical work, and leadership.",
+    "items": [
+      {
+        "id": "sat-ticket",
+        "label": "Save the SAT registration ticket"
+      },
+      {
+        "id": "english-test",
+        "label": "Locate the English test report"
+      },
+      {
+        "id": "technical-evidence",
+        "label": "Select one example of practical technical fluency"
+      },
+      {
+        "id": "leadership",
+        "label": "Locate leadership evidence and dates"
+      }
+    ]
+  },
+  {
+    "id": "financial",
+    "folder": "04_Financial_Documents",
+    "title": "Financial documents",
+    "description": "An inventory first. Translations after the rules are confirmed.",
+    "items": [
+      {
+        "id": "income",
+        "label": "Inventory family income and tax records"
+      },
+      {
+        "id": "property",
+        "label": "Inventory household and property records"
+      },
+      {
+        "id": "regional-rules",
+        "label": "Verify the current regional aid checklist"
+      },
+      {
+        "id": "liquidity",
+        "label": "Estimate deposits and cash before the first payment"
+      }
+    ]
+  },
+  {
+    "id": "applications",
+    "folder": "02_Applications",
+    "title": "Application folders",
+    "description": "A separate working folder for each active route.",
+    "items": [
+      {
+        "id": "active-folders",
+        "label": "Create a folder for each active application"
+      },
+      {
+        "id": "portal-receipts",
+        "label": "Save portal login instructions and receipts securely"
+      },
+      {
+        "id": "requirements",
+        "label": "Record the exact current-cycle checklist"
+      },
+      {
+        "id": "freeze-submission",
+        "label": "Keep a frozen copy of each submitted version"
+      }
+    ]
+  }
+]
