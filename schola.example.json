@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "contextAllowed": false,
+  "llm": {
+    "baseUrl": "http://127.0.0.1:20128/v1",
+    "model": "YOUR_MODEL_ID",
+    "apiKey": "YOUR_LOCAL_ROUTER_KEY",
+    "toolMode": "json",
+    "timeoutSeconds": 120,
+    "maxOutputTokens": 1600,
+    "maxToolRounds": 6,
+    "dailyCallLimit": 80
+  },
+  "search": {
+    "provider": "searxng",
+    "baseUrl": "http://127.0.0.1:8080",
+    "apiKey": "",
+    "maxResults": 5
+  },
+  "background": { "enabled": false, "maxJobsPerDay": 3 },
+  "access": { "enabled": true, "origins": ["http://127.0.0.1:3270"] }
+}

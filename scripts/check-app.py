@@ -3,6 +3,7 @@
 Exercises persistence and recovery without touching the owner's vault.
 """
 import json
+import hashlib
 import os
 from pathlib import Path
 import shutil
@@ -27,6 +28,7 @@ def main():
             s.bind(("127.0.0.1", 0))
             port = s.getsockname()[1]
         origin = f"http://127.0.0.1:{port}"
+        last_headers = {}
 
         def request(route="/api/schola", value=None, headers=None, expect=200):
             h = {"Origin": origin, **(headers or {})}
@@ -38,10 +40,12 @@ def main():
             except HTTPError as e:
                 status, content, response_headers = e.code, e.read(), e.headers
             assert status == expect, (route, status, content[:200])
+            last_headers.clear()
+            last_headers.update({k.lower(): v for k, v in response_headers.items()})
             return json.loads(content) if "application/json" in response_headers.get("Content-Type", "") else content
 
         log = (scratch / "server.log").open("w")
-        server = subprocess.Popen(["node", str(root / "node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", str(port)], cwd=scratch, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, "NEXT_TELEMETRY_DISABLED": "1", "STUDAB27_DEMO": "0"})
+        server = subprocess.Popen(["node", str(root / "node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", str(port)], cwd=scratch, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, "NEXT_TELEMETRY_DISABLED": "1", "STUDAB27_DEMO": "0", "STUDAB27_CONFIG_PATH": str(scratch / "private/schola.local.json")})
         try:
             for attempt in range(80):
                 if server.poll() is not None: raise AssertionError("Temporary app server exited")
@@ -52,7 +56,7 @@ def main():
             else: raise AssertionError("Temporary app server did not become ready")
             data = request()
             assert data["mode"] == "DEMO" and len(data["routes"]) == 57 and len(data["briefing"]["cards"]) == 3
-            for route in ("/", "/catalogue", "/bricks", "/watchtower"): request(route)
+            for route in ("/", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
             request(value={"action": "task", "id": "sat-registration", "command": "done"})
             assert request()["state"]["tasks"]["sat-registration"]["status"] == "DONE"
             request(value={"action": "task", "id": "sat-registration", "command": "undo"})
@@ -80,7 +84,33 @@ def main():
             bad = {**bundle, "overlays": bundle["overlays"][:-1]}
             request(value={"action": "import", "bundle": bad}, expect=400)
             assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
-            print("Production HTTP: demo fallback, four pages, persisted task/document/route/inbox actions, scenario isolation, origin/host guards, export, validated import and recovery backup passed.")
+            assert request("/api/schola/chat")["messages"] == []
+            request("/api/schola/chat", {"action": "send", "message": "Fixture"}, expect=400)
+            password, salt = "fictional-http-password", "1234567890abcdef1234567890abcdef"
+            access = {"enabled": True, "origins": [origin, "https://workspace.example:9443", "https://workspace.example:10000"], "sessionSecret": "fictional-session-secret-for-http-tests", "passwordSalt": salt, "passwordHash": hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=32768, r=8, p=1, maxmem=64*1024*1024).hex()}
+            (scratch / "private/schola.local.json").write_text(json.dumps({"access": access, "llm": {}, "search": {"provider": "disabled"}}))
+            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat"):
+                request(route, expect=401)
+            request("/api/session", {"password": "incorrect"}, expect=401)
+            request("/api/session", {"password": password}, headers={"Origin": "https://attacker.invalid"}, expect=403)
+            request("/api/session", {"password": password})
+            cookie = last_headers["set-cookie"].split(";", 1)[0]
+            assert "HttpOnly" in last_headers["set-cookie"] and "SameSite=strict" in last_headers["set-cookie"]
+            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", "/schola"):
+                request(route, headers={"Cookie": cookie})
+            request(headers={"Cookie": "studab27-session=forged"}, expect=401)
+            for host in ("workspace.example.attacker.invalid:10000", "workspace.example:9000", "workspace.example"):
+                request(headers={"Host": host, "Cookie": cookie}, expect=403)
+            for suffix in (9443, 10000):
+                public = f"https://workspace.example:{suffix}"
+                request("/api/session", {"password": password}, headers={"Host": f"workspace.example:{suffix}", "Origin": public})
+                assert "Secure" in last_headers["set-cookie"]
+                request(headers={"Host": f"workspace.example:{suffix}", "Cookie": cookie})
+                request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={"Host": f"workspace.example:{suffix}", "Origin": public, "Cookie": cookie})
+                request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={"Host": f"workspace.example:{suffix}", "Origin": public.replace("https:", "http:"), "Cookie": cookie}, expect=403)
+            request("/api/session", {"action": "logout"}, headers={"Cookie": cookie})
+            assert "Max-Age=0" in last_headers["set-cookie"]
+            print("Production HTTP: five app views, persisted actions, scenario isolation, export/import recovery, private API authentication, signed sessions, HTTPS cookie flags, exact remote hosts and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)

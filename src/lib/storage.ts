@@ -4,6 +4,7 @@ import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import type { AppState, Brick, Dashboard, Evaluation, InboxItem, Milestone, Overlay, Profile, Route, SourceNote, Task, WatchState } from "./schema";
+import { requireAccess } from "./access";
 
 const run = promisify(execFile);
 export const root = process.cwd();
@@ -42,6 +43,7 @@ export async function python<T>(module: string, payload: unknown): Promise<T> {
 }
 
 export async function baseData() {
+  await requireAccess();
   const currentMode = await mode();
   const [routes, profile, overlays, templates, bricks, sourceNotes, milestones] = await Promise.all([
     readJson<Route[]>(path.join(publicDir, "scholarships_2027.json")),

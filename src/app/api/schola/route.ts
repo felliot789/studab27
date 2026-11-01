@@ -4,7 +4,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { baseData, emptyState, inboxPath, loadDashboard, python, readJson, root, serialized, statePath, vault, writeJson } from "@/lib/storage";
 import { type AppState, type Dashboard, type Evaluation, type InboxItem, type Task } from "@/lib/schema";
-import { assertSafeKeys, number, object, text, validateOverlay, validateProfile } from "@/lib/validation";
+import { number, object, text, validateOverlay, validateProfile } from "@/lib/validation";
+import { jsonBody } from "@/lib/request-body";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,28 +15,9 @@ export async function GET() {
   catch { return NextResponse.json({ error: "Could not load local data. Existing vault files were preserved; inspect the local server log." }, { status: 500 }); }
 }
 
-async function body(request: NextRequest) {
-  const size = Number(request.headers.get("content-length") || 0);
-  if (size > 1_500_000) throw new Error("JSON import is too large.");
-  const reader = request.body?.getReader();
-  if (!reader) throw new Error("A JSON request is required.");
-  let total = 0;
-  const chunks: Uint8Array[] = [];
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    total += value.byteLength;
-    if (total > 1_500_000) { await reader.cancel(); throw new Error("JSON import is too large."); }
-    chunks.push(value);
-  }
-  const parsed: unknown = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-  assertSafeKeys(parsed);
-  return object(parsed);
-}
-
 export async function POST(request: NextRequest) {
   try {
-    const input = await body(request);
+    const input = await jsonBody(request);
     if (input.action === "simulate") {
       const base = await baseData();
       const sat = number(input.sat, 1350, 1560), cap = number(input.cap, 0, 100);

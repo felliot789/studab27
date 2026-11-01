@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+const privateFiles = ["./private/**/*", "./**/*.local.*", "./.env*", "./artifacts/**/*"];
 const config: NextConfig = {
   poweredByHeader: false,
-  outputFileTracingExcludes: { "/*": ["./private/**/*", "./**/*.local.*", "./.env*", "./artifacts/**/*"] },
+  outputFileTracingExcludes: { "/*": privateFiles, middleware: privateFiles },
   experimental: { cpus: 2 },
   async headers() {
     return [{ source: "/:path*", headers: [

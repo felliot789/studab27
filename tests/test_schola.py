@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from schola.evaluator import budget_survivability_gate, curriculum_gate, evaluate, graduation_gate
 from schola.spoonfeeder import briefing, task_pool
-from schola.watcher import normalize, scan, validate_public_url
+from schola.watcher import fetch, normalize, PinnedHTTP, scan, validate_public_url
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("privacy_guard", ROOT / "scripts/privacy_guard.py")
@@ -88,6 +88,20 @@ class BriefingChecks(unittest.TestCase):
 
 
 class MonitoringChecks(unittest.TestCase):
+    def test_public_fetch_pins_the_checked_address_and_rejects_private_redirects(self):
+        with patch("schola.watcher.socket.create_connection") as connect:
+            connection = PinnedHTTP("example.edu", 80, "93.184.215.14")
+            connection.connect()
+            self.assertEqual(connect.call_args.args[0], ("93.184.215.14", 80))
+        def addresses(host, *_args, **_kwargs):
+            return [(2, 1, 6, "", ("127.0.0.1" if host == "127.0.0.1" else "93.184.215.14", 443))]
+        with patch("schola.watcher.socket.getaddrinfo", side_effect=addresses), patch("schola.watcher.PinnedHTTP") as pinned, patch("schola.watcher.time.sleep"):
+            response = pinned.return_value.getresponse.return_value
+            response.status = 302
+            response.getheader.return_value = "http://127.0.0.1/admin"
+            with self.assertRaises(ValueError): fetch("https://example.edu/")
+            self.assertEqual(pinned.call_count, 1)
+
     def test_html_normalization_and_pdf_discovery(self):
         html = ("<html><script>private script noise</script><p>2027 engineering scholarship details and eligibility. " + "Benefits and instructions. " * 8 + '</p><a href="/call.pdf">Call</a></html>').encode()
         text, pdfs = normalize(html, "text/html", "https://example.edu/apply")

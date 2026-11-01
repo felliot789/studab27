@@ -1,6 +1,6 @@
 # StudAb27
 
-A local scholarship workspace for undergraduate engineering applications. Schola keeps official-source snapshots, calculates conservative planning gates, and offers at most three short next steps. The interface includes a briefing, a 57-route catalogue, four reusable document packs, and a source watchtower with a SAT and budget simulator.
+A local scholarship workspace for undergraduate engineering applications. Schola keeps official-source snapshots, calculates conservative planning gates, and offers at most three short next steps. Five phone-friendly views cover the briefing, 57-route catalogue, document readiness, watchtower/simulator, and a single Schola conversation.
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
@@ -14,7 +14,7 @@ python3 scripts/install-hooks.py
 npm run dev
 ```
 
-Open [the local workspace](http://127.0.0.1:3270). The server binds to loopback. No accounts, external fonts, cloud credentials, analytics, or paid API keys are needed. Next.js telemetry is disabled by the project scripts.
+Open [the local workspace](http://127.0.0.1:3270). The server binds to loopback. The fictional dashboard works without an account or API key. Schola chat requires your own model connection. No external fonts or analytics are loaded; Next.js telemetry is disabled.
 
 For a production build:
 
@@ -24,7 +24,73 @@ python3 scripts/check-public-build.py
 npm start
 ```
 
-The app intentionally has no remote-user authentication. Keep it local. Hosting the personal vault or exposing this server requires a separately reviewed authentication and deployment design; the repository can be public without making the running personal app public.
+Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
+
+## Schola model and conversation
+
+Put the model connection in an ignored `.env` once:
+
+```dotenv
+INFERENCE_BASE_URL=http://127.0.0.1:20128/v1
+INFERENCE_API_KEY=YOUR_LOCAL_ROUTER_KEY
+INFERENCE_MODEL=YOUR_MODEL_ID
+```
+
+Then initialize the canonical configuration (never overwrites an existing one):
+
+```sh
+python3 scripts/configure-schola.py --from-env --allow-context
+```
+
+Thereafter edit **`private/schola.local.json` only** for Schola. The original `.env` is preserved but is no longer its settings source. `schola.example.json` documents the shape without credentials. Model/search changes apply to the next job; no SDK or additional Python packages are required.
+
+| Setting | Purpose |
+| --- | --- |
+| `llm.baseUrl`, `llm.model`, `llm.apiKey` | Trusted custom-v1 Chat Completions connection; remote endpoints require HTTPS |
+| `llm.toolMode` | `json` uses plain-text actions through custom-v1 adapters; `native` uses function calling. Set `llm.jsonResponseFormat` false only if the endpoint rejects JSON response format. |
+| `llm.dailyCallLimit` | Model requests per UTC day, including failed attempts; default 80 |
+| `llm.maxToolRounds`, `llm.maxOutputTokens`, `llm.timeoutSeconds` | Bound each reply; tools also have a 12-call and ten-minute work budget |
+| `contextAllowed` | Explicit consent for relevant real profile, strategy and milestones; false uses fictional context |
+| `search.provider` | `searxng`, `brave`, or `disabled` |
+| `search.baseUrl`, `search.apiKey` | Local SearXNG URL, or a separate Brave Search API credential |
+| `background.enabled`, `background.maxJobsPerDay` | Review newly changed source text in the conversation; default at most three jobs daily |
+| `access.origins` | Exact allowed HTTP localhost and HTTPS remote origins, including ports |
+
+Open **Schola** in the app. Messages become durable SQLite jobs, so closing a tab does not cancel work. Drafts stay in the current browser tab until Send is tapped. An interrupted worker marks an unfinished reply failed rather than silently repeating a charged request; retries then require a tap. A malformed JSON reply may receive one bounded format-correction request, counted in the daily budget. There are no automatic network retries or model requests while idle. Conversation history persists in `private/schola.sqlite3`; recent turns enter context, and an older-conversation search tool can retrieve relevant statements. Memory is not official evidence. The UI loads the latest 80 messages.
+
+Tools can read the current plan, compare catalogue routes, search public topics, inspect official HTML/PDF sources, and find older conversation statements. They cannot execute shell commands, submit applications, send messages, mark tasks done, or change verified rules. Relevant project context and chat may reach an external model through your configured router. Credentials and private Calendar/Drive links are excluded from model context; source content is treated as untrusted data. Public search queries reject contact details, credentials and explicit family finances. The reader accepts exact catalogue, search-result, returned-PDF or user-supplied official URLs; it does not invent paths or attach profile data as URL parameters.
+
+**Search is a separate capability from inference.** SearXNG depends on its upstream engines; a successful HTTP response with zero results is not proof of a working search engine. Schola exposes degradation and engine errors, filters to official academic/government and known source domains, and cools down failed searches for five minutes. Direct reading of known official pages remains useful. Brave Search is an optional adapter requiring its own key; no search subscription is provisioned automatically. Neither option promises exhaustive or Google-level discovery.
+
+The assistant can review new `CHANGED` events after a completed watchtower scan. Existing history is a starting watermark, not a new alert. Baselines and errors alone do not trigger model reviews. Reviews appear only in Schola; there is no external messaging channel or idle research loop. Model answers remain fallible even when a tool succeeds; consult the displayed sources before acting.
+
+## Homelab hosting and phone access
+
+After configuration, build and check before enabling the user services:
+
+```sh
+npm run check
+npm run build
+python3 scripts/check-public-build.py
+python3 scripts/check-app.py
+python3 scripts/install-app-services.py --enable
+```
+
+`studab27-web.service` serves production Next at `127.0.0.1:3270`; `studab27-schola.service` processes conversations and source reviews. Both restart on failure. The existing twelve-hour watchtower timer remains separate. No cloud host is needed. Services run while the host and user manager are available; the installer does not change lingering.
+
+The generated password is in **`private/web-login.local.txt`**, mode 0600. It is never displayed by the setup script. The settings hold a scrypt hash and session signing secret; cookies are HttpOnly, SameSite Strict and Secure over HTTPS. Fifteen failed logins temporarily throttle password attempts. To rotate the password and invalidate all sessions, run `python3 scripts/reset-web-password.py`, then read the local password file. The shield menu signs out this browser.
+
+For phone access, add the exact HTTPS origins to `access.origins` first. Prefer private Tailscale Serve; optional Funnel is publicly reachable and therefore also requires login. Use separate free ports and preserve existing services:
+
+```sh
+tailscale serve status --json
+tailscale serve --bg --https=9443 http://127.0.0.1:3270
+tailscale funnel --bg --https=10000 http://127.0.0.1:3270
+```
+
+The URLs use your node's exact Tailscale DNS name with `:9443` (tailnet only) or `:10000` (public). Check unauthenticated and authenticated access before relying on them. Never use a default-port command or `reset` that might replace unrelated 443/8443 mappings. Disable only these routes with `tailscale serve --https=9443 off` or `tailscale funnel --https=10000 off`. To stop the app, use `systemctl --user disable --now studab27-web.service studab27-schola.service`.
+
+The phone layout uses bottom navigation, cards by default, larger form controls, safe-area spacing, full-height drawers, and a reachable focus bar. Browser viewport checks do not replace testing an actual phone and its on-screen keyboard.
 
 ## Private data and demo mode
 
@@ -34,7 +100,7 @@ Without `private/profile.local.json` and `private/overlay.local.json`, the app l
 STUDAB27_DEMO=1 npm run dev
 ```
 
-Demo progress and route edits are stored separately from real-user state. To initialize a local vault from a private project seed stored outside the checkout:
+Demo progress, route edits and conversation storage are separate from real-user state. Forced demo mode also disables real model credentials and private chat/context. To initialize a local vault from a private project seed stored outside the checkout:
 
 ```sh
 python3 scripts/bootstrap-private.py --seed /absolute/path/to/project-seed.md
@@ -50,7 +116,7 @@ The optional offline Drive mirror exporter writes into the ignored vault:
 python3 -m schola.drive_sync private/exports/my-backup
 ```
 
-It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Documents`, `04_Financial_Documents`, `05_Profile_Evidence`, `06_Offers_and_Decisions`, `07_Inbox`, and `99_Archive`. Existing export folders are preserved. JSON exports do not include the original imported DOCX/XLSX or the actual supporting documents: back up those separately. **Google Drive and Calendar are not connected or automatically synchronized.** Imported Calendar links are historical references; no Calendar events are created.
+It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Documents`, `04_Financial_Documents`, `05_Profile_Evidence`, `06_Offers_and_Decisions`, `07_Inbox`, and `99_Archive`. Existing export folders are preserved. JSON exports do not include original imported DOCX/XLSX, supporting documents, conversation SQLite data or model/access settings: back up those separately. **Google Drive and Calendar are not connected or automatically synchronized.** Imported Calendar links are historical references; no Calendar events are created.
 
 ## What Schola does
 
@@ -60,7 +126,7 @@ It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Docume
 - **Simulator:** scenario SAT and budget controls recalculate the same Python evaluator used elsewhere. Advisory SAT targets are not admission thresholds. The simulator never changes the saved profile and never treats unknown rules as an unlocked scholarship.
 - **Watchtower:** bounded HTML/PDF fetches, SHA-256 of normalized text, source snapshots, diffs, and visible errors. First fetch establishes a baseline. Failed fetches retain the last good hash. Changed text does not automatically establish a new deadline or eligibility rule. Inbox links are never fetched automatically.
 
-Scholarship benefits, requirements, and deadlines in the original catalogue are **unverified seed claims**. Scoped official-source checks are stored separately in `data/public/source_verifications.json`, including the corrected UBC international-award deadline and the uncertain PoliTO testing transition. A checked deadline does not verify every other claim in that route. No application prose is generated or submitted.
+Scholarship benefits, requirements, and deadlines in the original catalogue are **unverified seed claims**. Scoped official-source checks are stored separately in `data/public/source_verifications.json`, including the corrected UBC international-award deadline and the uncertain PoliTO testing transition. A checked deadline does not verify every other claim in that route. No applications are submitted. Award-specific restrictions on AI-created content, including Pearson's, must be respected.
 
 ## Monitoring
 
@@ -70,7 +136,7 @@ Run one local scan:
 python3 -m schola.watcher
 ```
 
-Results go to `private/watchtower_state.local.json`; text snapshots stay under `private/watchtower/snapshots/`. The monitor fetches catalogue sources, scoped source-note URLs, and at most two discovered same-host PDF links per page. It limits response size, uses four workers with per-host serialization, validates public HTTP(S) redirect targets, and prevents overlapping scans with a file lock. It does not crawl entire university websites, run JavaScript, bypass access controls, or interpret every changed sentence.
+Results go to `private/watchtower_state.local.json`; text snapshots stay under `private/watchtower/snapshots/`. The monitor fetches catalogue sources, scoped source-note URLs, and at most two discovered same-host PDF links per page. It limits response size/read time, uses four workers with per-host serialization, validates and pins public IPs for each HTTP(S) redirect, and prevents overlapping scans with a file lock. It does not crawl entire university websites, run JavaScript, bypass access controls, or interpret every changed sentence.
 
 On a Linux system with a user systemd manager:
 
@@ -102,18 +168,20 @@ python3 scripts/check-public-build.py
 python3 scripts/check-app.py
 ```
 
-The tests cover funding boundaries, unknown evidence, graduation cutoffs, queue behavior, source normalization and baseline/error handling, staged-blob privacy, and production HTTP flows. The HTTP check creates a disposable fictional workspace to exercise persistence, origin/host guards, simulation, export, import, and recovery backups without altering the real vault. The build check scans emitted production code and traces for known seed identifiers and private paths. Live fetch success and the existence of a timer do not prove every source is reliable or every scholarship rule is verified.
+Checks cover conservative gates, task queues, source baselines/errors and public-IP pinning, staged privacy, durable chat/retries, JSON tool compatibility, model budgets, context redaction, demo isolation and degraded search. The production HTTP check uses a disposable fictional workspace for persistence, exact hosts/origins, login, forged cookies, HTTPS cookie flags, protected exports and import recovery. The build check scans emitted code for seed identifiers and configured secrets, and traces for private/env paths. Stubbed provider tests do not prove a particular live model works; test the configured model separately. Fetch success and a timer do not prove every scholarship rule is verified.
 
 ## Repository map
 
 | Location | Responsibility |
 | --- | --- |
-| `src/app/` | Four dynamic app pages and local JSON API |
+| `src/app/` | Five dynamic app pages, login and protected JSON APIs |
 | `src/components/` | Accessible dashboard, route drawer, checklists, simulator |
 | `src/lib/storage.ts` | Runtime-only vault/demo loading and serialized file writes |
 | `schola/evaluator.py` | Conservative deterministic gates and advisory scenarios |
 | `schola/spoonfeeder.py` | Atomic task pool and bounded briefing queue |
 | `schola/watcher.py` | Public-source fetches, text normalization, snapshots, diffs |
+| `schola/assistant.py` | SQLite conversation/jobs, bounded model/tool loop, source reviews |
+| `schola/config.py` | Local model/search settings and browser-safe status |
 | `schola/drive_sync.py` | Offline export into canonical Drive-shaped folders |
 | `data/public/` | Catalogue, fictional presets, task definitions, scoped sources |
 | `private/` | Ignored personal state, source imports, snapshots, recovery bundles |

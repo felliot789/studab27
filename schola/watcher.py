@@ -9,6 +9,7 @@ import contextlib
 import difflib
 import fcntl
 import hashlib
+import http.client
 from html.parser import HTMLParser
 import ipaddress
 import json
@@ -16,11 +17,11 @@ from pathlib import Path
 import re
 import shutil
 import socket
+import ssl
 import subprocess
 import threading
 import time
 from urllib.parse import urljoin, urlsplit
-from urllib.request import HTTPRedirectHandler, Request, build_opener
 from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,12 +52,19 @@ def validate_public_url(url):
     addresses = socket.getaddrinfo(parts.hostname, parts.port or (443 if parts.scheme == "https" else 80), type=socket.SOCK_STREAM)
     if not addresses or any(not ipaddress.ip_address(a[4][0]).is_global for a in addresses):
         raise ValueError("Source resolves to a nonpublic address")
+    return parts, addresses[0][4][0]
 
 
-class SafeRedirect(HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        validate_public_url(newurl)
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+class PinnedHTTP(http.client.HTTPConnection):
+    """Connect to the validated IP without a second DNS lookup or proxy env."""
+    def __init__(self, host, port, address, secure=False):
+        super().__init__(host, port=port, timeout=14)
+        self.address, self.secure = address, secure
+
+    def connect(self):
+        self.sock = socket.create_connection((self.address, self.port), self.timeout)
+        if self.secure:
+            self.sock = ssl.create_default_context().wrap_socket(self.sock, server_hostname=self.host)
 
 
 class TextParser(HTMLParser):
@@ -113,16 +121,39 @@ def fetch(url):
         lock = HOST_LOCKS.setdefault(host, threading.Lock())
     with lock:
         try:
-            opener = build_opener(SafeRedirect())
-            req = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/pdf"})
-            with opener.open(req, timeout=14) as response:
-                if int(response.headers.get("Content-Length", "0")) > MAX_BYTES:
-                    raise ValueError("Source exceeds size limit")
-                data = response.read(MAX_BYTES + 1)
-                if len(data) > MAX_BYTES:
-                    raise ValueError("Source exceeds size limit")
-                text, links = normalize(data, response.headers.get("Content-Type", ""), response.url)
-                return {"text": text, "pdfLinks": links, "finalUrl": response.url}
+            current = url
+            for redirect in range(6):
+                parts, address = validate_public_url(current)
+                connection = PinnedHTTP(parts.hostname, parts.port or (443 if parts.scheme == "https" else 80), address, secure=parts.scheme == "https")
+                try:
+                    connection.request("GET", (parts.path or "/") + ("?" + parts.query if parts.query else ""), headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/pdf"})
+                    response = connection.getresponse()
+                    if response.status in (301, 302, 303, 307, 308):
+                        if not response.getheader("Location"):
+                            raise ValueError("Source redirected without a destination")
+                        current = urljoin(current, response.getheader("Location"))
+                        continue  # The next connection validates and pins its own IP.
+                    if response.status != 200:
+                        raise ValueError(f"Source returned HTTP {response.status}")
+                    if int(response.getheader("Content-Length", "0")) > MAX_BYTES:
+                        raise ValueError("Source exceeds size limit")
+                    chunks, total, started = [], 0, time.monotonic()
+                    while True:
+                        if time.monotonic() - started > 45:
+                            raise ValueError("Source exceeded read deadline")
+                        chunk = response.read1(min(128 * 1024, MAX_BYTES + 1 - total))
+                        if not chunk:
+                            break
+                        chunks.append(chunk)
+                        total += len(chunk)
+                        if total > MAX_BYTES:
+                            raise ValueError("Source exceeds size limit")
+                    data = b"".join(chunks)
+                    text, links = normalize(data, response.getheader("Content-Type", ""), current)
+                    return {"text": text, "pdfLinks": links, "finalUrl": current}
+                finally:
+                    connection.close()
+            raise ValueError("Source exceeded redirect limit")
         finally:
             time.sleep(0.6)
 
