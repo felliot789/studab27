@@ -1,6 +1,17 @@
 export type GateStatus = "PASS" | "FAIL" | "UNKNOWN";
 export type ApplicationStatus = "NOT_STARTED" | "RESEARCHING" | "IN_PROGRESS" | "SUBMITTED" | "DEFER_TO_MAIN_ROUND" | "DROP";
 export const APPLICATION_STATUSES: ApplicationStatus[] = ["NOT_STARTED", "RESEARCHING", "IN_PROGRESS", "SUBMITTED", "DEFER_TO_MAIN_ROUND", "DROP"];
+export type Evidence = { url: string; checkedAt?: string; finding?: string; supportedFields?: string[]; scope?: string };
+export type CalendarEvent = {
+  id: string; routeId: string; cycle: string; program: string; round: string | null;
+  eventType: string; title: string; date: string | null; endDate?: string; time: string | null;
+  timezone: string | null; windowText: string | null; dateStatus: string;
+  prerequisiteEventIds: string[]; sourceUrl: string; sourceEvidence: string; checkedAt: string;
+  calendarDateSupported: boolean; humanVerified: boolean; deadlineAtWib: string | null;
+  candidateDate?: string; candidateTime?: string; candidateTimezone?: string;
+  conditions?: string[] | string; cutoffTimeText?: string;
+  sourceReview: { status: string; note: string; reviewedAt: string; scope: string; evidence: Evidence[] };
+};
 export type Route = {
   id: string; country: string; institution: string; scholarshipName: string;
   fundingType: string; engineeringFit: string; benefitsCoverage: string; satRole: string;
@@ -8,12 +19,16 @@ export type Route = {
   preGradApplyAllowed: string; separateScholarshipApp: string; renewalAndBondTerms: string;
   publicRiskOrCaveat: string; officialSourceUrl: string; secondarySourceUrl: string;
   seedStatus: string;
+  currentCycleStatus?: string; currentCycleEvidenceSummary?: string; reviewedAt?: string;
+  indonesianApplicantNotes?: string; programAndLanguageNotes?: string; aiContentPolicy?: string;
+  unresolvedQuestions?: string[]; evidenceSources?: Evidence[];
+  fieldReview?: Record<string, { status: string; evidence: Evidence[] }>;
 };
 export type CostEstimate = { tuition: number; housing: number; food: number; insurance: number; other: number; coverage: number; upfront?: number };
 export type Overlay = {
   routeId: string; personalStrategyTier: string; estimatedFamilyGapIdrMPerMonth: string;
   personalSatTargetNote: string; personalRiskNote: string; applicationStatus: ApplicationStatus;
-  driveApplicationFolder?: string; costEstimate?: CostEstimate; notes?: string;
+  saved?: boolean; driveApplicationFolder?: string; costEstimate?: CostEstimate; notes?: string;
   verifiedRules?: { cycle: string; program: string; sourceUrl: string; checkedAt: string; nationalCurriculumDirectEntry?: boolean; preGraduationApplicationAllowed?: boolean; finalDiplomaDeadline?: string };
 };
 export type Profile = {
@@ -37,7 +52,7 @@ export type AppState = { tasks: Record<string, { status?: "DONE"; snoozedUntil?:
 export type SourceNote = { id: string; routeId?: string; checkedAt: string; cycle: string; title: string; summary: string; sourceUrl: string; secondaryUrl?: string; deadlineAt?: string; deadlineDate?: string; deadlineLabel?: string; verifiedField: string };
 export type WatchEvent = { id: string; at: string; url: string; kind: "BASELINE" | "CHANGED" | "ERROR"; summary: string; excerpt: string; routeIds: string[] };
 export type WatchState = { lastRunAt: string | null; runStartedAt?: string; running?: boolean; runComplete?: boolean; scope?: string; progress?: { checked: number; total: number }; summary?: { checked: number; ok: number; errors: number }; sources: Record<string, { status: string; hash?: string; lastCheckedAt?: string; lastSuccessAt?: string; error?: string; routeIds?: string[] }>; events: WatchEvent[] };
-export type Dashboard = { mode: "PRIVATE" | "DEMO"; profile: Profile; routes: Route[]; overlays: Overlay[]; evaluations: Evaluation[]; briefing: { cards: Task[]; remaining: number; completed: number; taskTitles: Record<string,string> }; bricks: Brick[]; state: AppState; milestones: Milestone[]; inbox: InboxItem[]; sourceNotes: SourceNote[]; watch: WatchState; schedule: { active: boolean; label: string; nextRunAt?: string } };
+export type Dashboard = { mode: "PRIVATE" | "DEMO"; profile: Profile; routes: Route[]; calendarEvents: CalendarEvent[]; overlays: Overlay[]; evaluations: Evaluation[]; briefing: { cards: Task[]; remaining: number; completed: number; taskTitles: Record<string,string> }; bricks: Brick[]; state: AppState; milestones: Milestone[]; inbox: InboxItem[]; sourceNotes: SourceNote[]; watch: WatchState; schedule: { active: boolean; label: string; nextRunAt?: string } };
 
 export function label(value: string) { return value.toLowerCase().replaceAll("_", " ").replace(/^\w/, c => c.toUpperCase()); }
 export function safeUrl(value: string) { try { const u = new URL(value); return ["https:", "http:"].includes(u.protocol) && !u.username && !u.password ? value : undefined; } catch { return undefined; } }

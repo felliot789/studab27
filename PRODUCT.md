@@ -14,9 +14,15 @@ The primary device is a phone, often used one-handed in a quiet room at night. K
 
 Turn scholarship research into a sustainable application workflow. Schola tracks official-source changes, records evidence and uncertainty, compares funding against a family budget, and offers at most three short tasks. The catalogue supports deliberate research without taking over the home screen. One Schola corner holds conversation and bounded source reviews; no external chat channel is required.
 
+## Information architecture
+
+Today, Scholarships, Applications, Calendar, and Documents form the primary navigation on phone and desktop. Use the same plain names in headings. Schola stays one tap away; source monitoring, scenarios, and settings sit outside the main five.
+
+Every scholarship has one permanent page containing its overview, dates, personal plan, and sources. Saving a route follows its dates without deciding to apply. Applications contain explicit active statuses. Calendar opens on saved and active routes, with a clear All routes switch. Keep unconfirmed and conflicting dates visible in a separate list, without placing them on calendar days.
+
 ## Brand Personality
 
-Quiet, focused, reassuring. The user prefers a dark interface with the warmth and restrained presentation of Claude. Use direct, human language; urgency comes from real dates rather than pressure or gamification.
+Professional, concise, and factual. Preserve the dark, restrained interface. Use descriptive headings, specific instructions, and neutral status messages. Avoid motivational slogans, forced optimism, coaching language, and patronizing reassurance. Urgency must come from published dates and explicit requirements.
 
 ## Anti-references
 

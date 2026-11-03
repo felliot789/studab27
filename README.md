@@ -1,12 +1,12 @@
 # StudAb27
 
-A local scholarship workspace for undergraduate engineering applications. Schola keeps official-source snapshots, calculates conservative planning gates, and offers at most three short next steps. Five phone-friendly views cover the briefing, 57-route catalogue, document readiness, watchtower/simulator, and a single Schola conversation.
+A local scholarship workspace for undergraduate engineering applications. Five main places keep the work easy to find: **Today**, **Scholarships**, **Applications**, **Calendar**, and **Documents**. Schola is available from every page; source updates, scenarios, and settings are secondary tools.
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
 ## Run locally
 
-Requires Node.js 20.9+ (tested with Node 24), npm, Python 3.11+, and Git. On Linux, Poppler's `pdftotext` enables PDF monitoring. The worker has no Python package dependencies.
+Requires Node.js 22.18+ (tested with Node 24), npm, Python 3.11+, and Git. On Linux, Poppler's `pdftotext` enables PDF monitoring. The worker has no Python package dependencies. Calendar unit checks use Node's built-in TypeScript support and test runner.
 
 ```sh
 npm ci
@@ -25,6 +25,30 @@ npm start
 ```
 
 Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
+
+## Finding your work
+
+| Place | What lives here |
+| --- | --- |
+| Today `/` | At most three atomic next steps, upcoming dates from your shortlist, document readiness, and an optional focus timer |
+| Scholarships `/scholarships` | All 57 routes, search and filters, and explicitly saved scholarships |
+| Scholarship `/scholarships/[id]` | One permanent page with Overview, Dates, Your plan, and Sources |
+| Applications `/applications` | Routes you explicitly marked researching, in progress, submitted, or deferred; set-aside routes stay accessible |
+| Calendar `/calendar` | Saved and active routes by default, an All routes switch, month/agenda views, route/step filters, and source details |
+| Documents `/documents` | Four reusable readiness checklists; actual files remain in your own folders |
+| Schola `/schola` | Your existing durable conversation and read-only research tools |
+| Source updates `/updates` | Monitoring, research captures, and budget/SAT scenarios |
+| Settings `/settings` | Profile summary, private exports, and explicit backup restoration |
+
+Older `/catalogue`, `/bricks`, and `/watchtower` links still work. Saving a scholarship changes only its bookmark; it does not start an application or record a verified rule. Existing overlays without a saved flag remain valid. No migration rewrites the private vault.
+
+## Reviewed catalogue and calendar
+
+The public catalogue includes all 57 refreshed route IDs and 174 calendar records from the 3 November 2026 review. Eighty records have target-cycle date evidence. The remaining 94 include annual rules awaiting cycle confirmation, unresolved dates, and conflicting official sources. They stay in **Dates to confirm**, off calendar days. Funding, language, curriculum, graduation, and other claims retain their own field-level evidence status; a reviewed date does not verify eligibility.
+
+Published times with known zones convert to WIB. Date-only records stay on the publisher's calendar day and never acquire an invented end-of-day cutoff. Multi-day events retain their range. Imported private milestones are labeled personal targets, with published scholarship records shown separately. This calendar does not connect cloud services, submit applications, or send notifications.
+
+`scripts/prepare-catalogue.py REVIEW_DIRECTORY` creates the public projection from reviewed research. It allowlists public facts and source URLs, excluding raw imports, local source filenames, snapshots, hashes, and private review metadata. `scripts/validate-data.py` checks all route/event relationships and date-evidence boundaries. Schola can inspect the same reviewed events without converting candidate dates into verified rules.
 
 ## Schola model and conversation
 

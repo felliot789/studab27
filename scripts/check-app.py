@@ -13,6 +13,7 @@ import tempfile
 import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
+from urllib.parse import quote
 
 root = Path(__file__).resolve().parents[1]
 
@@ -56,15 +57,32 @@ def main():
             else: raise AssertionError("Temporary app server did not become ready")
             data = request()
             assert data["mode"] == "DEMO" and len(data["routes"]) == 57 and len(data["briefing"]["cards"]) == 3
-            for route in ("/", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
+            assert len(data["calendarEvents"]) == 174
+            for route in ("/", "/scholarships", "/applications", "/calendar", "/documents", "/updates", "/settings", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
+            for route in data["routes"]:
+                request("/scholarships/" + quote(route["id"]))
+            # Next's streamed notFound response retains HTTP 200 after streaming
+            # starts; verify that it renders recovery UI rather than a route.
+            missing = request("/scholarships/not-a-route")
+            assert "Page not found".encode() in missing
+            # Reading the refreshed catalogue/calendar must not change personal state.
+            assert request()["overlays"] == data["overlays"]
+            assert request()["state"] == data["state"]
+            focused_calendar = request("/calendar?route=" + quote(data["routes"][0]["id"]))
+            assert b"All routes" in focused_calendar
             request(value={"action": "task", "id": "sat-registration", "command": "done"})
             assert request()["state"]["tasks"]["sat-registration"]["status"] == "DONE"
             request(value={"action": "task", "id": "sat-registration", "command": "undo"})
             request(value={"action": "brick", "key": "profile:sat-ticket", "done": True})
             assert request()["state"]["bricks"]["profile:sat-ticket"]
             rid = data["routes"][0]["id"]
+            original_overlay = data["overlays"][0]
+            request(value={"action": "overlay", "id": rid, "patch": {"saved": True}})
+            assert request()["overlays"][0] == {**original_overlay, "saved": True}
+            request(value={"action": "overlay", "id": rid, "patch": {"saved": "yes"}}, expect=400)
+            assert request()["overlays"][0]["saved"] is True
             request(value={"action": "overlay", "id": rid, "patch": {"applicationStatus": "RESEARCHING", "notes": "Fictional persistence check"}})
-            assert request()["overlays"][0]["applicationStatus"] == "RESEARCHING"
+            assert request()["overlays"][0]["applicationStatus"] == "RESEARCHING" and request()["overlays"][0]["saved"]
             request(value={"action": "inbox", "text": "Fictional test capture; never fetch this automatically."})
             inbox = request()["inbox"]
             request(value={"action": "triage", "id": inbox[0]["id"], "status": "TRIAGED"})
@@ -80,6 +98,7 @@ def main():
             bundle["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] = 6
             request(value={"action": "import", "bundle": bundle})
             assert request()["mode"] == "PRIVATE" and request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
+            assert request()["overlays"][0]["saved"] is True
             assert list((scratch / "private/backups").glob("*.local.json"))
             bad = {**bundle, "overlays": bundle["overlays"][:-1]}
             request(value={"action": "import", "bundle": bad}, expect=400)
@@ -110,7 +129,7 @@ def main():
                 request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={"Host": f"workspace.example:{suffix}", "Origin": public.replace("https:", "http:"), "Cookie": cookie}, expect=403)
             request("/api/session", {"action": "logout"}, headers={"Cookie": cookie})
             assert "Max-Age=0" in last_headers["set-cookie"]
-            print("Production HTTP: five app views, persisted actions, scenario isolation, export/import recovery, private API authentication, signed sessions, HTTPS cookie flags, exact remote hosts and CSRF guards passed.")
+            print("Production HTTP: all five areas, 57 scholarship pages, saved routes, calendar reads, persisted actions, scenario isolation, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)

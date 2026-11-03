@@ -7,7 +7,7 @@
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "python3 scripts/run-web.py start",
     "typecheck": "tsc --noEmit",
-    "test": "python3 -m unittest discover -s tests",
+    "test": "python3 -m unittest discover -s tests && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/calendar.test.mjs",
     "check": "npm run typecheck && npm test && python3 scripts/validate-data.py && sh scripts/check-privacy.sh",
     "watchtower": "python3 -m schola.watcher"
   },

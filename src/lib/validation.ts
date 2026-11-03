@@ -33,6 +33,7 @@ export function validateOverlay(value: unknown, ids: Set<string>): Overlay {
   text(o.personalStrategyTier, 150);
   text(o.estimatedFamilyGapIdrMPerMonth, 300);
   text(o.personalSatTargetNote, 1000); text(o.personalRiskNote, 4000);
+  if (o.saved !== undefined && typeof o.saved !== "boolean") throw new Error("Saved must be true or false.");
   if (o.notes !== undefined) text(o.notes);
   if (o.costEstimate !== undefined) {
     const cost = object(o.costEstimate);

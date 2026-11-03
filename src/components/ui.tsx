@@ -12,6 +12,12 @@ const paths: Record<string, string> = {
   shield: "m12 2 9 4v6c0 5-9 10-9 10S3 17 3 12V6Zm-4 9 3 3 5-6", download: "M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5",
   pause: "M8 4v16M16 4v16", play: "m7 3 14 9-14 9Z", refresh: "M20 7a9 9 0 1 0 1 8M20 2v5h-5", plus: "M12 4v16M4 12h16", moon: "M20 15A9 9 0 0 1 9 3 9 9 0 1 0 20 15Z",
   chat: "M21 11a9 9 0 0 1-9 9H5l-4 3 2-7A9 9 0 1 1 21 11ZM7 10h10M7 14h6",
+  calendar: "M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2ZM7 2v5M17 2v5M3 10h18M7 14h2M12 14h2M7 17h2",
+  bookmark: "M6 3h12v19l-6-4-6 4Z", "bookmark-filled": "M6 3h12v19l-6-4-6 4ZM9 9l2 2 4-4",
+  applications: "M8 6V3h8v3M3 7h18v14H3ZM3 12a22 22 0 0 0 18 0M10 12v3h4v-3",
+  back: "m15 5-7 7 7 7", filter: "M4 6h16M7 12h10M10 18h4",
+  settings: "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM9 3h6l1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1Z",
+  more: "M5 12h.01M12 12h.01M19 12h.01",
 };
 export function Icon({ name, size = 18 }: { name: string; size?: number }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name] || paths.compass} /></svg>; }
 export function External({ href, children, className = "" }: { href?: string; children: ReactNode; className?: string }) { const url = href && safeUrl(href); return url ? <a href={url} target="_blank" rel="noopener noreferrer" className={`source-link ${className}`}>{children}<Icon name="external" size={13} /></a> : <span>{children}</span>; }

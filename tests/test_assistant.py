@@ -53,6 +53,22 @@ class AssistantChecks(unittest.TestCase):
         self.assertIn("fictional curriculum", encoded)
         self.assertNotIn("fictional curriculum", json.dumps(a.context(self.root, False)))
 
+    def test_route_tool_exposes_reviewed_calendar_without_verifying_eligibility(self):
+        data = a.context(self.root, False)
+        self.assertEqual(len(data["calendarEvents"]), 174)
+        route = data["routes"][0]
+        with closing(a.db(self.root)) as conn:
+            result = a.run_tool(self.root, conn, self.config, data, "inspect_route", {"routeId": route["id"]})
+        self.assertTrue(result["calendarEvents"])
+        self.assertTrue(all(e["routeId"] == route["id"] for e in result["calendarEvents"]))
+        self.assertEqual(result["gates"]["curriculum"]["status"], "UNKNOWN")
+        self.assertNotIn("verifiedRules", result["plan"])
+        data["overlays"][0]["saved"] = True
+        with closing(a.db(self.root)) as conn:
+            summary = a.run_tool(self.root, conn, self.config, data, "get_briefing", {})
+        self.assertEqual(summary["calendar"]["scope"], "SAVED_AND_ACTIVE")
+        self.assertTrue(all(e["calendarDateSupported"] for e in summary["calendar"]["publishedUpcoming"]))
+
     def test_forced_demo_cannot_reveal_private_chat_or_use_model_credentials(self):
         with closing(a.db(self.root)) as conn:
             conn.execute("INSERT INTO messages(role,content,created_at) VALUES('user','private conversation marker',?)", (a.now(),))

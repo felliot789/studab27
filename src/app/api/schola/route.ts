@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
           const existing = base.overlays.find(o => o.routeId === id);
           if (!existing) throw new Error("Unknown scholarship route.");
           const patch = object(input.patch);
-          const allowed = ["applicationStatus", "personalStrategyTier", "costEstimate", "notes", "verifiedRules"];
+          const allowed = ["applicationStatus", "personalStrategyTier", "costEstimate", "notes", "verifiedRules", "saved"];
           if (Object.keys(patch).some(k => !allowed.includes(k))) throw new Error("Unsupported route field.");
           const candidate = { ...existing, ...patch };
           if (patch.costEstimate === null) delete candidate.costEstimate;

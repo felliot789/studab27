@@ -4,7 +4,7 @@ import { PageHeading, Icon, type ViewProps } from "./ui";
 export default function Bricks({ data, act, busy }: ViewProps) {
   const total = data.bricks.reduce((n, b) => n + b.items.length, 0);
   const done = Object.values(data.state.bricks).filter(Boolean).length;
-  return <><PageHeading title="Build once. Reuse often." extra={<span className="readiness-total">{done} of {total} steps ready</span>}>Four document packs that make the next application easier.</PageHeading>
+  return <><PageHeading title="Your documents" extra={<span className="readiness-total">{done} of {total} steps ready</span>}>Reusable document checklists for scholarship applications.</PageHeading>
     <p className="intro-note">Check a step only when you have the document or have completed the action. This checklist stores readiness; your actual documents stay in your own folders.</p>
     <div className="brick-list">{data.bricks.map(brick => {
       const complete = brick.items.filter(i => data.state.bricks[`${brick.id}:${i.id}`]).length;
