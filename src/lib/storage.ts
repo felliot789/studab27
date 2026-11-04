@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AppState, Brick, CalendarEvent, Dashboard, Evaluation, InboxItem, Milestone, Overlay, Profile, Route, SourceNote, Task, WatchState } from "./schema";
+import type { ApplicationGuide, AppState, Brick, CalendarEvent, Dashboard, Evaluation, InboxItem, Milestone, Overlay, Profile, Route, ScholarshipOutlook, SourceNote, Task, WatchState } from "./schema";
 import { requireAccess } from "./access";
 
 const run = promisify(execFile);
@@ -45,14 +45,17 @@ export async function python<T>(module: string, payload: unknown): Promise<T> {
 export async function baseData() {
   await requireAccess();
   const currentMode = await mode();
-  const [routes, profile, overlays, templates, bricks, sourceNotes, milestones, calendarEvents] = await Promise.all([
+  const [catalogue, profile, overlays, templates, bricks, sourceNotes, milestones, calendarEvents, outlooks, guides] = await Promise.all([
     readJson<Route[]>(path.join(publicDir, "scholarships_2027.json")),
     readJson<Profile>(currentMode === "PRIVATE" ? path.join(vault, "profile.local.json") : path.join(publicDir, "profile.example.json")),
     currentMode === "PRIVATE" ? readJson<Overlay[]>(path.join(vault, "overlay.local.json")) : readJson<Overlay[]>(path.join(vault, "demo-overlay.local.json"), await readJson<Overlay[]>(path.join(publicDir, "overlay.example.json"))),
     readJson<Task[]>(path.join(publicDir, "tasks.json")), readJson<Brick[]>(path.join(publicDir, "bricks.json")), readJson<SourceNote[]>(path.join(publicDir, "source_verifications.json")),
     currentMode === "PRIVATE" ? readJson<Milestone[]>(path.join(vault, "milestones.local.json"), []) : Promise.resolve([]),
     readJson<CalendarEvent[]>(path.join(publicDir, "calendar_events.json")),
+    readJson<Record<string, ScholarshipOutlook>>(path.join(publicDir, "scholarship_outlooks.json"), {}),
+    readJson<Record<string, ApplicationGuide>>(path.join(publicDir, "application_guides.json"), {}),
   ]);
+  const routes = catalogue.map(route => ({ ...route, scholarshipOutlook: outlooks[route.id], applicationGuide: guides[route.id] }));
   const tasks = await python<Task[]>("schola.spoonfeeder", { tasks: templates, routes, profile, overlays, bricks, milestones, command: "pool" });
   return { mode: currentMode, routes, profile, overlays, tasks, bricks, sourceNotes, milestones, calendarEvents };
 }

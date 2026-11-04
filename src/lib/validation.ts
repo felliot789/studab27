@@ -1,4 +1,4 @@
-import { APPLICATION_STATUSES, type Overlay, type Profile, safeUrl } from "./schema";
+import { APPLICATION_STATUSES, type AppState, type Overlay, type Profile, type Route, safeUrl } from "./schema";
 
 export function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Expected a JSON object.");
@@ -34,6 +34,9 @@ export function validateOverlay(value: unknown, ids: Set<string>): Overlay {
   text(o.estimatedFamilyGapIdrMPerMonth, 300);
   text(o.personalSatTargetNote, 1000); text(o.personalRiskNote, 4000);
   if (o.saved !== undefined && typeof o.saved !== "boolean") throw new Error("Saved must be true or false.");
+  for (const field of ["tracked", "mainTarget"]) if (o[field] !== undefined && typeof o[field] !== "boolean") throw new Error(`${field} must be true or false.`);
+  if (o.pursuitLevel !== undefined && (typeof o.pursuitLevel !== "string" || !["FOCUS", "SECONDARY", "BACKUP"].includes(o.pursuitLevel))) throw new Error("Unknown pursuit level.");
+  if (o.mainTarget && (!o.tracked || o.pursuitLevel !== "FOCUS")) throw new Error("Your main target must be tracked as Focus.");
   if (o.notes !== undefined) text(o.notes);
   if (o.costEstimate !== undefined) {
     const cost = object(o.costEstimate);
@@ -49,4 +52,22 @@ export function validateOverlay(value: unknown, ids: Set<string>): Overlay {
     if (rule.finalDiplomaDeadline !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(text(rule.finalDiplomaDeadline, 10))) throw new Error("Use an ISO diploma deadline date.");
   }
   return value as Overlay;
+}
+
+export function validateRequirementProgress(value: unknown, routes: Route[]): NonNullable<AppState["requirements"]> {
+  const byRoute = object(value);
+  for (const [routeId, entries] of Object.entries(byRoute)) {
+    const route = routes.find(r => r.id === routeId);
+    if (!route) throw new Error("Unknown scholarship checklist.");
+    const items = route.applicationGuide?.sections.flatMap(s => s.items) || [];
+    for (const [id, raw] of Object.entries(object(entries))) {
+      const item = items.find(i => i.id === id), progress = object(raw);
+      if (!item) throw new Error("Unknown checklist step.");
+      if (typeof progress.status !== "string" || !["TODO", "DOING", "DONE", "NOT_NEEDED"].includes(progress.status)) throw new Error("Unknown checklist status.");
+      if (progress.status === "NOT_NEEDED" && !item.optional) throw new Error("Only optional or conditional steps can be marked not needed.");
+      if (progress.note !== undefined) text(progress.note, 2000);
+      if (progress.updatedAt !== undefined && !Number.isFinite(Date.parse(text(progress.updatedAt, 100)))) throw new Error("Invalid checklist date.");
+    }
+  }
+  return byRoute as NonNullable<AppState["requirements"]>;
 }

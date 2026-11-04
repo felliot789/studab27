@@ -4,7 +4,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { baseData, emptyState, inboxPath, loadDashboard, python, readJson, root, serialized, statePath, vault, writeJson } from "@/lib/storage";
 import { type AppState, type Dashboard, type Evaluation, type InboxItem, type Task } from "@/lib/schema";
-import { number, object, text, validateOverlay, validateProfile } from "@/lib/validation";
+import { number, object, text, validateOverlay, validateProfile, validateRequirementProgress } from "@/lib/validation";
 import { jsonBody } from "@/lib/request-body";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +29,25 @@ export async function POST(request: NextRequest) {
       const state = await readJson<AppState>(statePath(base.mode), emptyState());
       const now = new Date().toISOString();
       switch (input.action) {
+        case "requirement": {
+          const routeId = text(input.routeId, 150), id = text(input.id, 100);
+          const prior = state.requirements?.[routeId]?.[id];
+          const progress = { status: input.status, note: input.note === undefined ? prior?.note || "" : input.note, updatedAt: now };
+          const checked = validateRequirementProgress({ [routeId]: { [id]: progress } }, base.routes);
+          state.requirements = { ...state.requirements, [routeId]: { ...state.requirements?.[routeId], ...checked[routeId] } };
+          break;
+        }
+        case "tracking": {
+          const id = text(input.id, 150), command = text(input.command, 30);
+          if (!base.overlays.some(o => o.routeId === id) || !["add", "remove", "main"].includes(command)) throw new Error("Unknown tracker action.");
+          const updated = base.overlays.map(o => o.routeId === id
+            ? { ...o, tracked: command !== "remove", mainTarget: command === "main" || (command === "add" && !!o.mainTarget), pursuitLevel: command === "main" ? "FOCUS" : o.pursuitLevel }
+            : command === "main" ? { ...o, mainTarget: false } : o);
+          const ids = new Set(base.routes.map(r => r.id));
+          updated.forEach(o => validateOverlay(o, ids));
+          await writeJson(path.join(vault, base.mode === "PRIVATE" ? "overlay.local.json" : "demo-overlay.local.json"), updated);
+          return NextResponse.json({ ok: true });
+        }
         case "task": {
           const id = text(input.id, 100), command = text(input.command, 30);
           if (!base.tasks.some(t => t.id === id)) throw new Error("Unknown briefing task.");
@@ -51,9 +70,11 @@ export async function POST(request: NextRequest) {
           const existing = base.overlays.find(o => o.routeId === id);
           if (!existing) throw new Error("Unknown scholarship route.");
           const patch = object(input.patch);
-          const allowed = ["applicationStatus", "personalStrategyTier", "costEstimate", "notes", "verifiedRules", "saved"];
+          const allowed = ["applicationStatus", "personalStrategyTier", "costEstimate", "notes", "verifiedRules", "saved", "pursuitLevel"];
           if (Object.keys(patch).some(k => !allowed.includes(k))) throw new Error("Unsupported route field.");
           const candidate = { ...existing, ...patch };
+          if ("pursuitLevel" in patch && patch.pursuitLevel !== "FOCUS") candidate.mainTarget = false;
+          if (patch.pursuitLevel === null) delete candidate.pursuitLevel;
           if (patch.costEstimate === null) delete candidate.costEstimate;
           const updated = validateOverlay(candidate, new Set(base.routes.map(r => r.id)));
           // Demo edits live separately and cannot modify the public fictional preset.
@@ -100,6 +121,7 @@ export async function POST(request: NextRequest) {
           const ids = new Set(base.routes.map(r => r.id));
           const overlays = bundle.overlays.map(v => validateOverlay(v, ids));
           if (new Set(overlays.map(o => o.routeId)).size !== ids.size) throw new Error("Duplicate or missing route overlays.");
+          if (overlays.filter(o => o.mainTarget).length > 1) throw new Error("Choose one main target.");
           if (!Array.isArray(bundle.milestones) || !Array.isArray(bundle.inbox)) throw new Error("Milestones and inbox arrays are required.");
           for (const raw of bundle.milestones) {
             const m = object(raw); text(m.title, 1000);
@@ -112,6 +134,7 @@ export async function POST(request: NextRequest) {
           }
           const importedState = object(bundle.state);
           const taskStates = object(importedState.tasks), brickStates = object(importedState.bricks);
+          if (importedState.requirements !== undefined) validateRequirementProgress(importedState.requirements, base.routes);
           const importedTasks = await python<Task[]>("schola.spoonfeeder", { ...base, tasks: base.tasks.filter(t => !t.generated), profile, overlays, milestones: bundle.milestones, command: "pool" });
           for (const [id, value] of Object.entries(taskStates)) {
             if (!importedTasks.some(t => t.id === id)) throw new Error("Unknown imported task.");

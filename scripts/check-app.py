@@ -58,7 +58,7 @@ def main():
             data = request()
             assert data["mode"] == "DEMO" and len(data["routes"]) == 57 and len(data["briefing"]["cards"]) == 3
             assert len(data["calendarEvents"]) == 174
-            for route in ("/", "/scholarships", "/applications", "/calendar", "/documents", "/updates", "/settings", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
+            for route in ("/", "/scholarships", "/scholarships?browse=1", "/today", "/applications", "/calendar", "/documents", "/documents?tab=reusable", "/updates", "/settings", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
             for route in data["routes"]:
                 request("/scholarships/" + quote(route["id"]))
             # Next's streamed notFound response retains HTTP 200 after streaming
@@ -83,6 +83,37 @@ def main():
             assert request()["overlays"][0]["saved"] is True
             request(value={"action": "overlay", "id": rid, "patch": {"applicationStatus": "RESEARCHING", "notes": "Fictional persistence check"}})
             assert request()["overlays"][0]["applicationStatus"] == "RESEARCHING" and request()["overlays"][0]["saved"]
+            # A guide's progress is independent from reusable documents and priority.
+            guided = [r for r in data["routes"] if r.get("applicationGuide")]
+            guide_route = guided[0]
+            guide_id = guide_route["id"]
+            items = [i for s in guide_route["applicationGuide"]["sections"] for i in s["items"]]
+            step = next(i for i in items if not i.get("optional"))
+            request(value={"action": "tracking", "id": guide_id, "command": "add"})
+            plan = lambda route_id: next(o for o in request()["overlays"] if o["routeId"] == route_id)
+            assert plan(guide_id)["tracked"] and "pursuitLevel" not in plan(guide_id)
+            request(value={"action": "requirement", "routeId": guide_id, "id": step["id"], "status": "DOING", "note": "Fictional checklist note"})
+            request(value={"action": "requirement", "routeId": guide_id, "id": step["id"], "status": "DONE"})
+            progress = request()["state"]["requirements"]
+            assert progress[guide_id][step["id"]]["note"] == "Fictional checklist note"
+            assert progress[guide_id][step["id"]]["status"] == "DONE"
+            assert guided[1]["id"] not in progress
+            for change in ({"status": "AUTOMATIC"}, {"status": ["DONE"]}, {"status": "NOT_NEEDED"}, {"id": "not-a-step"}, {"note": "x" * 2001}):
+                request(value={"action": "requirement", "routeId": guide_id, "id": step["id"], "status": "DONE", **change}, expect=400)
+                assert request()["state"]["requirements"] == progress
+            request(value={"action": "tracking", "id": guide_id, "command": "main"})
+            assert plan(guide_id)["mainTarget"] and plan(guide_id)["pursuitLevel"] == "FOCUS"
+            request(value={"action": "tracking", "id": guided[1]["id"], "command": "main"})
+            assert not plan(guide_id)["mainTarget"]
+            request(value={"action": "overlay", "id": guided[1]["id"], "patch": {"pursuitLevel": None}})
+            assert not plan(guided[1]["id"])["mainTarget"] and "pursuitLevel" not in plan(guided[1]["id"])
+            request(value={"action": "overlay", "id": guide_id, "patch": {"pursuitLevel": "BACKUP"}})
+            request(value={"action": "tracking", "id": guide_id, "command": "remove"})
+            assert not plan(guide_id)["tracked"] and request()["state"]["requirements"] == progress
+            request(value={"action": "tracking", "id": guide_id, "command": "add"})
+            assert plan(guide_id)["pursuitLevel"] == "BACKUP" and request()["state"]["requirements"] == progress
+            request(value={"action": "overlay", "id": guide_id, "patch": {"pursuitLevel": "LOTTERY"}}, expect=400)
+            request(value={"action": "overlay", "id": guide_id, "patch": {"pursuitLevel": ["FOCUS"]}}, expect=400)
             request(value={"action": "inbox", "text": "Fictional test capture; never fetch this automatically."})
             inbox = request()["inbox"]
             request(value={"action": "triage", "id": inbox[0]["id"], "status": "TRIAGED"})
@@ -99,6 +130,11 @@ def main():
             request(value={"action": "import", "bundle": bundle})
             assert request()["mode"] == "PRIVATE" and request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
             assert request()["overlays"][0]["saved"] is True
+            assert request()["state"]["requirements"] == progress
+            bad_progress = json.loads(json.dumps(bundle))
+            bad_progress["state"]["requirements"][guide_id][step["id"]]["status"] = "NOT_NEEDED"
+            request(value={"action": "import", "bundle": bad_progress}, expect=400)
+            assert request()["state"]["requirements"] == progress
             assert list((scratch / "private/backups").glob("*.local.json"))
             bad = {**bundle, "overlays": bundle["overlays"][:-1]}
             request(value={"action": "import", "bundle": bad}, expect=400)
@@ -129,7 +165,7 @@ def main():
                 request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={"Host": f"workspace.example:{suffix}", "Origin": public.replace("https:", "http:"), "Cookie": cookie}, expect=403)
             request("/api/session", {"action": "logout"}, headers={"Cookie": cookie})
             assert "Max-Age=0" in last_headers["set-cookie"]
-            print("Production HTTP: all five areas, 57 scholarship pages, saved routes, calendar reads, persisted actions, scenario isolation, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
+            print("Production HTTP: tracker, documents, 57 scholarship pages, priority changes, checklist persistence, safe removal, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)

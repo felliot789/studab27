@@ -1,6 +1,6 @@
 # StudAb27
 
-A local scholarship workspace for undergraduate engineering applications. Five main places keep the work easy to find: **Today**, **Scholarships**, **Applications**, **Calendar**, and **Documents**. Schola is available from every page; source updates, scenarios, and settings are secondary tools.
+A local scholarship tracker for undergraduate engineering applications. **Tracker**, **Documents**, and **Calendar** keep progress on a chosen set of scholarships together. There is no tracking cap. Schola is available from every page; the catalogue, source updates, scenarios, and settings are secondary tools.
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
@@ -30,17 +30,23 @@ Always use the npm launch scripts or the installed service: they supply the runt
 
 | Place | What lives here |
 | --- | --- |
-| Today `/` | At most three atomic next steps, upcoming dates from your shortlist, document readiness, and an optional focus timer |
-| Scholarships `/scholarships` | All 57 routes, search and filters, and explicitly saved scholarships |
-| Scholarship `/scholarships/[id]` | One permanent page with Overview, Dates, Your plan, and Sources |
-| Applications `/applications` | Routes you explicitly marked researching, in progress, submitted, or deferred; set-aside routes stay accessible |
-| Calendar `/calendar` | Saved and active routes by default, an All routes switch, month/agenda views, route/step filters, and source details |
-| Documents `/documents` | Four reusable readiness checklists; actual files remain in your own folders |
-| Schola `/schola` | Your existing durable conversation and read-only research tools |
+| Tracker `/` or `/scholarships` | Explicitly tracked scholarships, pursuit priorities, application progress, and the next checklist step |
+| Explore `/scholarships?browse=1` | All 57 public routes, outlook filters, and an action to add any route to the tracker |
+| Scholarship `/scholarships/[id]` | One permanent page with Checklist, Overview, Dates, Your plan, and Sources |
+| Documents `/documents` | Per-scholarship document steps and a separate reusable-pack view; actual files remain in your own folders |
+| Calendar `/calendar` | Tracked, saved, and active routes by default, plus an All routes switch and month/agenda views |
+| Schola `/schola` | Your durable conversation and read-only research tools |
 | Source updates `/updates` | Monitoring, research captures, and budget/SAT scenarios |
 | Settings `/settings` | Profile summary, private exports, and explicit backup restoration |
+| Earlier tasks `/today` | The existing three-task briefing and focus timer, available through Settings |
 
-Older `/catalogue`, `/bricks`, and `/watchtower` links still work. Saving a scholarship changes only its bookmark; it does not start an application or record a verified rule. Existing overlays without a saved flag remain valid. No migration rewrites the private vault.
+Pursuit priority (**Focus**, **Secondary**, **Backup**, or **Decide later**) is separate from application progress. The main target is an explicitly chosen Focus scholarship. Removing tracking preserves its checklist and notes. Existing `/applications`, `/catalogue`, `/bricks`, and `/watchtower` links remain available; older bookmarks and active applications still contribute calendar dates.
+
+The source-scoped guides in `data/public/application_guides.json` distinguish current-cycle evidence, general guidance, and requirements to recheck. Progress and private notes are keyed by both route and step in the vault, shared by the checklist and Documents views. Completing a reusable document never automatically completes a scholarship-specific step. Routes without a researched guide remain trackable without an invented generic checklist. Backups include tracking, priorities, and checklist progress; older backups remain valid. Public presets contain no owner selections.
+
+The scholarship organizer filters **Realistic**, **Reach**, **Lottery**, and **Unknown**, and can hide lottery options while retaining unknowns. Each row and scholarship page explains its assessment with source links and the evidence's cycle. Categories consider admission as well as award selection; a promise of funding after admission does not make the complete path easy. The public source reviews live in `data/public/scholarship_outlooks.json`, separately from personal priorities and the generated catalogue. Missing evidence stays Unknown. No private decisions are changed by filtering.
+
+Published award percentages require recipient and applicant counts for the same award, population and cycle, plus a matching source. The initial reviews do not establish such a rate, and none supports a Realistic classification yet. Counts of awards, admission rates, finalist ratios and percentages of expenses covered are not presented as scholarship success rates. These are dated qualitative research assessments, not calibrated personal predictions or eligibility verification.
 
 ## Reviewed catalogue and calendar
 

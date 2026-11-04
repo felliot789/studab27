@@ -1,0 +1,911 @@
+{
+  "route-14-italy-politecnico-di-torino": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-04",
+    "summary": "Prepare two applications: admission to PoliTO and financial support from EDISU Piemonte. The full 2027/28 calls still need checking.",
+    "sources": [
+      {
+        "id": "call",
+        "title": "PoliTO 2027/28 admission update",
+        "url": "https://www.polito.it/en/education/applying-studying-graduating/admissions-and-enrolment/bachelor-s-degree-programmes/calls-for-application-regulations-and-ranking-lists",
+        "scope": "2027/28 announcement; full call pending"
+      },
+      {
+        "id": "test",
+        "title": "PoliTO admission tests",
+        "url": "https://www.polito.it/en/education/applying-studying-graduating/admissions-and-enrolment/bachelor-s-degree-programmes/admission-test",
+        "scope": "2027/28 test policy"
+      },
+      {
+        "id": "entry",
+        "title": "PoliTO international qualifications",
+        "url": "https://www.polito.it/en/education/applying-studying-graduating/admissions-and-enrolment/bachelor-s-degree-programmes/applicants-with-a-non-italian-qualification",
+        "scope": "2026/27 preparation reference; reconfirm for 2027/28"
+      },
+      {
+        "id": "edisu",
+        "title": "EDISU international documentation",
+        "url": "https://edisu.piemonte.it/en/international-students",
+        "scope": "2026/27 reference; next call not established"
+      },
+      {
+        "id": "aid",
+        "title": "EDISU scholarship application",
+        "url": "https://edisu.piemonte.it/en/scholarships-and-grants/financial-benefits/scholarship-and-grants",
+        "scope": "General process; next-cycle conditions to confirm"
+      }
+    ],
+    "sections": [
+      {
+        "id": "admission",
+        "title": "PoliTO admission",
+        "items": [
+          {
+            "id": "check-call",
+            "title": "Check the 2027/28 call",
+            "detail": "Record the programme, applicant category and deadlines when the full call is published.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "test-route",
+            "title": "Confirm the entrance test you can take",
+            "detail": "The 2027/28 page accepts in-person TOLC@UNI and CEnT@UNI, excluding remote versions. Check venues and any alternative-test provisions before booking.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "test"
+            ]
+          },
+          {
+            "id": "programme-language",
+            "title": "Confirm your programme and teaching language",
+            "detail": "Check diploma acceptance, pre-graduation applications and the language requirement for the exact degree.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "entry"
+            ]
+          },
+          {
+            "id": "school-record",
+            "title": "Prepare your academic record",
+            "detail": "Collect school records and check which years and translations the new call requires.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "entry"
+            ],
+            "sharedKey": "school:transcript"
+          },
+          {
+            "id": "graduation-proof",
+            "title": "Prepare graduation evidence",
+            "detail": "Keep the final diploma, or establish which provisional school document is accepted before graduation.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "entry"
+            ],
+            "sharedKey": "school:graduation-letter"
+          },
+          {
+            "id": "language-proof",
+            "title": "Check your language certificate",
+            "detail": "Confirm the accepted test, validity and score-reporting method for the programme.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "entry"
+            ],
+            "sharedKey": "profile:english-test"
+          },
+          {
+            "id": "admission-submit",
+            "title": "Complete the PoliTO application",
+            "detail": "Follow the current Apply@polito procedure and keep its confirmation.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "entry"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "funding",
+        "title": "EDISU funding",
+        "items": [
+          {
+            "id": "financial-records",
+            "title": "Collect household income and asset records",
+            "detail": "Inventory official financial documents. Confirm the required reference year and household coverage in the new EDISU call.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "edisu"
+            ],
+            "sharedKey": "financial:income"
+          },
+          {
+            "id": "legalisation",
+            "title": "Check translations and legalisation",
+            "detail": "Confirm the required Italian translations and authentication before paying for them.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "edisu"
+            ]
+          },
+          {
+            "id": "edisu-access",
+            "title": "Arrange access to EDISU",
+            "detail": "Check the temporary-access-code process if you have no SPID or CIE. Access is separate from Apply@polito.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "edisu"
+            ]
+          },
+          {
+            "id": "edisu-submit",
+            "title": "Submit the separate funding application",
+            "detail": "Check scholarship and housing choices, attachments and submission confirmation in the current call.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "aid"
+            ]
+          },
+          {
+            "id": "funding-followup",
+            "title": "Check rankings and payment conditions",
+            "detail": "Record corrections, enrolment and first-year credit requirements. Plan for costs before funding arrives.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "aid"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-12-hungary-stipendium-hungaricum": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-04",
+    "summary": "Prepare the scholarship application and the sending-partner nomination process. The reviewed application pack is for 2026/27; update it when the 2027/28 call appears.",
+    "sources": [
+      {
+        "id": "apply",
+        "title": "Stipendium Hungaricum application hub",
+        "url": "https://stipendiumhungaricum.hu/apply/",
+        "scope": "Application hub; currently links the 2026/27 pack"
+      },
+      {
+        "id": "call",
+        "title": "Bachelor's scholarship call",
+        "url": "https://stipendiumhungaricum.hu/wp-content/uploads/2025/10/BA_MA_OTM_Call_for_Applications_2026_27.pdf",
+        "scope": "2026/27 reference, sections 2.4, 3.3–3.5"
+      },
+      {
+        "id": "documents",
+        "title": "Application document checklist",
+        "url": "https://stipendiumhungaricum.hu/wp-content/uploads/2025/10/document-for-applicants-ba-ma-otm_26.pdf",
+        "scope": "2026/27 document reference"
+      }
+    ],
+    "sections": [
+      {
+        "id": "choices",
+        "title": "Programme choices and nomination",
+        "items": [
+          {
+            "id": "check-call",
+            "title": "Check the 2027/28 call",
+            "detail": "Confirm the new cycle and your sending country's nomination procedure before relying on dates.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "apply"
+            ]
+          },
+          {
+            "id": "programme-choices",
+            "title": "Choose and rank your programmes",
+            "detail": "The previous call allowed two choices. Check eligible fields, entry requirements and language evidence for each.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "nomination",
+            "title": "Complete the sending-partner requirements",
+            "detail": "Find your country's current nomination instructions and keep the submission confirmation.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "apply"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "documents",
+        "title": "Application documents",
+        "items": [
+          {
+            "id": "motivation",
+            "title": "Draft the motivation letter",
+            "detail": "Previous format: at least one page, Times New Roman 12, in the programme language or Hungarian.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ]
+          },
+          {
+            "id": "transcript",
+            "title": "Prepare transcripts and translations",
+            "detail": "Include completed school years and the translations required for the programme.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ],
+            "sharedKey": "school:transcript"
+          },
+          {
+            "id": "diploma",
+            "title": "Prepare the diploma or missing-document declaration",
+            "detail": "If graduating later, check the new declaration and final-upload rules before submitting.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ],
+            "sharedKey": "school:graduation-letter"
+          },
+          {
+            "id": "language",
+            "title": "Prepare language evidence",
+            "detail": "Each host programme sets its minimum. Check accepted certificates and translation requirements.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ],
+            "sharedKey": "profile:english-test"
+          },
+          {
+            "id": "identity",
+            "title": "Prepare passport or identity evidence",
+            "detail": "Check the passport-data-page requirement and the process if your passport is still pending.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ]
+          },
+          {
+            "id": "photo",
+            "title": "Prepare an application photo",
+            "detail": "Use a recent photo meeting the new portal instructions.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "submission",
+        "title": "Submission and follow-up",
+        "items": [
+          {
+            "id": "submit",
+            "title": "Submit and keep the portal confirmation",
+            "detail": "Review uploads and the application statement yourself before submitting.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "apply",
+              "documents"
+            ]
+          },
+          {
+            "id": "entrance",
+            "title": "Track university entrance assessments",
+            "detail": "After nomination, record each host's examination or interview instructions.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "final-documents",
+            "title": "Complete conditional documents after graduation",
+            "detail": "Use the new call's final-upload deadline; last year's date is not a 2027 deadline.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "medical",
+            "title": "Prepare the medical certificate if awarded",
+            "detail": "The previous cycle required holders to bring it to Hungary, rather than upload it with the initial application.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "documents"
+            ],
+            "optional": true
+          }
+        ]
+      }
+    ]
+  },
+  "route-17-italy-university-of-padua": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-04",
+    "summary": "Track degree admission and the Veneto regional scholarship separately. Information Engineering is an English-taught option to investigate; the regional-aid evidence is still for 2026/27.",
+    "sources": [
+      {
+        "id": "programme",
+        "title": "Information Engineering programme",
+        "url": "https://degrees.dei.unipd.it/information-engineering/",
+        "scope": "English-taught programme overview"
+      },
+      {
+        "id": "admission",
+        "title": "Padua application procedure",
+        "url": "https://www.unipd.it/en/studiare-inglese-come-fare-domanda",
+        "scope": "Current application guidance; exact programme call controls"
+      },
+      {
+        "id": "programme-call",
+        "title": "Information Engineering calls",
+        "url": "https://www.unipd.it/en/ammissioni-information-engineering",
+        "scope": "Programme page currently lists 2026/27 notices"
+      },
+      {
+        "id": "regional",
+        "title": "Veneto Regional Scholarship",
+        "url": "https://www.unipd.it/en/borse-studio-regionali",
+        "scope": "2026/27 aid procedure; reconfirm for 2027/28"
+      }
+    ],
+    "sections": [
+      {
+        "id": "admission",
+        "title": "Degree admission",
+        "items": [
+          {
+            "id": "programme",
+            "title": "Confirm the degree and 2027 applicant call",
+            "detail": "Review Information Engineering and the call for your citizenship and residence category.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "programme",
+              "programme-call"
+            ]
+          },
+          {
+            "id": "entry-test",
+            "title": "Confirm the entrance test and fee",
+            "detail": "Check the programme's CEnT-S requirement and payment instructions before paying an application fee.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ]
+          },
+          {
+            "id": "cv",
+            "title": "Prepare an English CV",
+            "detail": "Make the application version in PDF format.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ]
+          },
+          {
+            "id": "motivation",
+            "title": "Draft the programme motivation letter",
+            "detail": "Explain your reasons for this particular programme.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ]
+          },
+          {
+            "id": "transcript",
+            "title": "Prepare transcripts and translations",
+            "detail": "Upload colour scans with the required English or Italian translation.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ],
+            "sharedKey": "school:transcript"
+          },
+          {
+            "id": "qualification",
+            "title": "Prepare your school qualification",
+            "detail": "Check whether an enrolment or provisional certificate is appropriate while the final diploma is pending.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ],
+            "sharedKey": "school:graduation-letter"
+          },
+          {
+            "id": "passport",
+            "title": "Prepare your passport copy",
+            "detail": "Use the identity document required for your applicant category.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ]
+          },
+          {
+            "id": "language",
+            "title": "Check programme language evidence",
+            "detail": "Verify accepted certificates and any exemption in the programme call.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ],
+            "sharedKey": "profile:english-test"
+          },
+          {
+            "id": "admission-submit",
+            "title": "Submit the degree application",
+            "detail": "Review uploads, programme-specific payment instructions and the confirmation.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "admission"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "regional",
+        "title": "Veneto Regional Scholarship",
+        "items": [
+          {
+            "id": "regional-call",
+            "title": "Check the new regional scholarship call",
+            "detail": "Confirm thresholds, deadlines and first-year conditions for 2027/28.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "regional"
+            ]
+          },
+          {
+            "id": "isee",
+            "title": "Arrange the correct ISEE assessment",
+            "detail": "For a household abroad, check ISEE parificato with the university's affiliated CAF and obtain its document list.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "regional"
+            ],
+            "sharedKey": "financial:income"
+          },
+          {
+            "id": "benefits-request",
+            "title": "Confirm the benefits request in Uniweb",
+            "detail": "The previous process required the fee-reduction request, ISEE and completed enrolment. Keep the saved request.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "regional"
+            ]
+          },
+          {
+            "id": "enrolment",
+            "title": "Check enrolment, first payment and credit conditions",
+            "detail": "Plan the gap before payment; review the credits needed to retain aid.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "regional"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-30-south-korea-kaist": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-04",
+    "summary": "Use the 2027 international undergraduate guide. Admission and the scholarship request belong to the same application; document preparation still has its own steps.",
+    "sources": [
+      {
+        "id": "guide",
+        "title": "KAIST 2027 admissions guide",
+        "url": "https://admission.kaist.ac.kr/wz/api/common/files/view/intl-undergraduate/pdf/Admissions_Guide_for_2027_admission.pdf",
+        "scope": "2027 guide, pages 6–11 and 14–18"
+      },
+      {
+        "id": "calendar",
+        "title": "KAIST 2027 timeline",
+        "url": "https://admission.kaist.ac.kr/intl-undergraduate/application/ApplicationGuide/ApplicationTimeline",
+        "scope": "2027 application and recommendation dates"
+      },
+      {
+        "id": "scholarship",
+        "title": "KAIST Scholarship",
+        "url": "https://admission.kaist.ac.kr/intl-undergraduate/support/scholarships/kaist",
+        "scope": "Scholarship selection and continuation policy"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Admission and scholarship",
+        "items": [
+          {
+            "id": "eligibility",
+            "title": "Check eligibility for your intake",
+            "detail": "Confirm nationality and graduation timing in the 2027 guide.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ]
+          },
+          {
+            "id": "track",
+            "title": "Choose the application track",
+            "detail": "Record application, document and recommendation dates separately. Check the Dates tab.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "calendar"
+            ]
+          },
+          {
+            "id": "essays",
+            "title": "Draft the application essays",
+            "detail": "Use the 2027 prompts and portal limits.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ]
+          },
+          {
+            "id": "transcript",
+            "title": "Prepare official school transcripts",
+            "detail": "Include the final two or three years, including current coursework; attach certified English translations when needed.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "sharedKey": "school:transcript"
+          },
+          {
+            "id": "identity",
+            "title": "Prepare passport or national ID",
+            "detail": "Use a clear copy showing nationality.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ]
+          },
+          {
+            "id": "test-score",
+            "title": "Arrange official test scores",
+            "detail": "At least one accepted test is required. SAT/AP/ACT require agency reporting; check delivery time.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Prepare English test evidence",
+            "detail": "Check validity and the guide's reporting instructions.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "sharedKey": "profile:english-test"
+          },
+          {
+            "id": "scholarship",
+            "title": "Select the KAIST Scholarship request",
+            "detail": "Check the financial-support selection and continuation conditions.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "scholarship"
+            ]
+          },
+          {
+            "id": "submission",
+            "title": "Complete the application and check receipt",
+            "detail": "Review documents, fee payment and portal status.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "supporting",
+        "title": "Optional supporting evidence",
+        "items": [
+          {
+            "id": "recommendations",
+            "title": "Arrange up to two recommendations",
+            "detail": "Optional but recommended in 2027. Recommenders submit directly through KAIST's link.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "sharedKey": "school:references",
+            "optional": true
+          },
+          {
+            "id": "awards",
+            "title": "Select supported honours and awards",
+            "detail": "Up to five; attach evidence.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "sharedKey": "profile:leadership",
+            "optional": true
+          },
+          {
+            "id": "school-context",
+            "title": "Prepare school context",
+            "detail": "Consider the optional school profile and school report.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "optional": true
+          }
+        ]
+      },
+      {
+        "id": "offer",
+        "title": "If admitted",
+        "items": [
+          {
+            "id": "final-papers",
+            "title": "Prepare final authenticated documents",
+            "detail": "Check final diploma, transcripts and any test-document authentication requested after admission.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "sharedKey": "school:graduation-letter",
+            "optional": true
+          },
+          {
+            "id": "arrival-funds",
+            "title": "Check arrival and visa funding",
+            "detail": "Review the post-admission financial evidence and costs before accepting.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "guide"
+            ],
+            "optional": true
+          }
+        ]
+      }
+    ]
+  },
+  "route-35-türkiye-türkiye-scholarships": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-04",
+    "summary": "Prepare a Türkiye Scholarships application with university and programme preferences. The general rules are available; confirm the 2027 call and each programme's requirements.",
+    "sources": [
+      {
+        "id": "criteria",
+        "title": "Türkiye Scholarships eligibility",
+        "url": "https://www.turkiyeburslari.gov.tr/scholarshipsprograms",
+        "scope": "General undergraduate criteria; 2027 call to confirm"
+      },
+      {
+        "id": "documents",
+        "title": "Application documents and language rules",
+        "url": "https://www.turkiyeburslari.gov.tr/applysteps",
+        "scope": "General application guidance"
+      },
+      {
+        "id": "programmes",
+        "title": "Scholarship scope and programmes",
+        "url": "https://www.turkiyeburslari.gov.tr/fulltimeprograms",
+        "scope": "General undergraduate funding and placement"
+      },
+      {
+        "id": "selection",
+        "title": "Evaluation and selection",
+        "url": "https://cdnweb.turkiyeburslari.gov.tr/evaluationandselectionprocess",
+        "scope": "General selection process"
+      }
+    ],
+    "sections": [
+      {
+        "id": "choices",
+        "title": "Eligibility and programme choices",
+        "items": [
+          {
+            "id": "eligibility",
+            "title": "Check age, grades and graduation timing",
+            "detail": "General bachelor's criteria include under 21, at least 70% academic achievement, and graduation before August. Confirm the new call.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "criteria"
+            ]
+          },
+          {
+            "id": "programmes",
+            "title": "Choose available engineering programmes",
+            "detail": "Check teaching language, admission tests and the programmes offered to you in TBBS.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "programmes",
+              "documents"
+            ]
+          },
+          {
+            "id": "language-year",
+            "title": "Review the Turkish-language year",
+            "detail": "The published policy includes a language year for awardees without C1 Turkish, including English-programme students.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "documents",
+        "title": "Application documents",
+        "items": [
+          {
+            "id": "identity",
+            "title": "Prepare identity evidence",
+            "detail": "Use a valid national ID or passport.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ]
+          },
+          {
+            "id": "photo",
+            "title": "Prepare a recent photo",
+            "detail": "The general checklist asks for a photo from the past year.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ]
+          },
+          {
+            "id": "transcript",
+            "title": "Prepare school transcripts",
+            "detail": "Check readable scans and the portal's language instructions.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ],
+            "sharedKey": "school:transcript"
+          },
+          {
+            "id": "graduation",
+            "title": "Prepare graduation evidence",
+            "detail": "Check which provisional evidence is accepted if your final diploma is pending.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ],
+            "sharedKey": "school:graduation-letter"
+          },
+          {
+            "id": "exams",
+            "title": "Prepare exam results if applicable",
+            "detail": "Include national results and international tests required by the selected programme.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ],
+            "optional": true
+          },
+          {
+            "id": "language",
+            "title": "Check each programme's accepted language proof",
+            "detail": "Confirm the exact accepted test; an existing certificate may not meet every programme's rule.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "documents"
+            ],
+            "sharedKey": "profile:english-test",
+            "optional": true
+          },
+          {
+            "id": "motivation",
+            "title": "Prepare motivation and activity evidence",
+            "detail": "Relate your interests, programme preferences and activities to the selection criteria.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "selection"
+            ],
+            "sharedKey": "profile:leadership"
+          }
+        ]
+      },
+      {
+        "id": "submission",
+        "title": "Submission and assessment",
+        "items": [
+          {
+            "id": "submit",
+            "title": "Review and submit through TBBS",
+            "detail": "Confirm the current application window and keep the submission record.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "programmes"
+            ]
+          },
+          {
+            "id": "assessment",
+            "title": "Prepare for tests or an interview if shortlisted",
+            "detail": "Review the published undergraduate assessment and interview process.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "selection"
+            ],
+            "optional": true
+          }
+        ]
+      }
+    ]
+  }
+}

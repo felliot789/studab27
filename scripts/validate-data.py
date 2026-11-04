@@ -24,6 +24,46 @@ assert all(0 < t["minutes"] <= 15 and set(t["routeIds"]) <= ids for t in tasks)
 assert len(json.loads((data / "bricks.json").read_text())) == 4
 for note in json.loads((data / "source_verifications.json").read_text()):
     assert not note.get("routeId") or note["routeId"] in ids
+outlooks = json.loads((data / "scholarship_outlooks.json").read_text())
+assert set(outlooks) <= ids
+for outlook in outlooks.values():
+    assert outlook["category"] in ("REALISTIC", "REACH", "LOTTERY", "UNKNOWN")
+    assert outlook["reason"].strip() and outlook["scope"].strip() and outlook["evidence"]
+    date.fromisoformat(outlook["reviewedAt"])
+    for evidence in outlook["evidence"]:
+        url = urlsplit(evidence["url"])
+        assert url.scheme == "https" and url.hostname and not url.username and not url.password
+        assert evidence["finding"].strip()
+        date.fromisoformat(evidence["checkedAt"])
+    if rate := outlook.get("publishedRate"):
+        assert rate["outcome"] == "SCHOLARSHIP_AWARDED"
+        assert rate["applicantStage"] == "ALL_APPLICANTS"
+        assert rate["cycle"].strip() and rate["population"].strip()
+        assert type(rate["applicants"]) is int and type(rate["recipients"]) is int
+        assert 0 <= rate["recipients"] <= rate["applicants"] and rate["applicants"] > 0
+        assert rate["sourceUrl"] in {e["url"] for e in outlook["evidence"]}
+guides = json.loads((data / "application_guides.json").read_text())
+assert set(guides) <= ids
+brick_keys = {f"{brick['id']}:{item['id']}" for brick in json.loads((data / "bricks.json").read_text()) for item in brick["items"]}
+for guide in guides.values():
+    assert guide["cycle"] == "2027 entry" and guide["summary"].strip()
+    date.fromisoformat(guide["reviewedAt"])
+    sources = {s["id"] for s in guide["sources"]}
+    assert len(sources) == len(guide["sources"])
+    for source in guide["sources"]:
+        url = urlsplit(source["url"])
+        assert url.scheme == "https" and url.hostname and not url.username and not url.password
+        assert source["scope"].strip() and source["title"].strip()
+    assert len({s["id"] for s in guide["sections"]}) == len(guide["sections"])
+    items = [item for section in guide["sections"] for item in section["items"]]
+    assert items and len({i["id"] for i in items}) == len(items)
+    for item in items:
+        assert item["title"].strip() and item["detail"].strip()
+        assert item["kind"] in ("DOCUMENT", "TASK")
+        assert item["basis"] in ("CURRENT", "GENERAL", "RECHECK")
+        assert item["sourceIds"] and set(item["sourceIds"]) <= sources
+        assert "optional" not in item or type(item["optional"]) is bool
+        assert "sharedKey" not in item or item["sharedKey"] in brick_keys
 events = json.loads((data / "calendar_events.json").read_text())
 event_ids = {e["id"] for e in events}
 assert len(events) == len(event_ids) == 174
@@ -49,7 +89,7 @@ for e in events:
         url = urlsplit(source)
         assert url.scheme in ("https", "http") and url.hostname and not url.username and not url.password
     assert "originalClaim" not in e
-encoded = json.dumps([routes, events])
+encoded = json.dumps([routes, events, outlooks, guides])
 for private_key in ("snapshotSha256", '"snapshot":', "originalResearchRecord", "sources/003.txt", "/home/elliot/"):
     assert private_key not in encoded, "Private review artifacts must remain outside public data"
-print("Public data: 57 routes, 174 evidence-scoped events, aligned fictional overlays, 4 document packs, bounded atomic tasks.")
+print(f"Public data: 57 routes, 174 evidence-scoped events, {len(outlooks)} scoped scholarship outlooks, {len(guides)} source-scoped application guides, aligned fictional overlays, 4 document packs, bounded atomic tasks.")

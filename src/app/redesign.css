@@ -1,4 +1,4 @@
-/* The five places in StudAb: a quiet shell and readable, connected pages. */
+/* A quiet shell for the tracker, documents, and calendar. */
 :root { --bg: oklch(.205 .003 65); --sidebar: oklch(.185 .003 65); --surface: oklch(.24 .004 65); --faint: oklch(.72 .006 290); }
 [hidden] { display: none !important; }
 .app-shell { grid-template-columns: 220px minmax(0, 1fr); }
@@ -76,6 +76,44 @@
 .text-tabs button:hover { color: var(--ink); }
 .text-tabs button span, .count-pill { font-size: 10px; background: var(--surface-hover); padding: 1px 7px; border-radius: 20px; color: var(--muted); font-weight: 400; }
 .discovery-tools { display: flex; align-items: stretch; gap: 12px; margin: 7px 0 21px; }
+.view-catalogue .page-heading { padding-bottom: 24px; }
+.outlook-organizer { padding: 0 0 16px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+.outlook-organizer .section-line { flex-wrap: wrap; gap: 8px 20px; }
+.outlook-organizer .section-line > span { color: var(--muted); font-size: 12px; }
+.outlook-organizer > p { color: var(--muted); font-size: 13px; max-width: 72ch; margin-top: 10px; }
+.outlook-filters { display: flex; flex-wrap: wrap; gap: 9px; margin: 12px 0 4px; }
+.outlook-filters button { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 7px; background: none; color: var(--muted); font-size: 13px; }
+.outlook-filters button:hover { background: var(--surface-hover); color: var(--ink); }
+.outlook-filters button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.outlook-filters button span { font-size: 12px; font-variant-numeric: tabular-nums; }
+.outlook-options { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 28px; }
+.outlook-options > label { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
+.outlook-guide { flex: 1; min-width: 180px; color: var(--muted); font-size: 13px; }
+.outlook-guide summary { padding: 11px 0; }
+.outlook-guide dl { margin: 6px 0 14px; }
+.outlook-guide dl > div + div { margin-top: 12px; }
+.outlook-guide dt { color: var(--ink); font-weight: 500; }
+.outlook-guide dd { margin: 3px 0 0; }
+.outlook-guide p { max-width: 70ch; }
+.scholarship-outlook { margin-top: 13px; font-size: 12px; }
+.scholarship-outlook > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: fit-content; min-height: 38px; list-style: none; }
+.scholarship-outlook > summary::-webkit-details-marker { display: none; }
+.outlook-label { display: inline-flex; align-items: center; padding: 2px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); }
+.outlook-realistic { color: var(--success); }
+.outlook-reach { color: var(--warning); }
+.outlook-lottery { color: var(--danger); }
+.outlook-disclosure { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.outlook-disclosure::after { content: " +"; }
+.scholarship-outlook[open] .outlook-disclosure::after { content: " −"; }
+.outlook-evidence { margin: 8px 0 16px; max-width: 70ch; color: var(--muted); }
+.outlook-evidence p, .scholarship-identity .outlook-evidence p { font-size: 13px; line-height: 1.75; margin: 10px 0; }
+.outlook-evidence .outlook-scope, .outlook-evidence small { font-size: 12px; color: var(--muted); }
+.outlook-evidence > div { margin-top: 16px; }
+.outlook-evidence .source-link { overflow-wrap: anywhere; font-size: 12px; }
+.outlook-evidence small { display: block; margin-top: 16px; }
+.detail-outlook { margin: 0 0 26px; max-width: 75ch; }
+.detail-outlook > p { font-size: 13px; color: var(--muted); }
+.detail-outlook .scholarship-outlook { margin-top: 7px; }
 .discovery-tools .search-box { max-width: none; }
 .discovery-tools .search-box input { font-size: 13px; min-height: 45px; }
 .discovery-tools select { font-size: 12px; width: 175px; }
@@ -368,3 +406,171 @@
   .settings-section p, .settings-section dd { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
+
+/* Scholarship work stays together; research opens only when requested. */
+.view-tracker .page-heading h1 { font-size: 34px; }
+.tracker-intro { color: var(--faint); font-size: 13px; margin: -8px 0 28px; }
+.tracker-group + .tracker-group { margin-top: 38px; }
+.tracker-group-heading { margin-bottom: 16px; }
+.tracker-group-heading h2 { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 500; }
+.tracker-group-heading p { font-size: 13px; color: var(--muted); margin-top: 5px; }
+.tracker-row { display: grid; grid-template-columns: minmax(0, 1fr) 230px; align-items: center; gap: 32px; padding: 27px 0; border-bottom: 1px solid var(--line); }
+.tracker-row.main-target { padding: 25px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 6px; }
+.tracker-country { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
+.tracker-identity h3 { font-size: 22px; font-weight: 500; line-height: 1.35; margin-top: 9px; }
+.tracker-identity h3 a:hover { color: var(--accent); }
+.tracker-identity > p { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.tracker-progress { max-width: 310px; margin: 18px 0 15px; font-size: 12px; color: var(--muted); }
+.tracker-progress .progress-track { margin-top: 9px; }
+.tracker-identity > .tracker-next { color: var(--ink); font-size: 14px; }
+.tracker-next > span { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.tracker-identity > .tracker-date { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; margin-top: 13px; }
+.tracker-date svg { flex-shrink: 0; margin-top: 2px; }
+.tracker-actions > .button { display: flex; justify-content: space-between; margin-top: 18px; }
+.pursuit-controls { display: grid; gap: 14px; }
+.pursuit-controls label, .requirement-status { font-size: 12px; color: var(--muted); }
+.pursuit-controls select, .requirement-status select { display: block; width: 100%; min-width: 0; margin-top: 6px; font-size: 13px; min-height: 44px; }
+.detail-tracking { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 16px; }
+.detail-tracking .pursuit-controls { grid-template-columns: minmax(0, 170px) minmax(0, 230px); }
+.detail-tracking > .badge, .detail-tracking > .text-button { margin-top: 20px; }
+.tracker-help { font-size: 13px; color: var(--muted); margin-top: 28px; }
+.tracker-help summary { padding: 12px 0; }
+.tracker-help dl { display: grid; gap: 12px; margin: 12px 0 18px; }
+.tracker-help dl div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; }
+.tracker-help dt { color: var(--ink); }
+.tracker-help dd { margin: 0; }
+.tracker-help > p { max-width: 70ch; }
+.route-tabs { overflow-x: auto; overflow-y: hidden; }
+.application-checklist { max-width: 850px; }
+.checklist-intro > p { font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 75ch; }
+.checklist-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; margin: 18px 0 10px; font-size: 12px; color: var(--muted); }
+.checklist-meta > span:first-child { color: var(--ink); }
+.checklist-intro > .fine-print { font-size: 12px; }
+.checklist-section { margin-top: 30px; }
+.checklist-section > h3 { font-size: 16px; font-weight: 500; margin-bottom: 9px; }
+.requirement-row { border-bottom: 1px solid var(--line); }
+.requirement-row > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 0; list-style: none; }
+.requirement-row > summary::-webkit-details-marker { display: none; }
+.requirement-row > summary::after { content: "+"; color: var(--muted); font-size: 18px; }
+.requirement-row[open] > summary::after { content: "−"; }
+.requirement-title { display: flex; align-items: center; gap: 8px; flex: 1; font-size: 14px; font-weight: 500; line-height: 1.6; }
+.requirement-title > svg { flex-shrink: 0; color: var(--success); }
+.requirement-title small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 4px; }
+.requirement-body { padding: 4px 0 23px; }
+.requirement-body > p { font-size: 14px; color: var(--muted); line-height: 1.85; max-width: 74ch; }
+.requirement-body > .shared-document { font-size: 12px; margin-top: 13px; }
+.shared-document a { color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
+.requirement-status { display: block; max-width: 230px; margin-top: 17px; }
+.requirement-sources { display: grid; gap: 14px; margin: 20px 0; }
+.requirement-sources .source-link { font-size: 12px; }
+.requirement-sources small { display: block; color: var(--faint); font-size: 11px; margin-top: 3px; }
+.requirement-note { max-width: 650px; }
+.requirement-note label { display: block; font-size: 12px; }
+.requirement-note textarea { display: block; width: 100%; margin: 7px 0 10px; font-size: 13px; }
+.document-tabs { margin-bottom: 23px; }
+.document-scholarships { margin-top: 24px; }
+.document-scholarship { border-bottom: 1px solid var(--line); }
+.document-scholarship > summary { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; list-style: none; }
+.document-scholarship > summary::-webkit-details-marker { display: none; }
+.document-scholarship > summary::after { content: "+"; color: var(--muted); }
+.document-scholarship[open] > summary::after { content: "−"; }
+.document-scholarship > summary > span:first-child { flex: 1; }
+.document-scholarship summary strong { font-size: 19px; font-weight: 500; }
+.document-scholarship summary small { display: block; color: var(--muted); font-size: 13px; margin-top: 7px; }
+.document-scholarship > summary > span:last-of-type { color: var(--muted); font-size: 12px; }
+.document-scholarship-body { padding-bottom: 28px; }
+.document-scholarship-body > .text-button { margin-bottom: 16px; }
+.view-bricks .readiness-total { margin: 24px 0 12px; }
+@media (max-width: 900px) {
+  .mobile-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tracker-row { grid-template-columns: minmax(0, 1fr) 205px; gap: 24px; }
+}
+@media (max-width: 650px) {
+  .view-tracker .page-heading h1 { font-size: 30px; max-width: 19ch; }
+  .tracker-row { display: block; }
+  .tracker-row.main-target { padding: 20px; }
+  .tracker-identity h3 { font-size: 21px; }
+  .tracker-actions { margin-top: 22px; }
+  .pursuit-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; }
+  .pursuit-controls select, .requirement-status select, .requirement-note textarea { font-size: 16px; }
+  .pursuit-controls label { font-size: 11px; }
+  .tracker-actions > .button { min-height: 46px; }
+  .detail-tracking { gap: 8px 18px; }
+  .detail-tracking .pursuit-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); width: 100%; }
+  .detail-tracking > .badge, .detail-tracking > .text-button { margin-top: 8px; }
+  .tracker-help dl div { grid-template-columns: 90px minmax(0, 1fr); gap: 10px; }
+  .requirement-row > summary { gap: 10px; flex-wrap: wrap; }
+  .requirement-title { flex-basis: calc(100% - 28px); order: 0; }
+  .requirement-row > summary::after { order: 1; }
+  .requirement-row > summary > .badge { order: 2; }
+  .document-scholarship > summary { gap: 12px; flex-wrap: wrap; }
+  .document-scholarship > summary > span:first-child { flex-basis: calc(100% - 30px); order: 0; }
+  .document-scholarship > summary::after { order: 1; }
+  .document-scholarship > summary > span:last-of-type { order: 2; }
+}
+
+/* Keep the browser's form and keyboard behavior, with our own picker surface. */
+@supports (appearance: base-select) {
+  select, select::picker(select) { appearance: base-select; }
+  select:not([multiple]):not([size]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-inline: 12px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: border-color 150ms, background-color 150ms;
+  }
+  select:hover:not(:disabled) { border-color: var(--muted); background: var(--surface); }
+  select:open { border-color: var(--accent); background: var(--surface); }
+  select:focus-visible { outline-offset: 2px; }
+  select:disabled { opacity: .5; cursor: wait; }
+  select::picker-icon {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    rotate: 45deg;
+    transition: rotate 150ms;
+  }
+  select:open::picker-icon { rotate: 225deg; }
+  select::picker(select) {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 6px;
+    margin-block: 6px;
+    min-inline-size: anchor-size(width);
+    max-inline-size: min(440px, calc(100vw - 24px));
+    max-block-size: min(320px, calc(50dvh - 40px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  select option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 40px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    white-space: normal;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  select option + option { margin-top: 3px; }
+  select option:hover, select option:focus { background: var(--surface-hover); color: var(--ink); }
+  select option:checked { background: var(--accent-bg); color: var(--accent); }
+  select option:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
+  select option::checkmark { order: 1; margin-inline-start: auto; color: var(--accent); }
+  select option:disabled { color: var(--faint); cursor: default; }
+}

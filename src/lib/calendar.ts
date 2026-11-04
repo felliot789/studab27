@@ -3,7 +3,7 @@ import type { CalendarEvent, Overlay } from "./schema";
 export function activeApplication(overlay: Overlay) {
   return !["NOT_STARTED", "DROP"].includes(overlay.applicationStatus);
 }
-export function inMyCalendar(overlay: Overlay) { return !!overlay.saved || activeApplication(overlay); }
+export function inMyCalendar(overlay: Overlay) { return !!overlay.tracked || !!overlay.saved || activeApplication(overlay); }
 export function todayWib(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
 }

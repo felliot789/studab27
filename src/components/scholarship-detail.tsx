@@ -3,26 +3,30 @@ import Link from "next/link";
 import { useState } from "react";
 import type { CalendarEvent, Route } from "@/lib/schema";
 import { label } from "@/lib/schema";
-import { dateLabel, eventDay, upcomingEvents } from "@/lib/calendar";
+import { eventDay } from "@/lib/calendar";
 import { EventDialog, EventRow } from "./calendar-event";
 import RoutePlan from "./route-plan";
+import ScholarshipOutlook from "./scholarship-outlook";
+import ApplicationChecklist from "./application-checklist";
+import { PursuitControls } from "./tracker";
 import { Badge, External, Icon, type ViewProps } from "./ui";
 
 const facts: [string, keyof Route][] = [["Coverage", "benefitsCoverage"], ["Engineering fit", "engineeringFit"], ["Tests and language", "languageOrTestNotes"], ["Apply before graduation", "preGradApplyAllowed"], ["Separate scholarship application", "separateScholarshipApp"], ["AI content policy", "aiContentPolicy"], ["SAT role", "satRole"], ["SAT benchmark · advisory", "suggestedSatBenchmark"], ["Renewal and bond", "renewalAndBondTerms"], ["Indonesian applicants", "indonesianApplicantNotes"], ["Program and teaching language", "programAndLanguageNotes"], ["Other caveats", "publicRiskOrCaveat"]];
-const tabs = [{ id: "overview", title: "Overview" }, { id: "dates", title: "Dates" }, { id: "plan", title: "Your plan" }, { id: "sources", title: "Sources" }];
+const tabs = [{ id: "checklist", title: "Checklist" }, { id: "overview", title: "Overview" }, { id: "dates", title: "Dates" }, { id: "plan", title: "Your plan" }, { id: "sources", title: "Sources" }];
 
 export default function ScholarshipDetail({ routeId, initialTab, ...props }: ViewProps & { routeId: string; initialTab?: string }) {
   const { data, act, busy } = props;
   const route = data.routes.find(r => r.id === routeId)!, overlay = data.overlays.find(o => o.routeId === routeId)!, evaluation = data.evaluations.find(e => e.routeId === routeId)!;
-  const [tab, setTab] = useState(tabs.some(t => t.id === initialTab) ? initialTab! : "overview"), [selected, setSelected] = useState<CalendarEvent | null>(null);
-  const events = data.calendarEvents.filter(e => e.routeId === routeId), next = upcomingEvents(events, data.overlays, true)[0];
+  const [tab, setTab] = useState(tabs.some(t => t.id === initialTab) ? initialTab! : "checklist"), [selected, setSelected] = useState<CalendarEvent | null>(null);
+  const events = data.calendarEvents.filter(e => e.routeId === routeId);
   const published = events.filter(e => eventDay(e)).sort((a, b) => eventDay(a)!.localeCompare(eventDay(b)!)), pending = events.filter(e => !eventDay(e));
   const sources = [...new Map([...(route.evidenceSources || []), ...events.flatMap(e => e.sourceReview.evidence)].map(s => [s.url, s])).values()];
-  return <><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/scholarships"><Icon name="back" size={16} />Scholarships</Link><span>/</span><span>{route.country}</span></nav>
-    <header className="scholarship-heading"><div><span className="eyebrow">{route.country} · 2027 entry</span><h1>{route.institution}</h1><p>{route.scholarshipName}</p></div><button className={`button ${overlay.saved ? "secondary" : "primary"}`} disabled={busy} aria-pressed={!!overlay.saved} onClick={() => act({ action: "overlay", id: route.id, patch: { saved: !overlay.saved } }, overlay.saved ? "Scholarship removed from saved routes." : "Scholarship saved to your shortlist and calendar.")}><Icon name={overlay.saved ? "bookmark-filled" : "bookmark"} size={17} />{overlay.saved ? "Saved" : "Save scholarship"}</button></header>
-    <div className="route-at-a-glance"><div><span>Funding · terms to verify</span><strong>{route.fundingType}</strong></div><div><span>Next published date</span><strong>{next ? dateLabel(eventDay(next)!, true) : "Still to confirm"}</strong></div><div><span>Your progress</span><strong>{label(overlay.applicationStatus)}</strong></div></div>
-    <div className="text-tabs route-tabs" role="group" aria-label="Scholarship sections">{tabs.map(t => <button key={t.id} aria-pressed={tab === t.id} aria-controls={`section-${t.id}`} onClick={() => { setTab(t.id); window.history.replaceState(null, "", `${window.location.pathname}${t.id === "overview" ? "" : `?tab=${t.id}`}`); }}>{t.title}{t.id === "dates" && <span>{events.length}</span>}</button>)}</div>
-    <section id="section-overview" hidden={tab !== "overview"} className="route-section"><div className="research-note"><Icon name="search" size={21} /><div><h2>Evidence status</h2><p>{route.currentCycleEvidenceSummary}</p><p>Calendar evidence does not establish eligibility, funding, or diploma acceptance for your program.</p></div></div><dl className="scholarship-facts">{facts.slice(0, 6).map(([title, key]) => {
+  return <><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/scholarships"><Icon name="back" size={16} />Tracker</Link><span>/</span><span>{route.country}</span></nav>
+    <header className="scholarship-heading"><div><span className="eyebrow">{route.country} · 2027 entry</span><h1>{route.institution}</h1><p>{route.scholarshipName}</p></div><button className={`button ${overlay.tracked ? "secondary" : "primary"}`} disabled={busy} aria-pressed={!!overlay.tracked} onClick={() => act({ action: "tracking", id: route.id, command: overlay.tracked ? "remove" : "add" }, overlay.tracked ? "Removed from tracker. Checklist and notes kept." : "Scholarship added to your tracker.")}><Icon name={overlay.tracked ? "bookmark-filled" : "bookmark"} size={17} />{overlay.tracked ? "Tracking · remove" : "Track scholarship"}</button></header>
+    <div className="detail-tracking"><PursuitControls overlay={overlay} act={act} busy={busy} />{overlay.mainTarget ? <Badge tone="success">Main target</Badge> : <button className="text-button" disabled={busy} onClick={() => act({ action: "tracking", id: route.id, command: "main" }, "Main target updated and set to Focus.")}>Make main target<Icon name="arrow" size={15} /></button>}</div>
+    <div className="text-tabs route-tabs" role="group" aria-label="Scholarship sections">{tabs.map(t => <button key={t.id} aria-pressed={tab === t.id} aria-controls={`section-${t.id}`} onClick={() => { setTab(t.id); window.history.replaceState(null, "", `${window.location.pathname}${t.id === "checklist" ? "" : `?tab=${t.id}`}`); }}>{t.title}{t.id === "dates" && <span>{events.length}</span>}</button>)}</div>
+    <section id="section-checklist" hidden={tab !== "checklist"} className="route-section"><ApplicationChecklist route={route} data={data} act={act} busy={busy} /></section>
+    <section id="section-overview" hidden={tab !== "overview"} className="route-section"><section className="detail-outlook" aria-label="Scholarship outlook"><p>Path to this scholarship · admission + award selection</p><ScholarshipOutlook route={route} /></section><div className="research-note"><Icon name="search" size={21} /><div><h2>Evidence status</h2><p>{route.currentCycleEvidenceSummary}</p><p>Calendar evidence does not establish eligibility, funding, or diploma acceptance for your program.</p></div></div><dl className="scholarship-facts">{facts.slice(0, 6).map(([title, key]) => {
       const value = route[key]; if (typeof value !== "string") return null;
       const review = route.fieldReview?.[key], checked = !!review && !review.status.includes("UNVERIFIED") && review.evidence.length > 0;
       return <div key={key}><dt>{title}<small className={checked ? "source-checked" : ""}>{checked ? "Scoped source evidence" : "To verify for your program"}</small></dt><dd>{value}{checked && review.evidence.map(e => <External key={e.url} href={e.url}>Source for this field</External>)}</dd></div>;

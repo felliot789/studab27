@@ -66,8 +66,25 @@ class AssistantChecks(unittest.TestCase):
         data["overlays"][0]["saved"] = True
         with closing(a.db(self.root)) as conn:
             summary = a.run_tool(self.root, conn, self.config, data, "get_briefing", {})
-        self.assertEqual(summary["calendar"]["scope"], "SAVED_AND_ACTIVE")
+        self.assertEqual(summary["calendar"]["scope"], "TRACKED_SAVED_AND_ACTIVE")
         self.assertTrue(all(e["calendarDateSupported"] for e in summary["calendar"]["publishedUpcoming"]))
+
+    def test_tracker_context_keeps_priority_and_progress_distinct_from_evidence(self):
+        data = a.context(self.root, False)
+        route = next(r for r in data["routes"] if r.get("applicationGuide"))
+        item = route["applicationGuide"]["sections"][0]["items"][0]
+        data["state"]["requirements"] = {route["id"]: {item["id"]: {"status": "DONE"}}}
+        plan = next(o for o in data["overlays"] if o["routeId"] == route["id"])
+        plan.update(tracked=True, pursuitLevel="BACKUP", applicationStatus="NOT_STARTED")
+        with closing(a.db(self.root)) as conn:
+            result = a.run_tool(self.root, conn, self.config, data, "inspect_route", {"routeId": route["id"]})
+            summary = a.run_tool(self.root, conn, self.config, data, "get_briefing", {})
+        self.assertEqual(result["checklistProgress"][item["id"]]["status"], "DONE")
+        self.assertEqual(result["gates"]["curriculum"]["status"], "UNKNOWN")
+        self.assertIn(plan, summary["tracker"])
+        self.assertGreater(summary["calendar"]["datesToConfirm"], 0)
+        for source in route["applicationGuide"]["sources"]:
+            self.assertIn(source["url"].split("#")[0].rstrip("/"), a.source_urls(data))
 
     def test_forced_demo_cannot_reveal_private_chat_or_use_model_credentials(self):
         with closing(a.db(self.root)) as conn:

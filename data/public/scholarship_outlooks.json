@@ -1,0 +1,303 @@
+{
+  "route-02-canada-university-of-british-co": {
+    "category": "REACH",
+    "reason": "Admission, a school nomination, exceptional academic results, leadership and assessed financial need all matter. Meeting the academic minimum alone does not establish a likely award.",
+    "scope": "International Scholars Program, September 2027 entry. Personal eligibility and financial need remain to be verified.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://you.ubc.ca/financial-planning/scholarships-awards-international-students/international-scholars/",
+        "checkedAt": "2026-11-04",
+        "finding": "The current application guidance requires admission, a nominator and referee, all-As-equivalent achievement and documented financial need."
+      }
+    ]
+  },
+  "route-03-canada-university-of-toronto": {
+    "category": "LOTTERY",
+    "reason": "A small worldwide award pool and a highly selective nomination process make this a long shot even for strong applicants. Admission and nomination are both prerequisites.",
+    "scope": "Lester B. Pearson Scholarship, 2027 entry. The award count is not an applicant success rate.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://future.utoronto.ca/pearson-scholarships/",
+        "checkedAt": "2026-11-04",
+        "finding": "Toronto describes Pearson as one of its most competitive awards, lists 37 scholars annually and permits one nominee per school."
+      }
+    ]
+  },
+  "route-09-hong-kong-hong-kong-polytechnic-un": {
+    "category": "UNKNOWN",
+    "reason": "Automatic consideration is not an automatic award. The page describes possible support subject to approval, but does not establish the overall likelihood of admission and a STARS award.",
+    "scope": "Non-local STARS scholarship; award level and personal fit need review.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.polyu.edu.hk/study/ug/fees-and-scholarships/scholarships/non-local-stars-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "Eligible applicants are considered automatically; the stated maximum funding remains subject to approval."
+      }
+    ]
+  },
+  "route-15-italy-university-of-bologna": {
+    "category": "UNKNOWN",
+    "reason": "Regional benefits depend on the annual call, economic evidence and enrolment requirements. The current evidence does not establish the complete 2027 admission-and-award path.",
+    "scope": "ER.GO regional benefits. Available guidance concerns 2026/27, not a confirmed 2027/28 award.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.er-go.it/international-students/application/guide-to-application-announcement",
+        "checkedAt": "2026-11-04",
+        "finding": "ER.GO describes an annual public competition with funding criteria and requires documentation of foreign income and assets."
+      }
+    ]
+  },
+  "route-16-italy-university-of-padua": {
+    "category": "LOTTERY",
+    "reason": "The award selects only the strongest academic records through programme committees. Automatic consideration still leads to a highly competitive scholarship selection.",
+    "scope": "Padua International Excellence. Qualitative planning assessment from current published guidance; the 2027/28 call still needs checking.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.unipd.it/en/padua-international-excellence-scholarship-programme",
+        "checkedAt": "2026-11-04",
+        "finding": "Padua calls the process highly competitive and says committees select admitted candidates for academic excellence. Published totals cover both bachelor and master programmes, so they are not a bachelor award rate."
+      }
+    ]
+  },
+  "route-19-qatar-qatar-university": {
+    "category": "REACH",
+    "reason": "Applicants compete on demonstrated talent, portfolio evidence, recommendations and an interview, as well as meeting admission requirements. The minimum grades are not a winning threshold.",
+    "scope": "Qatar University Talent Scholarship, including technology and innovation. Current published selection policy; cycle-specific requirements need checking.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.qu.edu.qa/en-us/students/admission/scholarships/Pages/types.aspx",
+        "checkedAt": "2026-11-04",
+        "finding": "The university explicitly describes competitive selection, portfolio and recommendation requirements, and committee interviews."
+      }
+    ]
+  },
+  "route-21-singapore-nanyang-technological-un": {
+    "category": "REACH",
+    "reason": "Outstanding academics, leadership and extracurricular achievement are required, followed by scholarship shortlisting and interviews. An admission offer does not guarantee this award.",
+    "scope": "Nanyang Global Scholarship. Current selection policy, including the Year 12-equivalent applicant pathway.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.ntu.edu.sg/admissions/undergraduate/scholarships-and-awards/scholarship-opportunities/detail/nanyang-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "NTU lists demanding academic and leadership criteria and a separate scholarship interview shortlist for applicants with Year 12-equivalent qualifications."
+      }
+    ]
+  },
+  "route-22-singapore-national-university-of-s": {
+    "category": "REACH",
+    "reason": "Admission and scholarship selection both matter. NUS shortlists applicants, assesses their record and interviews selected candidates; being considered automatically does not guarantee an award.",
+    "scope": "ASEAN Undergraduate Scholarship. Current published selection policy; individual eligibility and obligations still need checking.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://nus.edu.sg/oam/scholarships/scholarships-for-freshmen-international-students/asean-undergraduate-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "NUS requires strong academics and leadership, uses a scholarship shortlist and interviews, and can decline to award a scholarship when no candidate meets its merit standard."
+      }
+    ]
+  },
+  "route-23-singapore-national-university-of-s": {
+    "category": "REACH",
+    "reason": "Admission and scholarship selection both matter. NUS shortlists applicants, assesses their record and interviews selected candidates; being considered automatically does not guarantee an award.",
+    "scope": "NUS International Undergraduate Scholarship. Current published selection policy; individual eligibility and obligations still need checking.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.nus.edu.sg/oam/scholarships/scholarships-for-freshmen-international-students/nus-international-undergraduate-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "NUS requires strong academics and leadership, uses a scholarship shortlist and interviews, and can decline to award a scholarship when no candidate meets its merit standard."
+      }
+    ]
+  },
+  "route-24-singapore-national-university-of-s": {
+    "category": "REACH",
+    "reason": "Admission and scholarship selection both matter. NUS shortlists applicants, assesses their record and interviews selected candidates; being considered automatically does not guarantee an award.",
+    "scope": "Science & Technology Undergraduate Scholarship. Current published selection policy; individual eligibility and obligations still need checking.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.nus.edu.sg/oam/scholarships/scholarships-for-freshmen-international-students/science-technology-undergraduate-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "NUS requires strong academics and leadership, uses a scholarship shortlist and interviews, and can decline to award a scholarship when no candidate meets its merit standard."
+      }
+    ]
+  },
+  "route-25-singapore-singapore-university-of-": {
+    "category": "REACH",
+    "reason": "Outstanding academic results, extracurricular achievements and leadership are scholarship requirements in addition to admission. The published criteria support treating this as a competitive opportunity.",
+    "scope": "SUTD ASEAN Undergraduate Scholarship. This is a qualitative assessment of the requirements, not measured award odds.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.sutd.edu.sg/admissions/undergraduate/scholarship/sutd-administered/asean-undergraduate-scholarship/",
+        "checkedAt": "2026-11-04",
+        "finding": "SUTD lists outstanding qualifications, exemplary extracurricular records and leadership qualities as scholarship criteria."
+      }
+    ]
+  },
+  "route-30-south-korea-kaist": {
+    "category": "UNKNOWN",
+    "reason": "KAIST provides this scholarship after successful international admission. That makes admission the key hurdle; the reviewed award policy does not establish how likely admission is for this applicant.",
+    "scope": "KAIST international undergraduate admission plus scholarship. Automatic funding after admission is not treated as an easy overall outcome.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://admission.kaist.ac.kr/intl-undergraduate/support/scholarships/kaist",
+        "checkedAt": "2026-11-04",
+        "finding": "The scholarship has no separate selection process: students selected for admission are entitled to it, subject to the application and continuation conditions."
+      }
+    ]
+  },
+  "route-36-uae-american-university-of-s": {
+    "category": "UNKNOWN",
+    "reason": "An older official notice describes a small merit-selected award pool. It is a warning to research the competition, but does not establish the 2027 award pool or overall prospects.",
+    "scope": "AUS President's Scholarship. The located notice concerns the 2025 application cycle.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://info.aus.edu/president-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "The notice lists up to 20 awards a year based primarily on academic excellence, but displays an April 2025 deadline."
+      }
+    ]
+  },
+  "route-38-united-kingdom-oxford-university": {
+    "category": "LOTTERY",
+    "reason": "Oxford requires an admission offer first, then selects only a few scholarship recipients. The university explicitly warns that competition is very high.",
+    "scope": "Reach Oxford Scholarship. Current guidance includes 2027 applications; the award count is not a success rate.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/oxford-bursaries-and-scholarships/reach-oxford",
+        "checkedAt": "2026-11-04",
+        "finding": "Oxford lists around two or three awards each year and very high competition among eligible offer holders."
+      }
+    ]
+  },
+  "route-39-united-kingdom-university-college-londo": {
+    "category": "UNKNOWN",
+    "reason": "The published previous-cycle award pool was small, especially for awards including living costs. The 2027 pool and applicant selection evidence still need confirmation.",
+    "scope": "UCL Global Undergraduate Scholarship. Located award numbers apply to 2026/27.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.ucl.ac.uk/scholarships/ucl-global-undergraduate-scholarship",
+        "checkedAt": "2026-11-04",
+        "finding": "The 2026/27 page lists 10 tuition-and-maintenance awards and further tuition-only awards, selected on financial need. It does not supply a matching applicant denominator."
+      }
+    ]
+  },
+  "route-40-united-states-brown-university": {
+    "category": "LOTTERY",
+    "reason": "The main hurdle is highly selective admission. Need-based support is available after admission and a timely aid application; that policy does not make the overall path likely.",
+    "scope": "Brown international undergraduate need-based aid. Admission evidence is from the Class of 2030, across all applicants; it is not a scholarship award rate.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://admission.brown.edu/explore/brown-admission-numbers",
+        "checkedAt": "2026-11-04",
+        "finding": "Brown reports 2,687 admissions from 47,944 applications for the Class of 2030."
+      },
+      {
+        "url": "https://admission.brown.edu/international/financial-aid",
+        "checkedAt": "2026-11-04",
+        "finding": "Brown meets demonstrated need for admitted international students who apply for aid when applying for admission."
+      }
+    ]
+  },
+  "route-43-united-states-dartmouth-college": {
+    "category": "UNKNOWN",
+    "reason": "Dartmouth meets assessed need after admission, but this funding policy alone does not assess the full path to admission and an award. Admission selectivity has not been established in this review.",
+    "scope": "International undergraduate need-based aid. The university determines demonstrated need and the composition of support.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://financialaid.dartmouth.edu/apply-aid/international-students",
+        "checkedAt": "2026-11-04",
+        "finding": "Dartmouth states that it meets demonstrated need for admitted international undergraduates and describes scholarships, loans and work contributions."
+      }
+    ]
+  },
+  "route-45-united-states-harvard-university": {
+    "category": "LOTTERY",
+    "reason": "Financial aid follows an exceptionally selective admission process and an assessment of need. The aid policy is generous, but the admission hurdle still makes the complete path a long shot.",
+    "scope": "Harvard undergraduate need-based aid. Admission evidence covers all applicants to the Class of 2030, not scholarship applicants.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://college.harvard.edu/admissions",
+        "checkedAt": "2026-11-04",
+        "finding": "Harvard reports 2,037 admitted students from 55,104 applicants for the Class of 2030."
+      },
+      {
+        "url": "https://college.harvard.edu/financial-aid/how-aid-works",
+        "checkedAt": "2026-11-04",
+        "finding": "Harvard offers the same need-based aid policy to international and American students and assesses each family's demonstrated need."
+      }
+    ]
+  },
+  "route-48-united-states-mit": {
+    "category": "LOTTERY",
+    "reason": "Very few international applicants gain admission. MIT's commitment to meet demonstrated need applies after admission; it does not remove that highly selective hurdle.",
+    "scope": "MIT international undergraduate need-based aid. The admission counts are for the Class of 2029 and are not an award-recipient rate.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://mitadmissions.org/apply/process/stats/",
+        "checkedAt": "2026-11-04",
+        "finding": "MIT reports 136 international admits from 6,926 international applications for the Class of 2029."
+      },
+      {
+        "url": "https://sfs.mit.edu/undergraduate-students/the-cost-of-attendance/making-mit-affordable/",
+        "checkedAt": "2026-11-04",
+        "finding": "MIT describes need-blind admission and meeting demonstrated financial need with aid."
+      }
+    ]
+  },
+  "route-49-united-states-princeton-university": {
+    "category": "UNKNOWN",
+    "reason": "Princeton meets the assessed need of admitted international students. That conditional funding promise does not, by itself, establish the chance of admission and receiving aid.",
+    "scope": "Princeton international undergraduate need-based aid. Admission competitiveness has not been established by this review.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://admission.princeton.edu/apply/international-students",
+        "checkedAt": "2026-11-04",
+        "finding": "Princeton meets the full need of admitted international students with grants and calculates the family contribution from the financial aid application."
+      }
+    ]
+  },
+  "route-55-united-states-villanova-university": {
+    "category": "LOTTERY",
+    "reason": "A multi-stage selection process ends in a very small annual group of Presidential Scholars. An invitation or finalist place is not the same as winning the award.",
+    "scope": "Villanova Presidential Scholarship. Finalist counts cannot be used as the denominator for all applicants.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/faq.html",
+        "checkedAt": "2026-11-04",
+        "finding": "Villanova describes admission-linked invitations, a supplemental application, approximately 60 interview finalists and 25 scholars invited each year."
+      }
+    ]
+  },
+  "route-57-united-states-yale-university": {
+    "category": "UNKNOWN",
+    "reason": "Yale meets demonstrated need after admission, but that is not evidence that the full path to admission and a scholarship is attainable. Admission selection still needs a scoped review.",
+    "scope": "Yale international undergraduate need-based aid. The aid offer depends on Yale's assessment of financial need.",
+    "reviewedAt": "2026-11-04",
+    "evidence": [
+      {
+        "url": "https://admissions.yale.edu/affordability",
+        "checkedAt": "2026-11-04",
+        "finding": "Yale describes need-blind admissions and need-based grants meeting demonstrated need, regardless of citizenship."
+      }
+    ]
+  }
+}

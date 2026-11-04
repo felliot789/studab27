@@ -2,6 +2,24 @@ export type GateStatus = "PASS" | "FAIL" | "UNKNOWN";
 export type ApplicationStatus = "NOT_STARTED" | "RESEARCHING" | "IN_PROGRESS" | "SUBMITTED" | "DEFER_TO_MAIN_ROUND" | "DROP";
 export const APPLICATION_STATUSES: ApplicationStatus[] = ["NOT_STARTED", "RESEARCHING", "IN_PROGRESS", "SUBMITTED", "DEFER_TO_MAIN_ROUND", "DROP"];
 export type Evidence = { url: string; checkedAt?: string; finding?: string; supportedFields?: string[]; scope?: string };
+export type OutlookCategory = "REALISTIC" | "REACH" | "LOTTERY" | "UNKNOWN";
+export type ScholarshipOutlook = {
+  category: OutlookCategory; reason: string; scope: string; reviewedAt: string; evidence: Evidence[];
+  publishedRate?: { outcome: "SCHOLARSHIP_AWARDED"; applicantStage: "ALL_APPLICANTS"; cycle: string; population: string; applicants: number; recipients: number; sourceUrl: string };
+};
+export type PursuitLevel = "FOCUS" | "SECONDARY" | "BACKUP";
+export type RequirementStatus = "TODO" | "DOING" | "DONE" | "NOT_NEEDED";
+export type ApplicationRequirement = {
+  id: string; title: string; detail: string; kind: "DOCUMENT" | "TASK";
+  basis: "CURRENT" | "GENERAL" | "RECHECK"; sourceIds: string[];
+  sharedKey?: string; optional?: boolean;
+};
+export type ApplicationGuide = {
+  cycle: string; reviewedAt: string; summary: string;
+  sources: { id: string; title: string; url: string; scope: string }[];
+  sections: { id: string; title: string; items: ApplicationRequirement[] }[];
+};
+export type RequirementProgress = { status: RequirementStatus; note?: string; updatedAt?: string };
 export type CalendarEvent = {
   id: string; routeId: string; cycle: string; program: string; round: string | null;
   eventType: string; title: string; date: string | null; endDate?: string; time: string | null;
@@ -23,12 +41,15 @@ export type Route = {
   indonesianApplicantNotes?: string; programAndLanguageNotes?: string; aiContentPolicy?: string;
   unresolvedQuestions?: string[]; evidenceSources?: Evidence[];
   fieldReview?: Record<string, { status: string; evidence: Evidence[] }>;
+  scholarshipOutlook?: ScholarshipOutlook;
+  applicationGuide?: ApplicationGuide;
 };
 export type CostEstimate = { tuition: number; housing: number; food: number; insurance: number; other: number; coverage: number; upfront?: number };
 export type Overlay = {
   routeId: string; personalStrategyTier: string; estimatedFamilyGapIdrMPerMonth: string;
   personalSatTargetNote: string; personalRiskNote: string; applicationStatus: ApplicationStatus;
   saved?: boolean; driveApplicationFolder?: string; costEstimate?: CostEstimate; notes?: string;
+  tracked?: boolean; mainTarget?: boolean; pursuitLevel?: PursuitLevel;
   verifiedRules?: { cycle: string; program: string; sourceUrl: string; checkedAt: string; nationalCurriculumDirectEntry?: boolean; preGraduationApplicationAllowed?: boolean; finalDiplomaDeadline?: string };
 };
 export type Profile = {
@@ -48,7 +69,7 @@ export type Task = { id: string; category: "DECISION_GATE" | "VERIFY_RULE" | "DO
 export type Brick = { id: string; folder: string; title: string; description: string; items: { id: string; label: string }[] };
 export type Milestone = { date: string; title: string; timeWIB?: string; notes?: string; calendarUrl?: string };
 export type InboxItem = { id: string; text: string; createdAt: string; status: "NEW" | "TRIAGED" };
-export type AppState = { tasks: Record<string, { status?: "DONE"; snoozedUntil?: string; replacedAt?: string }>; bricks: Record<string, boolean>; updatedAt?: string };
+export type AppState = { tasks: Record<string, { status?: "DONE"; snoozedUntil?: string; replacedAt?: string }>; bricks: Record<string, boolean>; requirements?: Record<string, Record<string, RequirementProgress>>; updatedAt?: string };
 export type SourceNote = { id: string; routeId?: string; checkedAt: string; cycle: string; title: string; summary: string; sourceUrl: string; secondaryUrl?: string; deadlineAt?: string; deadlineDate?: string; deadlineLabel?: string; verifiedField: string };
 export type WatchEvent = { id: string; at: string; url: string; kind: "BASELINE" | "CHANGED" | "ERROR"; summary: string; excerpt: string; routeIds: string[] };
 export type WatchState = { lastRunAt: string | null; runStartedAt?: string; running?: boolean; runComplete?: boolean; scope?: string; progress?: { checked: number; total: number }; summary?: { checked: number; ok: number; errors: number }; sources: Record<string, { status: string; hash?: string; lastCheckedAt?: string; lastSuccessAt?: string; error?: string; routeIds?: string[] }>; events: WatchEvent[] };

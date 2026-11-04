@@ -12,13 +12,17 @@ The primary device is a phone, often used one-handed in a quiet room at night. K
 
 ## Product Purpose
 
-Turn scholarship research into a sustainable application workflow. Schola tracks official-source changes, records evidence and uncertainty, compares funding against a family budget, and offers at most three short tasks. The catalogue supports deliberate research without taking over the home screen. One Schola corner holds conversation and bounded source reviews; no external chat channel is required.
+Track progress on a deliberately small, user-chosen set of scholarships. Each has its own source-scoped application checklist, document requirements, dates, and private notes. There is no cap on how many scholarships can be tracked. Schola helps research requirements and missing evidence; the full catalogue is available when the user wants to add another opportunity.
 
 ## Information architecture
 
-Today, Scholarships, Applications, Calendar, and Documents form the primary navigation on phone and desktop. Use the same plain names in headings. Schola stays one tap away; source monitoring, scenarios, and settings sit outside the main five.
+Tracker, Documents, and Calendar form the primary navigation on phone and desktop. Both home and /scholarships open the tracker. Add scholarship opens the full catalogue. Schola stays one tap away; source monitoring, the earlier task briefing, scenarios, and settings are secondary tools.
 
-Every scholarship has one permanent page containing its overview, dates, personal plan, and sources. Saving a route follows its dates without deciding to apply. Applications contain explicit active statuses. Calendar opens on saved and active routes, with a clear All routes switch. Keep unconfirmed and conflicting dates visible in a separate list, without placing them on calendar days.
+Every scholarship has one permanent page opening on its own checklist, with overview, dates, personal plan, and sources available as tabs. Pursuit priority is Focus, Secondary, Backup, or unset (Decide later), separate from application progress and outlook. The explicitly chosen main target appears first and is always Focus. Removing an item from the tracker keeps its notes and progress. Calendar includes tracked scholarships regardless of priority, plus earlier saved and active routes, with a clear All routes switch. Keep unconfirmed and conflicting dates off calendar days.
+
+Documents opens on the document steps for tracked scholarships and retains the reusable packs in a second view. A shared document being ready never completes an institution-specific requirement automatically. Every guide step identifies its sources and whether it needs rechecking for the target cycle; completion is preparation progress, not eligibility verification. New tracked scholarships without a researched guide say so plainly. Checklists, notes, and priority choices are private and change only through explicit actions.
+
+Scholarships can be filtered by Realistic, Reach, Lottery, or Unknown, with a visible explanation and source scope for each assessment. Judge the whole path to receiving the named award, including required admission. Automatic funding after admission does not establish a realistic overall chance. These qualitative planning categories are separate from personal priority, eligibility checks, and budget adequacy. Only matched scholarship-recipient and applicant figures may produce a published award rate; admissions rates, finalist ratios, funding coverage, and SAT targets must never become personal scholarship probabilities. Keep unsupported options Unknown, including when that leaves Realistic empty.
 
 ## Brand Personality
 
