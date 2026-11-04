@@ -3,7 +3,7 @@ import Link from "next/link";
 import { APPLICATION_STATUSES, label, type Overlay } from "@/lib/schema";
 import { dateLabel, eventDay, upcomingEvents } from "@/lib/calendar";
 import { checklistProgress, PURSUIT_HELP, PURSUIT_LABELS, pursuitLevel, trackedRoutes, type PursuitGroup } from "@/lib/tracker";
-import { Badge, Icon, PageHeading, type Action, type ViewProps } from "./ui";
+import { Badge, CountryLabel, Icon, PageHeading, type Action, type ViewProps } from "./ui";
 
 export function PursuitControls({ overlay, act, busy }: { overlay: Overlay; act: Action; busy: boolean }) {
   return <div className="pursuit-controls">
@@ -31,7 +31,7 @@ export default function Tracker({ data, act, busy }: ViewProps) {
           const overlay = data.overlays.find(o => o.routeId === route.id)!, progress = checklistProgress(route, data.state);
           const nextDate = upcoming.find(event => event.routeId === route.id);
           return <article className={`tracker-row ${overlay.mainTarget ? "main-target" : ""}`} key={route.id} aria-label={route.institution}>
-            <div className="tracker-identity"><div className="tracker-country">{route.country}{overlay.mainTarget && <Badge tone="success">Main target</Badge>}</div><h3><Link href={`/scholarships/${route.id}`}>{route.institution}</Link></h3><p>{route.scholarshipName}</p>
+            <div className="tracker-identity"><div className="tracker-country"><CountryLabel country={route.country} />{overlay.mainTarget && <Badge tone="success">Main target</Badge>}</div><h3><Link href={`/scholarships/${route.id}`}>{route.institution}</Link></h3><p>{route.scholarshipName}</p>
               <div className="tracker-progress"><span>{progress.total ? `${progress.done} of ${progress.total} steps done` : "Checklist to research"}</span>{progress.total > 0 && <div className="progress-track" role="progressbar" aria-label={`${route.institution} checklist`} aria-valuenow={progress.done} aria-valuemin={0} aria-valuemax={progress.total}><span style={{ width: `${progress.done / progress.total * 100}%` }} /></div>}</div>
               <p className="tracker-next"><span>Next step</span>{progress.next?.title || (progress.total ? "Checklist complete. Check your portal for updates." : "Review the official requirements for your programme.")}</p>
               <p className="tracker-date"><Icon name="calendar" size={15} />{nextDate ? `${dateLabel(eventDay(nextDate)!, true)} · ${nextDate.title}` : "2027 dates still to confirm"}</p>

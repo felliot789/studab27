@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { checklistProgress, trackedRoutes } from "@/lib/tracker";
 import ApplicationChecklist from "./application-checklist";
-import { PageHeading, Icon, type ViewProps } from "./ui";
+import { PageHeading, CountryFlag, Icon, type ViewProps } from "./ui";
 
 export default function Bricks({ data, act, busy }: ViewProps) {
   const tab = useSearchParams().get("tab") === "reusable" ? "reusable" : "scholarships";
@@ -16,7 +16,7 @@ export default function Bricks({ data, act, busy }: ViewProps) {
       <p className="intro-note">These are the document steps from your tracked checklists. Updating one also updates that scholarship's progress. Actual files stay in your own folders.</p>
       <div className="document-scholarships">{routes.map(route => {
         const progress = checklistProgress(route, data.state, true);
-        return <details className="document-scholarship" key={route.id}><summary><span><strong>{route.institution}</strong><small>{route.scholarshipName}</small></span><span>{progress.total ? `${progress.done} / ${progress.total} ready` : "Guide to research"}</span></summary><div className="document-scholarship-body"><Link className="text-button" href={`/scholarships/${route.id}`}>Full application checklist<Icon name="arrow" size={16} /></Link><ApplicationChecklist route={route} documentsOnly data={data} act={act} busy={busy} /></div></details>;
+        return <details className="document-scholarship" key={route.id}><summary><span><strong><CountryFlag country={route.country} labelled />{route.institution}</strong><small>{route.scholarshipName}</small></span><span>{progress.total ? `${progress.done} / ${progress.total} ready` : "Guide to research"}</span></summary><div className="document-scholarship-body"><Link className="text-button" href={`/scholarships/${route.id}`}>Full application checklist<Icon name="arrow" size={16} /></Link><ApplicationChecklist route={route} documentsOnly data={data} act={act} busy={busy} /></div></details>;
       })}</div>
       {!routes.length && <div className="empty-state"><h2>Add a scholarship first</h2><p>Its document requirements will appear here. You can prepare reusable documents in the meantime.</p><Link href="/scholarships?browse=1" className="button primary">Add scholarship</Link></div>}
     </section>

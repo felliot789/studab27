@@ -574,3 +574,7 @@
   select option::checkmark { order: 1; margin-inline-start: auto; color: var(--accent); }
   select option:disabled { color: var(--faint); cursor: default; }
 }
+
+.country-label { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.country-flag { display: inline-block; flex-shrink: 0; font: 14px/1 "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; letter-spacing: 0; vertical-align: middle; }
+.document-scholarship strong > .country-flag, .subtle-link > .country-flag { margin-inline-end: 7px; }

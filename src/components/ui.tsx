@@ -4,6 +4,16 @@ import { safeUrl, type Dashboard } from "@/lib/schema";
 
 export type Action = (payload: Record<string, unknown>, message?: string) => Promise<boolean>;
 export type ViewProps = { data: Dashboard; act: Action; busy: boolean; openRoute: (id: string) => void };
+const countryFlags: Record<string, string> = {
+  Brunei: "🇧🇳", Canada: "🇨🇦", China: "🇨🇳", "Hong Kong": "🇭🇰", Hungary: "🇭🇺",
+  Italy: "🇮🇹", Qatar: "🇶🇦", Romania: "🇷🇴", Singapore: "🇸🇬", "South Korea": "🇰🇷",
+  Taiwan: "🇹🇼", Türkiye: "🇹🇷", UAE: "🇦🇪", "United Kingdom": "🇬🇧", "United States": "🇺🇸",
+};
+export function CountryFlag({ country, labelled = false }: { country: string; labelled?: boolean }) {
+  const flag = countryFlags[country];
+  return flag ? <span className="country-flag" title={country} role={labelled ? "img" : undefined} aria-label={labelled ? country : undefined} aria-hidden={labelled ? undefined : true}>{flag}</span> : null;
+}
+export function CountryLabel({ country }: { country: string }) { return <span className="country-label"><CountryFlag country={country} />{country}</span>; }
 const paths: Record<string, string> = {
   home: "m3 10 9-7 9 7v10H3Zm6 10v-7h6v7", compass: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm4-16-2 8-8 2 2-8Z",
   layers: "m3 7 9-5 9 5-9 5Zm0 5 9 5 9-5M3 17l9 5 9-5", radar: "M12 2v10l7 7M20.7 7A10 10 0 1 1 7 3M12 7a5 5 0 1 0 5 5",
