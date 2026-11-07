@@ -1,0 +1,3 @@
+# MIT orchestration runtime used by Local Deep Research's langgraph-agent.
+# Schola supplies its own transport and tools; no provider SDK or LDR web stack.
+langgraph==1.2.20

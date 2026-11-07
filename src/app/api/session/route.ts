@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { accessSettings, checkPassword, newSession, sessionCookie, trustedOrigin } from "@/lib/access";
+import { accessSettings, checkPassword, newSession, requestAccess, sessionCookie, trustedOrigin } from "@/lib/access";
 import { jsonBody } from "@/lib/request-body";
 
 export const runtime = "nodejs";
 const state = globalThis as typeof globalThis & { studabLogin?: { since: number; failures: number } };
 export async function POST(request: NextRequest) {
   try {
-    const settings = await accessSettings();
+    const settings = requestAccess(await accessSettings(), (request.headers.get("host") || "").toLowerCase(), request.headers.get("x-studab-lan-proxy"));
     const origin = trustedOrigin((request.headers.get("host") || "").toLowerCase(), settings);
     if (!origin || request.headers.get("origin") !== origin) return NextResponse.json({ error: "Same-origin login is required." }, { status: 403 });
     if (!settings.enabled) return NextResponse.json({ error: "Login is not configured." }, { status: 503 });

@@ -36,7 +36,7 @@ export default function Tracker({ data, act, busy }: ViewProps) {
               <p className="tracker-next"><span>Next step</span>{progress.next?.title || (progress.total ? "Checklist complete. Check your portal for updates." : "Review the official requirements for your programme.")}</p>
               <p className="tracker-date"><Icon name="calendar" size={15} />{nextDate ? `${dateLabel(eventDay(nextDate)!, true)} · ${nextDate.title}` : "2027 dates still to confirm"}</p>
             </div>
-            <div className="tracker-actions"><PursuitControls overlay={overlay} act={act} busy={busy} /><Link className={`button ${overlay.mainTarget ? "primary" : "secondary"}`} href={`/scholarships/${route.id}`}>Open checklist<Icon name="arrow" size={16} /></Link></div>
+            <div className="tracker-actions"><PursuitControls overlay={overlay} act={act} busy={busy} /><div className="tracker-page-links"><Link className="text-button" href={`/scholarships/${route.id}?tab=overview`}>Read description</Link><Link className={`button ${overlay.mainTarget ? "primary" : "secondary"}`} href={`/scholarships/${route.id}`}>Open checklist<Icon name="arrow" size={16} /></Link></div></div>
           </article>;
         })}
       </section>;

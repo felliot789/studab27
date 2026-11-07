@@ -6,6 +6,7 @@
     "model": "YOUR_MODEL_ID",
     "apiKey": "YOUR_LOCAL_ROUTER_KEY",
     "toolMode": "json",
+    "researchRuntime": "builtin",
     "timeoutSeconds": 120,
     "maxOutputTokens": 1600,
     "maxToolRounds": 6,

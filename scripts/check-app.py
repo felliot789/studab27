@@ -76,6 +76,8 @@ def main():
             request(value={"action": "brick", "key": "profile:sat-ticket", "done": True})
             assert request()["state"]["bricks"]["profile:sat-ticket"]
             rid = data["routes"][0]["id"]
+            description = request("/scholarships/" + quote(rid) + "?tab=overview")
+            assert b"About this scholarship" in description and b"Ask about this scholarship" in description
             original_overlay = data["overlays"][0]
             request(value={"action": "overlay", "id": rid, "patch": {"saved": True}})
             assert request()["overlays"][0] == {**original_overlay, "saved": True}
@@ -140,10 +142,16 @@ def main():
             request(value={"action": "import", "bundle": bad}, expect=400)
             assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
             assert request("/api/schola/chat")["messages"] == []
+            scoped_chat = request("/api/schola/chat?routeId=" + quote(rid))
+            assert scoped_chat["routeId"] == rid and scoped_chat["messages"] == []
+            assert request("/api/schola/chat")["routeId"] is None
+            request("/api/schola/chat?routeId=not-a-route", expect=400)
+            request("/api/schola/chat?routeId=", expect=400)
+            request("/api/schola/chat", {"action": "send", "routeId": [rid], "message": "Fixture", "id": "fixture-route-id"}, expect=400)
             request("/api/schola/chat", {"action": "send", "message": "Fixture"}, expect=400)
             password, salt = "fictional-http-password", "1234567890abcdef1234567890abcdef"
             access = {"enabled": True, "origins": [origin, "https://workspace.example:9443", "https://workspace.example:10000"], "sessionSecret": "fictional-session-secret-for-http-tests", "passwordSalt": salt, "passwordHash": hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=32768, r=8, p=1, maxmem=64*1024*1024).hex()}
-            (scratch / "private/schola.local.json").write_text(json.dumps({"access": access, "llm": {}, "search": {"provider": "disabled"}}))
+            (scratch / "private/schola.local.json").write_text(json.dumps({"access": access, "llm": {"baseUrl": "http://127.0.0.1:1/v1", "model": "fixture", "apiKey": "fictional-fixture-key"}, "search": {"provider": "disabled"}}))
             for route in ("/api/schola", "/api/schola/export", "/api/schola/chat"):
                 request(route, expect=401)
             request("/api/session", {"password": "incorrect"}, expect=401)
@@ -151,6 +159,16 @@ def main():
             request("/api/session", {"password": password})
             cookie = last_headers["set-cookie"].split(";", 1)[0]
             assert "HttpOnly" in last_headers["set-cookie"] and "SameSite=strict" in last_headers["set-cookie"]
+            # No worker runs here: queue scoping is checked without model traffic.
+            chat_headers = {"Cookie": cookie}
+            scoped_message = {"action": "send", "message": "Fictional scholarship question", "id": "fixture-scoped-chat", "routeId": rid}
+            request("/api/schola/chat", scoped_message, headers=chat_headers, expect=202)
+            request("/api/schola/chat", scoped_message, headers=chat_headers, expect=202)
+            request("/api/schola/chat", {"action": "send", "message": "Fictional general question", "id": "fixture-general-chat"}, headers=chat_headers, expect=202)
+            assert len(request("/api/schola/chat?routeId=" + quote(rid), headers=chat_headers)["messages"]) == 1
+            assert [m["content"] for m in request("/api/schola/chat", headers=chat_headers)["messages"]] == ["Fictional general question"]
+            assert request("/api/schola/chat?routeId=" + quote(data["routes"][1]["id"]), headers=chat_headers)["messages"] == []
+            request("/api/schola/chat", {**scoped_message, "routeId": data["routes"][1]["id"]}, headers=chat_headers, expect=400)
             for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", "/schola"):
                 request(route, headers={"Cookie": cookie})
             request(headers={"Cookie": "studab27-session=forged"}, expect=401)
@@ -165,6 +183,22 @@ def main():
                 request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={"Host": f"workspace.example:{suffix}", "Origin": public.replace("https:", "http:"), "Cookie": cookie}, expect=403)
             request("/api/session", {"action": "logout"}, headers={"Cookie": cookie})
             assert "Max-Age=0" in last_headers["set-cookie"]
+            lan_origin, lan_password, lan_proxy = "http://192.168.0.100:3270", "fictional-lan-password", "fictional-lan-proxy-secret"
+            access["lan"] = {"origin": lan_origin, "proxySecret": lan_proxy, "passwordSalt": salt,
+                             "passwordHash": hashlib.scrypt(lan_password.encode(), salt=bytes.fromhex(salt), n=32768, r=8, p=1, maxmem=64*1024*1024).hex(),
+                             "sessionSecret": "fictional-lan-session-secret"}
+            (scratch / "private/schola.local.json").write_text(json.dumps({"access": access}))
+            lan_headers = {"Host": "192.168.0.100:3270", "Origin": lan_origin, "x-studab-lan-proxy": lan_proxy}
+            request(headers={"Host": "192.168.0.100:3270"}, expect=403)
+            request("/api/session", {"password": lan_password}, headers={"Origin": "https://workspace.example:10000", "Host": "workspace.example:10000"}, expect=401)
+            request("/api/session", {"password": password}, headers=lan_headers, expect=401)
+            request("/api/session", {"password": lan_password}, headers=lan_headers)
+            lan_cookie = last_headers["set-cookie"].split(";", 1)[0]
+            assert "Secure" not in last_headers["set-cookie"]
+            request(headers={**lan_headers, "Cookie": lan_cookie})
+            request(headers={"Host": "workspace.example:10000", "Cookie": lan_cookie}, expect=401)
+            request(headers={**lan_headers, "Cookie": cookie}, expect=401)
+            request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={**lan_headers, "Cookie": lan_cookie, "Origin": "http://attacker.invalid"}, expect=403)
             print("Production HTTP: tracker, documents, 57 scholarship pages, priority changes, checklist persistence, safe removal, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()

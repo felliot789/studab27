@@ -4,7 +4,7 @@ import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypt
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export type Access = { enabled: boolean; origins: string[]; passwordSalt?: string; passwordHash?: string; sessionSecret?: string; sessionDays?: number };
+export type Access = { enabled: boolean; origins: string[]; passwordSalt?: string; passwordHash?: string; sessionSecret?: string; sessionDays?: number; lan?: { origin: string; proxySecret: string; passwordSalt: string; passwordHash: string; sessionSecret: string } };
 export const sessionCookie = "studab27-session";
 export async function accessSettings(): Promise<Access> {
   // The launch script supplies a runtime path, keeping the secret file out of
@@ -21,6 +21,10 @@ export async function accessSettings(): Promise<Access> {
       if (url.origin !== origin || url.username || url.password || (url.protocol !== "https:" && !(loopback && url.protocol === "http:"))) throw new Error("Only exact HTTPS remote origins and loopback HTTP origins are allowed");
     }
     if (access.enabled !== true || !access.sessionSecret || !access.passwordHash || !access.passwordSalt) throw new Error("Login protection must be configured before using Schola settings");
+    if (access.lan) {
+      const lan = access.lan, url = new URL(lan.origin);
+      if (url.origin !== lan.origin || url.protocol !== "http:" || !/^192\.168\.\d{1,3}\.\d{1,3}$/.test(url.hostname) || !lan.proxySecret || !lan.passwordSalt || !lan.passwordHash || !lan.sessionSecret) throw new Error("Invalid LAN access settings");
+    }
     return access;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return { enabled: false, origins: [] };
@@ -34,6 +38,13 @@ export function trustedOrigin(host: string, settings: Access) {
 function equal(a: string, b: string) {
   const x = Buffer.from(a), y = Buffer.from(b);
   return x.length === y.length && timingSafeEqual(x, y);
+}
+export function requestAccess(settings: Access, host: string, proxySecret: string | null): Access {
+  const lan = settings.lan;
+  if (lan && new URL(lan.origin).host === host && proxySecret && equal(proxySecret, lan.proxySecret)) {
+    return { ...settings, ...lan, origins: [lan.origin], lan: undefined };
+  }
+  return settings;
 }
 function signature(payload: string, settings: Access) { return createHmac("sha256", settings.sessionSecret!).update(payload).digest("base64url"); }
 export function validSession(token: string | undefined, settings: Access) {
@@ -55,8 +66,8 @@ export function checkPassword(password: unknown, settings: Access) {
 }
 // Enforced again where private data is read, independently of Proxy routing.
 export async function requireAccess() {
-  const settings = await accessSettings();
   const h = await headers();
+  const settings = requestAccess(await accessSettings(), (h.get("host") || "").toLowerCase(), h.get("x-studab-lan-proxy"));
   if (!trustedOrigin((h.get("host") || "").toLowerCase(), settings)) throw new Error("Untrusted workspace host.");
   if (!validSession((await cookies()).get(sessionCookie)?.value, settings)) redirect("/login");
 }

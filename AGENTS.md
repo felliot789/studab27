@@ -1,5 +1,14 @@
 # StudAb27
 
+## Start here
+
+1. Read [PRODUCT.md](PRODUCT.md) for purpose, vocabulary, and UX boundaries.
+2. Read [docs/HANDOFF.md](docs/HANDOFF.md) for the dated baseline, validation, and unfinished work. Check `git status --short --branch` and recent commits before editing; the handoff is a snapshot, not live state.
+3. Use [docs/REPO_MAP.md](docs/REPO_MAP.md) to find the relevant flow, then read those source files. Read [docs/DECISIONS.md](docs/DECISIONS.md) before changing a recorded design choice.
+4. Use [README.md](README.md) for setup and operations. No Graphify installation is required to understand or change this repo.
+
+Keep context small: follow the map into the files needed for the task rather than loading the entire repository. Owner-specific plans and progress are runtime data, never handoff documentation.
+
 ## Privacy first
 
 - Public code, catalogue, and fictional demo data are safe to commit. Real profiles, route strategy, milestones, task history, inbox captures, exports, and downloaded documents belong only in the ignored `private/` vault.
@@ -22,6 +31,9 @@
 - Start with `npm run dev` (loopback only). Worker: `python3 -m schola.watcher`. Unit checks: `python3 -m unittest discover -s tests`.
 - `PRODUCT.md` holds the product direction. Prefer a quiet, dark interface, keyboard access, readable contrast, and reduced motion.
 - Use installed graphify instructions before other work when the user types `/graphify`. Keep any generated graph local and exclude the vault.
+- Optional code navigation: `npm run map` builds an ignored, code-only Graphify graph without model calls. Query it narrowly, verify findings against source, and rebuild after code changes. See [README.md](README.md#optional-code-graph).
+- Update `docs/REPO_MAP.md` when responsibilities or data flows change, `docs/DECISIONS.md` when a significant choice changes, and `docs/HANDOFF.md` with the baseline commit, work remaining, and checks actually run. `npm run check` includes local documentation-link checks; Graphify is not required for it.
+- A running production service uses `.next`. Build and validate a separate staging checkout before a planned deployment; never run `npm run build` over the output currently being served. Do not restart workers with active jobs as a side effect of unrelated work.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

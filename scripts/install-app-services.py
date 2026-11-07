@@ -1,5 +1,6 @@
 """Prepare persistent loopback web and Schola worker user services."""
 import argparse
+import json
 import os
 from pathlib import Path
 import shutil
@@ -14,6 +15,12 @@ if not (root / ".next/BUILD_ID").exists():
     raise SystemExit("Build and check the app before installing services.")
 if not (root / "private/schola.local.json").exists():
     raise SystemExit("Configure Schola and login before installing services.")
+config = json.loads((root / "private/schola.local.json").read_text())
+worker_python = Path(sys.executable)
+if config.get("llm", {}).get("researchRuntime") == "langgraph":
+    worker_python = root / ".venv-research/bin/python"
+    if not worker_python.exists():
+        raise SystemExit("Install requirements-research.txt in .venv-research before enabling the research worker.")
 
 def quote(value):
     return '"' + str(value).replace('\\', '\\\\').replace('"', '\\"').replace('%', '%%') + '"'
@@ -25,7 +32,7 @@ units = Path.home() / ".config/systemd/user"
 units.mkdir(parents=True, exist_ok=True)
 commands = {
     "studab27-web.service": ("StudAb27 private scholarship workspace", f'{quote(sys.executable)} {quote(root / "scripts/run-web.py")} start'),
-    "studab27-schola.service": ("StudAb27 Schola conversation and source-review worker", f"{quote(sys.executable)} -m schola.assistant worker"),
+    "studab27-schola.service": ("StudAb27 Schola conversation and source-review worker", f"{quote(worker_python)} -m schola.assistant worker"),
 }
 for name, (description, command) in commands.items():
     content = f"""[Unit]

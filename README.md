@@ -4,6 +4,10 @@ A local scholarship tracker for undergraduate engineering applications. **Tracke
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
+## Continuing the project
+
+Start with [AGENTS.md](AGENTS.md) for the reading order and working rules. [PRODUCT.md](PRODUCT.md) defines the product; [the repository map](docs/REPO_MAP.md) traces the implementation; [decisions](docs/DECISIONS.md) explain the choices; [the handoff](docs/HANDOFF.md) records the dated baseline, checks, and remaining work. These files work with any coding harness and require no graph tool.
+
 ## Run locally
 
 Requires Node.js 22.18+ (tested with Node 24), npm, Python 3.11+, and Git. On Linux, Poppler's `pdftotext` enables PDF monitoring. The worker has no Python package dependencies. Calendar unit checks use Node's built-in TypeScript support and test runner.
@@ -24,6 +28,8 @@ python3 scripts/check-public-build.py
 npm start
 ```
 
+These build commands assume this checkout is not serving a running production instance. If it is, build and validate a separate staging checkout first: Next rewrites `.next`, which the live server still needs. Deploy that tested version in a planned restart after active Schola jobs finish. The [repository map](docs/REPO_MAP.md#change-entry-points-and-verification) lists the checks and runtime boundaries.
+
 Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
 
 ## Finding your work
@@ -32,7 +38,7 @@ Always use the npm launch scripts or the installed service: they supply the runt
 | --- | --- |
 | Tracker `/` or `/scholarships` | Explicitly tracked scholarships, pursuit priorities, application progress, and the next checklist step |
 | Explore `/scholarships?browse=1` | All 57 public routes, outlook filters, and an action to add any route to the tracker |
-| Scholarship `/scholarships/[id]` | One permanent page with Checklist, Overview, Dates, Your plan, and Sources |
+| Scholarship `/scholarships/[id]` | One permanent page with Checklist, Description, Dates, Your plan, Sources, and a scholarship-specific Schola popup; `?tab=overview` opens Description |
 | Documents `/documents` | Per-scholarship document steps and a separate reusable-pack view; actual files remain in your own folders |
 | Calendar `/calendar` | Tracked, saved, and active routes by default, plus an All routes switch and month/agenda views |
 | Schola `/schola` | Your durable conversation and read-only research tools |
@@ -72,12 +78,22 @@ Then initialize the canonical configuration (never overwrites an existing one):
 python3 scripts/configure-schola.py --from-env --allow-context
 ```
 
-Thereafter edit **`private/schola.local.json` only** for Schola. The original `.env` is preserved but is no longer its settings source. `schola.example.json` documents the shape without credentials. Model/search changes apply to the next job; no SDK or additional Python packages are required.
+Thereafter edit **`private/schola.local.json` only** for Schola. The original `.env` is preserved but is no longer its settings source. `schola.example.json` documents the shape without credentials. Model/search changes apply to the next job. The built-in loop uses the Python standard library. The optional research runtime uses the pinned, open-source LangGraph package:
+
+```sh
+python3 -m venv .venv-research
+.venv-research/bin/python -m pip install -r requirements-research.txt
+.venv-research/bin/python -m pip check
+.venv-research/bin/python -m unittest discover -s tests
+```
+
+Set `llm.researchRuntime` to `langgraph` and run the worker with `.venv-research/bin/python -m schola.assistant worker`. The service installer selects that interpreter for a new installation. It preserves differing existing units for local review. The web API, watcher and deterministic planner retain their standard-library environment. A missing selected research runtime fails the saved job explicitly; it does not silently repeat a paid request using another engine. `builtin` remains available for a minimal installation.
 
 | Setting | Purpose |
 | --- | --- |
 | `llm.baseUrl`, `llm.model`, `llm.apiKey` | Trusted custom-v1 Chat Completions connection; remote endpoints require HTTPS |
 | `llm.toolMode` | `json` uses plain-text actions through custom-v1 adapters; `native` uses function calling. Set `llm.jsonResponseFormat` false only if the endpoint rejects JSON response format. |
+| `llm.researchRuntime` | `builtin` (default) or `langgraph`; both use the same scoped tools, transport and daily budget. LangGraph requires the research worker environment above. |
 | `llm.dailyCallLimit` | Model requests per UTC day, including failed attempts; default 80 |
 | `llm.maxToolRounds`, `llm.maxOutputTokens`, `llm.timeoutSeconds` | Bound each reply; tools also have a 12-call and ten-minute work budget |
 | `contextAllowed` | Explicit consent for relevant real profile, strategy and milestones; false uses fictional context |
@@ -88,9 +104,17 @@ Thereafter edit **`private/schola.local.json` only** for Schola. The original `.
 
 Open **Schola** in the app. Messages become durable SQLite jobs, so closing a tab does not cancel work. Drafts stay in the current browser tab until Send is tapped. An interrupted worker marks an unfinished reply failed rather than silently repeating a charged request; retries then require a tap. A malformed JSON reply may receive one bounded format-correction request, counted in the daily budget. There are no automatic network retries or model requests while idle. Conversation history persists in `private/schola.sqlite3`; recent turns enter context, and an older-conversation search tool can retrieve relevant statements. Memory is not official evidence. The UI loads the latest 80 messages.
 
-Tools can read the current plan, compare catalogue routes, search public topics, inspect official HTML/PDF sources, and find older conversation statements. They cannot execute shell commands, submit applications, send messages, mark tasks done, or change verified rules. Relevant project context and chat may reach an external model through your configured router. Credentials and private Calendar/Drive links are excluded from model context; source content is treated as untrusted data. Public search queries reject contact details, credentials and explicit family finances. The reader accepts exact catalogue, search-result, returned-PDF or user-supplied official URLs; it does not invent paths or attach profile data as URL parameters.
+Each scholarship page also offers **Ask about this scholarship**. This opens a private Schola popup scoped to that route's catalogue entry, sources, dates, checklist and relevant personal context. Its history, conversation search and draft stay separate from general Schola and other scholarships. General Schola keeps its existing conversation and handles comparisons and background source reviews. Model settings, call budgets and the single worker are shared; each conversation can queue one request. Closing the popup preserves the draft and queued work. This is a separate conversation with the same configured model, not a separately trained model.
 
-**Search is a separate capability from inference.** SearXNG depends on its upstream engines; a successful HTTP response with zero results is not proof of a working search engine. Schola exposes degradation and engine errors, filters to official academic/government and known source domains, and cools down failed searches for five minutes. Direct reading of known official pages remains useful. Brave Search is an optional adapter requiring its own key; no search subscription is provisioned automatically. Neither option promises exhaustive or Google-level discovery.
+Deploy scoped chat changes to the web app and Python worker together, after active jobs finish. The worker must load the new scope-aware code before the new web app accepts scholarship messages; an older worker cannot preserve their scope. SQLite adds a job-scope mapping and nullable scope columns on messages/tools at first access, keeping existing history in general Schola. The original job table stays compatible with older general-chat writes.
+
+Tools can read the current plan, compare catalogue routes, search public topics, inspect official HTML/PDF sources, and find older conversation statements. Research is iterative: the model chooses queries, reads evidence, follows useful returned official links or PDFs and revises a search when necessary. A long source can be searched for a literal phrase or continued from its returned offset. Pages and repeated queries are cached within the job; source dates, hashes and excerpt offsets are saved with the answer. Admission, award selection, funding, obligations and cycle dates remain separate questions.
+
+Tools cannot execute shell commands, submit applications, send messages, mark tasks done, or change verified rules. Relevant project context and chat may reach an external model through your configured router. Credentials and private Calendar/Drive links are excluded from model context; source content is treated as untrusted data. Public search queries reject contact details, credentials and explicit family finances. The reader accepts exact catalogue/search results and links actually returned by official pages, including sibling institution subdomains. It never invents paths or attaches profile data as URL parameters. Fetches validate and pin public IPs across redirects. The reader handles HTML and text PDFs; it does not render JavaScript, bypass challenges, perform OCR or browse signed-in portals.
+
+**Search is a separate capability from inference.** SearXNG depends on its upstream engines; a successful HTTP response with zero results is not proof of a working search engine. Keep the local SearXNG installation current and test real public scholarship queries. Schola exposes degradation and engine errors, filters to official academic/government and known institution domains, and allows up to four distinct public searches per job with brief pacing. A failed query does not block reformulation or other conversations for five minutes. Direct official pages and their links remain available when discovery fails. Brave Search is an optional API adapter requiring its own key; SearXNG can use free upstream engines without one. No search subscription is provisioned automatically. Free engines can throttle or change; no option guarantees exhaustive discovery.
+
+LangGraph orchestrates the bounded model → tool → model loop. SQLite continues to own durable jobs and isolated conversation memory; interrupted inference requires explicit retry. Tools run serially on the worker's SQLite thread, and remote framework tracing is explicitly disabled. The orchestration software has no per-call fee; your configured inference provider, host and network still have their own costs. Schola is a scholarship research consultant, while the existing source watcher continues its separate schedule. It does not autonomously manage the owner's application journey.
 
 The assistant can review new `CHANGED` events after a completed watchtower scan. Existing history is a starting watermark, not a new alert. Baselines and errors alone do not trigger model reviews. Reviews appear only in Schola; there is no external messaging channel or idle research loop. Model answers remain fallible even when a tool succeeds; consult the displayed sources before acting.
 
@@ -109,6 +133,10 @@ python3 scripts/install-app-services.py --enable
 `studab27-web.service` serves production Next at `127.0.0.1:3270`; `studab27-schola.service` processes conversations and source reviews. Both restart on failure. The existing twelve-hour watchtower timer remains separate. No cloud host is needed. Services run while the host and user manager are available; the installer does not change lingering.
 
 The generated password is in **`private/web-login.local.txt`**, mode 0600. It is never displayed by the setup script. The settings hold a scrypt hash and session signing secret; cookies are HttpOnly, SameSite Strict and Secure over HTTPS. Fifteen failed logins temporarily throttle password attempts. To rotate the password and invalidate all sessions, run `python3 scripts/reset-web-password.py`, then read the local password file. The shield menu signs out this browser.
+
+An owner-configured LAN HTTP proxy can provide a separate login without changing the public password. Its exact origin, password hash, session secret, and proxy secret are in `access.lan` in the private configuration. The reverse proxy must overwrite `X-Studab-Lan-Proxy` with that secret and bind only the intended LAN address. This is unencrypted HTTP: the LAN password, session, and private content travel in plain text. Rotating the public password does not rotate the separate LAN login.
+
+On this installation, Docker container `studab27-lan` provides the proxy at `http://192.168.0.100:3270`, using `private/lan-nginx.local.conf` and Docker's `unless-stopped` restart policy. Check it with `docker ps --filter name=studab27-lan` or restart it with `docker restart studab27-lan`. If the host's LAN address changes, both the proxy listener and the configured LAN origin need updating. The existing `studab27-web.service` stays bound to loopback.
 
 For phone access, add the exact HTTPS origins to `access.origins` first. Prefer private Tailscale Serve; optional Funnel is publicly reachable and therefore also requires login. Use separate free ports and preserve existing services:
 
@@ -151,7 +179,7 @@ It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Docume
 ## What Schola does
 
 - **Briefing:** the five initial task templates are followed by specific document steps, checks for active routes, and near-term personal milestone checks. At most three are shown. Done, snooze, replacement, and route decisions require explicit user actions. Snooze lasts 24 hours; replacement moves a task behind other work. Completed tasks can return to the queue. The focus timer uses the current clock, survives navigation within the tab, and never completes a task automatically.
-- **Catalogue:** search and filter by country, private strategy, SAT role, and budget estimate. Each route has a drawer for source notes, renewal/bond terms, readiness packs, status, private notes, optional itemized cost estimates, and human-checked program rules.
+- **Catalogue:** search and filter by country, private strategy, budget estimate, and scholarship outlook. Each route links to its permanent page for requirements, source notes, funding terms, dates, private plans, and human-checked program rules.
 - **Gates:** curriculum and graduation checks remain unknown without an explicitly recorded program-specific, current-cycle source. The budget check compares a conservative range or an itemized monthly cost minus coverage against the profile cap. An overlapping range stays unknown. Missing data is never zero. Upfront arrival cash is separate and can still make a route unsustainable.
 - **Simulator:** scenario SAT and budget controls recalculate the same Python evaluator used elsewhere. Advisory SAT targets are not admission thresholds. The simulator never changes the saved profile and never treats unknown rules as an unlocked scholarship.
 - **Watchtower:** bounded HTML/PDF fetches, SHA-256 of normalized text, source snapshots, diffs, and visible errors. First fetch establishes a baseline. Failed fetches retain the last good hash. Changed text does not automatically establish a new deadline or eligibility rule. Inbox links are never fetched automatically.
@@ -200,20 +228,21 @@ python3 scripts/check-app.py
 
 Checks cover conservative gates, task queues, source baselines/errors and public-IP pinning, staged privacy, durable chat/retries, JSON tool compatibility, model budgets, context redaction, demo isolation and degraded search. The production HTTP check uses a disposable fictional workspace for persistence, exact hosts/origins, login, forged cookies, HTTPS cookie flags, protected exports and import recovery. The build check scans emitted code for seed identifiers and configured secrets, and traces for private/env paths. Stubbed provider tests do not prove a particular live model works; test the configured model separately. Fetch success and a timer do not prove every scholarship rule is verified.
 
-## Repository map
+## Optional code graph
 
-| Location | Responsibility |
-| --- | --- |
-| `src/app/` | Five dynamic app pages, login and protected JSON APIs |
-| `src/components/` | Accessible dashboard, route drawer, checklists, simulator |
-| `src/lib/storage.ts` | Runtime-only vault/demo loading and serialized file writes |
-| `schola/evaluator.py` | Conservative deterministic gates and advisory scenarios |
-| `schola/spoonfeeder.py` | Atomic task pool and bounded briefing queue |
-| `schola/watcher.py` | Public-source fetches, text normalization, snapshots, diffs |
-| `schola/assistant.py` | SQLite conversation/jobs, bounded model/tool loop, source reviews |
-| `schola/config.py` | Local model/search settings and browser-safe status |
-| `schola/drive_sync.py` | Offline export into canonical Drive-shaped folders |
-| `data/public/` | Catalogue, fictional presets, task definitions, scoped sources |
-| `private/` | Ignored personal state, source imports, snapshots, recovery bundles |
+Graphify is a local navigation aid. It is already installed on the current development host; no account, API key, model connection, or server setup is needed. Another machine can skip it and use [REPO_MAP.md](docs/REPO_MAP.md), or install the optional CLI with `uv tool install graphifyy==0.9.28` (the version tested here).
 
-The product direction is in `PRODUCT.md`; project safety and development conventions are in `AGENTS.md`.
+From the repository root:
+
+```sh
+npm run map
+graphify query "validateRequirementProgress" --budget 1500
+graphify explain "loadDashboard"
+graphify path "ApplicationChecklist" "validateRequirementProgress"
+```
+
+`npm run map` runs structural code extraction followed by local community detection with model labeling disabled. It makes **zero model calls**. Git ignores and [.graphifyignore](.graphifyignore) exclude the vault, local configuration, dependencies, and generated output. Do not remove those exclusions or use `--no-gitignore`. Markdown and other semantic inputs are skipped; their meaning lives in the written handoff.
+
+The ignored `graphify-out/` directory contains `graph.json`, `graph.html`, and `GRAPH_REPORT.md`, plus local caches. Open the HTML locally or use a narrow CLI query; do not load the entire JSON into an agent's context. Re-run `npm run map` after code changes. A missing path in the graph does not prove there is no relationship: Next routing, runtime data joins, and TypeScript-to-Python calls still need source review.
+
+No automatic Graphify hooks or watchers are installed. Keep the privacy pre-commit hook. The normal `npm run check` does not require Graphify; it checks local documentation link targets as well as the application checks. Update the architecture map when flows change, the decision log when choices change, and the handoff when completing work.

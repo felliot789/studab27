@@ -18,11 +18,11 @@ async function assistant(payload: unknown): Promise<Record<string, unknown>> {
     child.stdin?.end(JSON.stringify(payload));
   });
 }
-export async function GET() {
+export async function GET(request: NextRequest) {
   await requireAccess();
   try {
-    const value = await assistant({ action: "status" });
-    return NextResponse.json(value, { status: value.error ? 503 : 200 });
+    const value = await assistant({ action: "status", routeId: request.nextUrl.searchParams.get("routeId") });
+    return NextResponse.json(value, { status: value.error ? 400 : 200 });
   } catch (error) { return NextResponse.json({ error: (error as Error).message }, { status: 503 }); }
 }
 export async function POST(request: NextRequest) {

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { accessSettings, sessionCookie, trustedOrigin, validSession } from "./lib/access";
+import { accessSettings, requestAccess, sessionCookie, trustedOrigin, validSession } from "./lib/access";
 
 export async function proxy(request: NextRequest) {
   let settings;
   try { settings = await accessSettings(); }
   catch { return new NextResponse("Workspace access needs local attention.", { status: 503 }); }
   const host = (request.headers.get("host") || "").toLowerCase();
+  settings = requestAccess(settings, host, request.headers.get("x-studab-lan-proxy"));
   const origin = trustedOrigin(host, settings);
   if (!origin) return new NextResponse("Untrusted workspace host.", { status: 403 });
   if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) {

@@ -32,11 +32,15 @@ const paths: Record<string, string> = {
 export function Icon({ name, size = 18 }: { name: string; size?: number }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name] || paths.compass} /></svg>; }
 export function External({ href, children, className = "" }: { href?: string; children: ReactNode; className?: string }) { const url = href && safeUrl(href); return url ? <a href={url} target="_blank" rel="noopener noreferrer" className={`source-link ${className}`}>{children}<Icon name="external" size={13} /></a> : <span>{children}</span>; }
 export function Badge({ children, tone = "neutral" }: { children: ReactNode; tone?: string }) { return <span className={`badge ${tone}`}>{children}</span>; }
-export function Dialog({ title, children, onClose, wide = false }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean }) {
+export function Dialog({ title, children, onClose, wide = false, className = "" }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean; className?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  useEffect(() => { const d = ref.current, prior = document.body.style.overflow; document.body.style.overflow = "hidden"; d?.showModal(); return () => { d?.close(); document.body.style.overflow = prior; }; }, []);
-  return <dialog ref={ref} aria-labelledby={titleId} aria-modal="true" className={`drawer ${wide ? "wide" : ""}`} onCancel={onClose} onClick={e => { if (e.target === e.currentTarget) onClose(); }}><div className="drawer-inner"><header className="drawer-header"><h2 id={titleId}>{title}</h2><button className="icon-button" onClick={onClose} aria-label="Close dialog"><Icon name="close" /></button></header>{children}</div></dialog>;
+  useEffect(() => {
+    const d = ref.current, prior = document.body.style.overflow, opener = document.activeElement;
+    document.body.style.overflow = "hidden"; d?.showModal();
+    return () => { d?.close(); document.body.style.overflow = prior; if (opener instanceof HTMLElement && opener.isConnected) opener.focus({ preventScroll: true }); };
+  }, []);
+  return <dialog ref={ref} aria-labelledby={titleId} aria-modal="true" className={`drawer ${wide ? "wide" : ""} ${className}`} onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}><div className="drawer-inner"><header className="drawer-header"><h2 id={titleId}>{title}</h2><button className="icon-button" onClick={onClose} aria-label="Close dialog"><Icon name="close" /></button></header>{children}</div></dialog>;
 }
 export function PageHeading({ title, children, extra }: { title: string; children: ReactNode; extra?: ReactNode }) { return <header className="page-heading"><div><h1>{title}</h1><p>{children}</p></div>{extra}</header>; }
 export function shortDate(date: string) { return new Date(date.length === 10 ? `${date}T12:00:00+07:00` : date).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Jakarta" }); }

@@ -1,0 +1,22 @@
+# Code navigation only. Keep these boundaries even if Git ignores change.
+/private/
+.env
+.env.*
+*.local.*
+/.git/
+/node_modules/
+/.next/
+/out/
+/dist/
+/coverage/
+/artifacts/
+/graphify-out/
+/.impeccable/
+/.venv/
+__pycache__/
+*.pyc
+*.tsbuildinfo
+*.log
+
+# The dependency lockfile is generated and adds no useful architecture context.
+/package-lock.json

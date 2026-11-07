@@ -24,6 +24,8 @@ import time
 from urllib.parse import urljoin, urlsplit
 from datetime import datetime, timezone
 
+from .research_sources import MAX_CANDIDATE_LINKS, prioritize_source_links, source_link
+
 ROOT = Path(__file__).resolve().parents[1]
 MAX_BYTES = 12 * 1024 * 1024
 USER_AGENT = "StudAb27-Schola/0.1 (personal scholarship source monitor; 12-hour cadence)"
@@ -68,21 +70,42 @@ class PinnedHTTP(http.client.HTTPConnection):
 
 
 class TextParser(HTMLParser):
-    def __init__(self):
+    def __init__(self, base_url=""):
         super().__init__(convert_charrefs=True)
         self.skip = 0
         self.text = []
         self.pdfs = []
+        self.links = []
+        self.base_url = base_url
+        self.form_depth = 0
+        self.anchor = None
+
+    def finish_anchor(self):
+        if self.anchor and len(self.links) < MAX_CANDIDATE_LINKS:
+            link = source_link(self.anchor[0], "".join(self.anchor[1]), self.base_url)
+            if link and all(existing["url"] != link["url"] for existing in self.links):
+                self.links.append(link)
+        self.anchor = None
 
     def handle_starttag(self, tag, attrs):
         if tag in ("script", "style", "noscript", "svg"):
             self.skip += 1
+        if tag == "form":
+            self.form_depth += 1
         if tag == "a":
-            href = dict(attrs).get("href", "")
+            self.finish_anchor()
+            attributes = dict(attrs)
+            href = attributes.get("href") or ""
             if re.search(r"\.pdf(?:[?#]|$)", href, re.I):
                 self.pdfs.append(href)
+            if not self.skip and not self.form_depth and "download" not in attributes and "hidden" not in attributes and attributes.get("aria-hidden") != "true":
+                self.anchor = (href, [])
 
     def handle_endtag(self, tag):
+        if tag == "a":
+            self.finish_anchor()
+        if tag == "form" and self.form_depth:
+            self.form_depth -= 1
         if tag in ("script", "style", "noscript", "svg") and self.skip:
             self.skip -= 1
         if tag in ("p", "div", "li", "tr", "h1", "h2", "h3", "br"):
@@ -91,9 +114,18 @@ class TextParser(HTMLParser):
     def handle_data(self, data):
         if not self.skip:
             self.text.append(data)
+            if self.anchor:
+                self.anchor[1].append(data)
 
 
 def normalize(data, content_type, url):
+    result = normalize_source(data, content_type, url)
+    return result["text"], result["pdfLinks"]
+
+
+def normalize_source(data, content_type, url):
+    """Normalize one response and discover links without fetching their targets."""
+    source_links = []
     if data.startswith(b"%PDF") or "application/pdf" in content_type:
         if not shutil.which("pdftotext"):
             raise ValueError("PDF text unavailable: install Poppler pdftotext; no baseline updated")
@@ -101,17 +133,20 @@ def normalize(data, content_type, url):
         links = []
     elif "html" in content_type or data.lstrip().startswith(b"<"):
         match = re.search(r"charset=([\w-]+)", content_type, re.I)
-        parser = TextParser()
+        parser = TextParser(url)
         parser.feed(data.decode(match[1] if match else "utf-8", errors="replace"))
+        parser.close()
+        parser.finish_anchor()
         value = "".join(parser.text)
         links = sorted(set(urljoin(url, link) for link in parser.pdfs))
+        source_links = prioritize_source_links(parser.links)
     else:
         raise ValueError("Unsupported source type; HTML or text-readable PDF required")
     lines = [re.sub(r"\s+", " ", line).strip() for line in value.splitlines()]
     text = "\n".join(line for line in lines if line)
     if len(text) < 100 or re.search(r"^(?:just a moment|access denied|attention required|verify you are human)", text, re.I):
         raise ValueError("Empty, blocked, or challenge page; previous baseline preserved")
-    return text, links
+    return {"text": text, "pdfLinks": links, "links": source_links, "finalUrl": url}
 
 
 def fetch(url):
@@ -149,8 +184,7 @@ def fetch(url):
                         if total > MAX_BYTES:
                             raise ValueError("Source exceeds size limit")
                     data = b"".join(chunks)
-                    text, links = normalize(data, response.getheader("Content-Type", ""), current)
-                    return {"text": text, "pdfLinks": links, "finalUrl": current}
+                    return normalize_source(data, response.getheader("Content-Type", ""), current)
                 finally:
                     connection.close()
             raise ValueError("Source exceeded redirect limit")
