@@ -16,24 +16,24 @@ export async function readJson<T>(filename: string, fallback?: T): Promise<T> {
   catch (e) { if ((e as NodeJS.ErrnoException).code === "ENOENT" && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path.basename(filename)}; existing data was preserved.`); }
 }
 
-export async function writeJson(filename: string, value: unknown) {
-  await fs.mkdir(vault, { recursive: true, mode: 0o700 });
-  const temp = `${filename}.${process.pid}.tmp`;
-  await fs.writeFile(temp, JSON.stringify(value, null, 2) + "\n", { mode: 0o600 });
-  await fs.chmod(temp, 0o600);
-  await fs.rename(temp, filename);
+export type WorkspaceSnapshot = { mode: "PRIVATE" | "DEMO"; revision: number; profile: Profile; overlays: Overlay[]; milestones: Milestone[]; state: AppState; inbox: InboxItem[] };
+export async function loadWorkspace(): Promise<WorkspaceSnapshot> {
+  const value = await python<WorkspaceSnapshot & { error?: string }>("schola.workspace_store", { action: "load" });
+  if (value.error) throw new Error(value.error);
+  return value;
 }
-
-export async function mode() {
-  if (process.env.STUDAB27_DEMO === "1") return "DEMO" as const;
-  const exists = await Promise.all(["profile", "overlay"].map(async n => { try { await fs.access(path.join(vault, `${n}.local.json`)); return true; } catch { return false; } }));
-  if (exists.some(Boolean) && !exists.every(Boolean)) throw new Error("The private vault is incomplete. Restore both profile and overlay; personal and demo records were not mixed.");
-  return exists.every(Boolean) ? "PRIVATE" as const : "DEMO" as const;
+export async function mode() { return (await loadWorkspace()).mode; }
+export async function saveWorkspace(workspace: WorkspaceSnapshot, changes: Partial<WorkspaceSnapshot>, imported = false) {
+  const value = await python<{ error?: string; conflict?: boolean }>("schola.workspace_store", {
+    action: "save", revision: workspace.revision, mode: workspace.mode,
+    workspace: { ...workspace, ...changes }, targetMode: imported ? "PRIVATE" : workspace.mode, backup: imported,
+  });
+  if (value.error) throw Object.assign(new Error(value.error), { conflict: !!value.conflict });
 }
 
 export async function python<T>(module: string, payload: unknown): Promise<T> {
   return new Promise<T>((resolve, reject) => {
-    const child = execFile(/* turbopackIgnore: true */ process.env.SCHOLA_PYTHON || "python3", ["-m", module], { cwd: root, maxBuffer: 8 * 1024 * 1024, timeout: 15000 }, (error, stdout) => {
+    const child = execFile(/* turbopackIgnore: true */ process.env.SCHOLA_PYTHON || "python3", ["-m", module], { cwd: root, maxBuffer: 32 * 1024 * 1024, timeout: 15000 }, (error, stdout) => {
       if (error) { reject(new Error("Schola could not evaluate this request. Check the local Python runtime; no eligibility was inferred.")); return; }
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error("Schola returned an invalid result.")); }
     });
@@ -44,25 +44,22 @@ export async function python<T>(module: string, payload: unknown): Promise<T> {
 
 export async function baseData() {
   await requireAccess();
-  const currentMode = await mode();
-  const [catalogue, profile, overlays, templates, bricks, sourceNotes, milestones, calendarEvents, outlooks, guides] = await Promise.all([
+  const workspace = await loadWorkspace();
+  const [catalogue, templates, bricks, sourceNotes, calendarEvents, outlooks, guides] = await Promise.all([
     readJson<Route[]>(path.join(publicDir, "scholarships_2027.json")),
-    readJson<Profile>(currentMode === "PRIVATE" ? path.join(vault, "profile.local.json") : path.join(publicDir, "profile.example.json")),
-    currentMode === "PRIVATE" ? readJson<Overlay[]>(path.join(vault, "overlay.local.json")) : readJson<Overlay[]>(path.join(vault, "demo-overlay.local.json"), await readJson<Overlay[]>(path.join(publicDir, "overlay.example.json"))),
     readJson<Task[]>(path.join(publicDir, "tasks.json")), readJson<Brick[]>(path.join(publicDir, "bricks.json")), readJson<SourceNote[]>(path.join(publicDir, "source_verifications.json")),
-    currentMode === "PRIVATE" ? readJson<Milestone[]>(path.join(vault, "milestones.local.json"), []) : Promise.resolve([]),
     readJson<CalendarEvent[]>(path.join(publicDir, "calendar_events.json")),
     readJson<Record<string, ScholarshipOutlook>>(path.join(publicDir, "scholarship_outlooks.json"), {}),
     readJson<Record<string, ApplicationGuide>>(path.join(publicDir, "application_guides.json"), {}),
   ]);
+  const { mode: currentMode, profile, milestones } = workspace;
+  const overlays = [...workspace.overlays];
+  for (const route of catalogue) if (!overlays.some(plan => plan.routeId === route.id)) overlays.push({ routeId: route.id, applicationStatus: "NOT_STARTED", personalStrategyTier: "", estimatedFamilyGapIdrMPerMonth: "", personalSatTargetNote: "", personalRiskNote: "" });
+  workspace.overlays = overlays;
   const routes = catalogue.map(route => ({ ...route, scholarshipOutlook: outlooks[route.id], applicationGuide: guides[route.id] }));
   const tasks = await python<Task[]>("schola.spoonfeeder", { tasks: templates, routes, profile, overlays, bricks, milestones, command: "pool" });
-  return { mode: currentMode, routes, profile, overlays, tasks, bricks, sourceNotes, milestones, calendarEvents };
+  return { mode: currentMode, routes, profile, overlays, tasks, bricks, sourceNotes, milestones, calendarEvents, workspace };
 }
-
-export const statePath = (currentMode: "PRIVATE" | "DEMO") => path.join(vault, currentMode === "PRIVATE" ? "state.local.json" : "demo-state.local.json");
-export const inboxPath = (currentMode: "PRIVATE" | "DEMO") => path.join(vault, currentMode === "PRIVATE" ? "inbox.local.json" : "demo-inbox.local.json");
-export const emptyState = (): AppState => ({ tasks: {}, bricks: {} });
 
 export async function scheduleStatus() {
   const runtimeDir = process.env.XDG_RUNTIME_DIR || `/run/user/${process.getuid?.()}`;
@@ -79,19 +76,19 @@ export async function scheduleStatus() {
 
 export async function loadDashboard(): Promise<Dashboard> {
   const base = await baseData();
-  const [state, inbox, watch, schedule] = await Promise.all([
-    readJson<AppState>(statePath(base.mode), emptyState()),
-    readJson<InboxItem[]>(inboxPath(base.mode), []),
+  const { state, inbox } = base.workspace;
+  const [watch, schedule] = await Promise.all([
     readJson<WatchState>(path.join(vault, "watchtower_state.local.json"), await readJson<WatchState>(path.join(publicDir, "watchtower_state.json"))),
     scheduleStatus(),
   ]);
-  const payload = { ...base, state };
+  const { workspace: _snapshot, ...context } = base;
+  const payload = { ...context, state };
   const [evaluations, briefing] = await Promise.all([python<Evaluation[]>("schola.evaluator", payload), python<Dashboard["briefing"]>("schola.spoonfeeder", payload)]);
-  const { tasks: _tasks, ...data } = base;
+  const { tasks: _tasks, workspace: _workspace, ...data } = base;
   return { ...data, evaluations, briefing, state, inbox, watch, schedule };
 }
 
-// ponytail: one local process serializes writes. Use SQLite if multiple app workers are needed.
+// SQLite revision checks coordinate independent processes; this queue avoids avoidable local conflicts.
 const globalQueue = globalThis as typeof globalThis & { studabQueue?: Promise<unknown> };
 export async function serialized<T>(operation: () => Promise<T>): Promise<T> {
   const result = (globalQueue.studabQueue || Promise.resolve()).then(operation);

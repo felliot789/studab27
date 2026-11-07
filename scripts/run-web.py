@@ -5,12 +5,15 @@ import shutil
 import sys
 
 root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(root))
+from schola.sqlite_runtime import runtime_environment
 command = sys.argv[1] if len(sys.argv) == 2 else ""
 if command not in ("dev", "start"):
     raise SystemExit("Usage: python3 scripts/run-web.py dev|start")
 os.chdir(root)
 env = {**os.environ, "STUDAB27_CONFIG_PATH": str(root / "private/schola.local.json"), "NEXT_TELEMETRY_DISABLED": "1",
        "NODE_ENV": "development" if command == "dev" else "production"}
+env = runtime_environment(root, env, required=command == "start")
 node = shutil.which("node")
 if not node:
     raise SystemExit("Node.js is required")

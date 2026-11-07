@@ -32,7 +32,7 @@ units = Path.home() / ".config/systemd/user"
 units.mkdir(parents=True, exist_ok=True)
 commands = {
     "studab27-web.service": ("StudAb27 private scholarship workspace", f'{quote(sys.executable)} {quote(root / "scripts/run-web.py")} start'),
-    "studab27-schola.service": ("StudAb27 Schola conversation and source-review worker", f"{quote(worker_python)} -m schola.assistant worker"),
+    "studab27-schola.service": ("StudAb27 Schola conversation and source-review worker", f"{quote(worker_python)} {quote(root / 'scripts/run-python.py')} -m schola.assistant worker"),
 }
 for name, (description, command) in commands.items():
     content = f"""[Unit]
@@ -46,6 +46,7 @@ ExecStart={command}
 Environment=NODE_ENV=production
 Environment=NEXT_TELEMETRY_DISABLED=1
 Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=STUDAB27_REQUIRE_SQLITE_RUNTIME=1
 Environment=SCHOLA_PYTHON={quote(sys.executable)}
 UMask=0077
 NoNewPrivileges=true

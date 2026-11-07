@@ -22,17 +22,18 @@ export default function ApplicationChecklist({ route, documentsOnly = false, dat
 function RequirementRow({ item, guide, routeId, progress, sharedReady, initiallyOpen, act, busy }: { item: ApplicationRequirement; guide: ApplicationGuide; routeId: string; progress?: RequirementProgress; sharedReady: boolean; initiallyOpen: boolean } & Pick<ViewProps, "act" | "busy">) {
   const [note, setNote] = useState(progress?.note || "");
   const [open, setOpen] = useState(initiallyOpen);
-  const status = progress?.status || "TODO";
+  const needsRecheck = progress?.status === "NOT_NEEDED" && !item.optional;
+  const status = needsRecheck ? "TODO" : progress?.status || "TODO";
   return <details className={`requirement-row ${status === "DONE" ? "done" : ""}`} open={open} onToggle={event => setOpen(event.currentTarget.open)}>
-    <summary><span className="requirement-title">{status === "DONE" && <Icon name="check" size={17} />}<span>{item.title}<small>{BASIS_LABELS[item.basis]}{item.optional ? " · if applicable" : ""}</small></span></span><Badge tone={status === "DONE" ? "success" : "neutral"}>{REQUIREMENT_LABELS[status]}</Badge></summary>
-    <div className="requirement-body"><p>{item.detail}</p>
+    <summary><span className="requirement-title">{status === "DONE" && <Icon name="check" size={17} />}<span>{item.title}<small>{BASIS_LABELS[item.basis]}{item.optional ? " · if applicable" : ""}</small></span></span><Badge tone={status === "DONE" ? "success" : "neutral"}>{needsRecheck ? "Recheck progress" : REQUIREMENT_LABELS[status]}</Badge></summary>
+    <div className="requirement-body"><p>{item.detail}</p>{needsRecheck && <p className="fine-print">An earlier checklist marked this step not needed. The current guide lists it as required. Your earlier record is preserved; check the current call and choose its progress.</p>}
       {item.sharedKey && <p className="shared-document">{sharedReady ? "Your reusable document step is ready. Check this scholarship's version, translation, and format before marking this step done." : "You can prepare the base document in your reusable pack."} <Link href={`/documents?tab=reusable#${item.sharedKey.split(":")[0]}`}>Open reusable pack<Icon name="arrow" size={14} /></Link></p>}
       <label className="requirement-status">Step progress<select aria-label={`Progress: ${item.title}`} value={status} disabled={busy} onChange={event => act({ action: "requirement", routeId, id: item.id, status: event.target.value }, "Checklist progress saved.")}>{Object.entries(REQUIREMENT_LABELS).filter(([key]) => key !== "NOT_NEEDED" || item.optional).map(([key, title]) => <option key={key} value={key}>{title}</option>)}</select></label>
       <div className="requirement-sources">{item.sourceIds.map(id => {
         const source = guide.sources.find(source => source.id === id)!;
         return <div key={id}><External href={source.url}>{source.title}</External><small>{source.scope}</small></div>;
       })}</div>
-      <form className="requirement-note" onSubmit={async event => { event.preventDefault(); await act({ action: "requirement", routeId, id: item.id, status, note }, "Checklist note saved."); }}><label>Private note<textarea aria-label={`Note: ${item.title}`} value={note} onChange={event => setNote(event.target.value)} rows={2} maxLength={2000} placeholder="What is ready, what is missing, or where you keep the file" /></label><button className="button secondary" disabled={busy || note === (progress?.note || "")}>Save note</button></form>
+      <form className="requirement-note" onSubmit={async event => { event.preventDefault(); await act({ action: "requirement", routeId, id: item.id, note }, "Checklist note saved."); }}><label>Private note<textarea aria-label={`Note: ${item.title}`} value={note} onChange={event => setNote(event.target.value)} rows={2} maxLength={2000} placeholder="What is ready, what is missing, or where you keep the file" /></label><button className="button secondary" disabled={busy || note === (progress?.note || "")}>Save note</button></form>
     </div>
   </details>;
 }

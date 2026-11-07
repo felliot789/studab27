@@ -5,7 +5,7 @@ import { Badge, dateTime, External, Icon } from "./ui";
 
 type Message = { id: number; role: "user" | "assistant"; content: string; jobId: string; createdAt: string; meta: { model?: string; kind?: string; sources?: { url: string; retrievedAt: string; kind: string }[] } };
 type Job = { id: string; kind: string; status: "QUEUED" | "RUNNING" | "DONE" | "FAILED"; error?: string; createdAt: string };
-type Conversation = { messages: Message[]; jobs: Job[]; tools: { jobId: string; name: string; summary: string }[]; settings: { configured: boolean; model: string; contextAllowed: boolean; dailyCallLimit: number; searchProvider: string; backgroundEnabled: boolean }; callsToday: number; workerSeenAt?: string; search: { state: string; message: string } };
+type Conversation = { messages: Message[]; jobs: Job[]; tools: { jobId: string; name: string; summary: string }[]; settings: { configured: boolean; model: string; contextAllowed: boolean; dailyCallLimit: number; searchProvider: string; backgroundEnabled: boolean }; callsToday: number; workerSeenAt?: string; workerHealth?: { state: "OK" | "UNSEEN" | "NEEDS_ATTENTION" }; search: { state: string; message: string } };
 const suggestions = ["What needs my attention this week?", "Compare my most realistic engineering routes.", "What should I verify before choosing a route?"];
 type ChatRoute = { id: string; institution: string; scholarshipName: string };
 
@@ -82,6 +82,7 @@ export default function ScholaChat({ route, embedded = false }: { route?: ChatRo
     finally { setSending(false); }
   };
   const workerOnline = !!data?.workerSeenAt && Date.now() - Date.parse(data.workerSeenAt) < 4 * 60000;
+  const needsAttention = data?.workerHealth?.state === "NEEDS_ATTENTION";
   const latestFailed = data?.jobs[0]?.status === "FAILED" ? data.jobs[0] : undefined;
   const Heading = embedded ? "h3" : "h1";
   const WelcomeHeading = embedded ? "h3" : "h2";
@@ -91,7 +92,7 @@ export default function ScholaChat({ route, embedded = false }: { route?: ChatRo
     "Which official sources and dates should I verify next?",
   ] : suggestions;
   const conversation = <>
-    <header className="chat-heading"><div><span className="chat-glyph" aria-hidden="true">✳</span><div><Heading id={titleId}>Schola</Heading><p>{route ? `${route.institution} · ${route.scholarshipName}` : "Scholarship research and application planning."}</p></div></div><Badge tone={workerOnline ? "success" : "warning"}>{workerOnline ? "Online" : "Worker offline"}</Badge></header>
+    <header className="chat-heading"><div><span className="chat-glyph" aria-hidden="true">✳</span><div><Heading id={titleId}>Schola</Heading><p>{route ? `${route.institution} · ${route.scholarshipName}` : "Scholarship research and application planning."}</p></div></div><Badge tone={workerOnline && !needsAttention ? "success" : "warning"}>{!workerOnline ? "Worker offline" : needsAttention ? "Needs attention" : "Online"}</Badge></header>
     <details className="connection-details">
       <summary><Icon name="shield" size={15} />{!data ? "Loading connection settings…" : data.settings.contextAllowed ? route ? "Using your context for this scholarship" : "Using your relevant project context" : "Fictional context only"}<Icon name="chevron" size={13} /></summary>
       {data ? <div>

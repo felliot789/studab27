@@ -2,7 +2,7 @@
 
 This is a source map for a fresh clone, not an inventory of a running installation.
 Start with [AGENTS.md](../AGENTS.md), [PRODUCT.md](../PRODUCT.md), and [README.md](../README.md).
-The application is Next.js App Router + TypeScript + Tailwind, with Python standard-library modules for planning and monitoring, plus an optional pinned LangGraph research runtime.
+The application is Next.js App Router + TypeScript + Tailwind, with Python standard-library modules for planning and monitoring, an app-only pinned SQLite library, and an optional pinned LangGraph research environment. [DATABASE.md](DATABASE.md) owns schema details and the maintenance/recovery runbook.
 Dependency versions and commands live in [package.json](../package.json); the installed Next.js guides under `node_modules/next/dist/docs/` take precedence over remembered framework conventions.
 
 ## Request and data flow
@@ -14,23 +14,21 @@ flowchart TD
   Page --> Storage[src/lib/storage.ts: loadDashboard]
   Storage --> Access[requireAccess: host and session checked again]
   Access --> Public[data/public: catalogue and research]
-  Access --> Vault[private: request-time local state]
+  Access --> Store[Python workspace_store: committed SQLite snapshot]
   Public --> Base[baseData: attach guides and outlooks]
-  Vault --> Base
+  Store --> Base
   Base --> Pool[Python spoonfeeder: task pool]
   Pool --> Dashboard[Evaluator + briefing + state + watch status]
   Dashboard --> Workspace[Workspace: client views]
   Workspace --> API[POST /api/schola]
   API --> Validate[Bounded JSON body + field validation]
-  Validate --> Save[Serialized local writes / explicit action]
+  Validate --> Save[SQLite transaction + revision check / explicit action]
   Save --> Refresh[GET /api/schola refresh]
   Refresh --> Workspace
 ```
 
-[storage.ts](../src/lib/storage.ts) is `server-only`. It reads JSON at request time and invokes Python through JSON stdin/stdout, with a bounded subprocess timeout.
-Private profile and overlay must both exist to select PRIVATE mode; a partial vault fails instead of mixing personal and demo data.
-Otherwise the public fictional presets are used. Demo edits remain in separate ignored files; `STUDAB27_DEMO=1` forces demo mode and disables import.
-JSON writes use temporary files, restrictive permissions, and rename. A process-global queue serializes app mutations; this assumes one local web process, not multiple independent writers.
+[storage.ts](../src/lib/storage.ts) is `server-only`. It invokes [workspace_store.py](../schola/workspace_store.py) through bounded JSON stdin/stdout to read one committed snapshot from `private/workspace.sqlite3`; public definitions and monitor observations remain request-time file reads. Legacy owner profile/overlay JSON must both exist for initial PRIVATE migration; a partial pair fails closed. Otherwise initial data is fictional. After migration the database is authoritative and preserved legacy JSON is historical input, including for Schola context and the offline mirror.
+`STUDAB27_DEMO=1` uses separate workspace/chat databases and disables import and owner model/context access. SQLite transactions update all workspace entities together; revision/mode compare-and-swap rejects concurrent stale writes with HTTP 409. The in-process queue reduces avoidable conflicts but is not the consistency boundary. Original documents and settings stay files. Monitor/export and migration-bundle writes use the durable atomic-file helper. See [storage invariants](DATABASE.md#reads-writes-and-limits).
 
 ## Pages and frontend responsibilities
 
@@ -64,7 +62,7 @@ Shared view state, action dispatch, refresh, navigation, busy state, errors, and
 | [schola-chat.tsx](../src/components/schola-chat.tsx) | Shared general/popup chat: scoped send/retry/status polling, separate drafts, job status, source provenance, and contained popup scrolling. |
 | [ui.tsx](../src/components/ui.tsx) | Shared controls, dialog behavior, icons, labels, links, and `Action`/`ViewProps` contracts. |
 | [schema.ts](../src/lib/schema.ts) | Shared data contracts and display helpers. |
-| [validation.ts](../src/lib/validation.ts), [request-body.ts](../src/lib/request-body.ts) | Runtime input validation, size limits, and unsafe-key rejection. |
+| [validation.ts](../src/lib/validation.ts), [request-body.ts](../src/lib/request-body.ts), [request-limits.ts](../src/lib/request-limits.ts) | Runtime input validation, shared 32 MiB import limit and unsafe-key rejection; retired identifiers retained on validated import. |
 | [layout.tsx](../src/app/layout.tsx), [globals.css](../src/app/globals.css), [redesign.css](../src/app/redesign.css) | Global shell metadata, dark styling, responsive layout, and reduced-motion rules. |
 | [error.tsx](../src/app/error.tsx), [loading.tsx](../src/app/loading.tsx), [not-found.tsx](../src/app/not-found.tsx) | Recovery, pending, and missing-route states. |
 
@@ -77,12 +75,16 @@ sequenceDiagram
   participant API as POST /api/schola
   participant V as validateRequirementProgress
   participant S as storage.ts
+  participant DB as Python workspace_store + SQLite
   UI->>W: action=requirement, routeId, id, status, optional note
   W->>API: JSON POST
   API->>V: Known route + guide item + allowed progress
   V-->>API: Validated route-keyed entry
-  API->>S: serialized write of state.requirements[routeId][id]
-  S-->>W: Saved
+  API->>S: saveWorkspace(snapshot revision, updated state)
+  S->>DB: BEGIN IMMEDIATE; check revision/mode
+  DB->>DB: Replace entity rows; advance revision; COMMIT
+  DB-->>S: Saved or conflict (no partial change)
+  S-->>W: Saved / HTTP 409
   W->>API: GET fresh Dashboard
   API-->>W: Updated shared state
   W-->>UI: Route checklist / Documents / Tracker counts refresh
@@ -100,7 +102,7 @@ Removing a route from tracking retains its notes and progress. Pursuit priority,
 | Entry point | Responsibility |
 | --- | --- |
 | [GET/POST `/api/schola`](../src/app/api/schola/route.ts) | Dashboard; requirement, tracking, task, brick, overlay, inbox, triage, scan, import, and simulate actions. Simulation returns evaluations without saving a profile/decision. |
-| [GET `/api/schola/export`](../src/app/api/schola/export/route.ts) | Download `studab27-v1` JSON containing current mode, profile, overlays, state, milestones, and inbox; no-store response. |
+| [GET `/api/schola/export`](../src/app/api/schola/export/route.ts) | Download one committed `studab27-v1` workspace snapshot with schema/revision metadata; no-store response. This excludes chat/configuration/original files. |
 | [GET/POST `/api/schola/chat`](../src/app/api/schola/chat/route.ts) | Authenticated JSON bridge to `schola.assistant api`; status, send, and explicit retry. Optional catalogue-validated `routeId` query/body selects one scholarship; omitted scope selects general Schola. |
 | [POST `/api/session`](../src/app/api/session/route.ts) | Same-origin login/logout, scrypt password check, failure throttling, signed expiring HttpOnly/SameSite=Strict cookie; Secure on HTTPS. |
 
@@ -118,16 +120,21 @@ Never import vault files into client modules or static page generation. Remote e
 | --- | --- |
 | [evaluator.py](../schola/evaluator.py) | Deterministic curriculum, graduation, budget, and advisory SAT evaluation. Reads JSON stdin; emits JSON stdout. Missing rules/costs remain unknown; estimates and SAT targets cannot prove eligibility. |
 | [spoonfeeder.py](../schola/spoonfeeder.py) | Stable task pool plus at most three atomic briefing cards; handles completed/snoozed/replaced work and active-route verification tasks. |
+| [workspace_store.py](../schola/workspace_store.py), [database.py](../schola/database.py) | Workspace entity schema/migration, committed snapshots, transactional save/import, revision checks, foreign keys and shared SQLite durability policy. |
+| [files.py](../schola/files.py) | Restrictive atomic file replacement with file/directory fsync for monitor/export files and workspace migration/import safeguard bundles. |
 | [assistant.py](../schola/assistant.py) | SQLite jobs/messages/tool provenance/call budget, status API, bounded model/tool loop, explicit retry, worker heartbeat, and optional new-change research reviews. Tools cannot mutate plans or checklists. |
 | [research_harness.py](../schola/research_harness.py) | Optional LangGraph model/tool loop using existing completion and tool callbacks, serial execution on the SQLite thread, explicit budgets, no remote tracing or implicit retries. Dependencies live in [requirements-research.txt](../requirements-research.txt). |
 | [research_sources.py](../schola/research_sources.py) | Pure bounded link candidates, scholarship-link priority and literal-query/offset source excerpts. No fetching or model calls. |
 | [config.py](../schola/config.py) | Loads local model/search/background config; validates model endpoint and exposes a browser-safe status subset. Remote model endpoints require HTTPS. |
 | [watcher.py](../schola/watcher.py) | Bounded public HTTP(S) fetches, validated/pinned public IPs, redirect checks, HTML/PDF normalization, hash snapshots, and diffs. Optional `pdftotext` handles PDFs. |
-| [drive_sync.py](../schola/drive_sync.py) | Offline folder-shaped export of selected vault JSON plus public catalogue. Destination must be a new path inside the vault; no cloud credentials, upload, or sync. |
+| [drive_sync.py](../schola/drive_sync.py) | Offline folder-shaped export from the canonical workspace (legacy files before initialization) plus public catalogue. New vault destination only; no cloud connection. |
+| [recovery.py](../schola/recovery.py) | Complete eligible vault/public snapshots, online SQLite backup, manifest verification, local retention, isolated-new-directory restore and local-only health. |
+| [maintenance.py](../schola/maintenance.py) | Explicit migration and schema/integrity/job/recovery health summaries without printing private records. |
+| [sqlite_runtime.py](../schola/sqlite_runtime.py) | Validates the pinned app-only library receipt and supplies its environment before Python starts. |
 
-The chat client enqueues through the API; a separate `python3 -m schola.assistant worker` consumes jobs under a filesystem lock.
+The chat client enqueues through the API; a separate worker launched through [run-python.py](../scripts/run-python.py) consumes jobs under a filesystem lock. [run-web.py](../scripts/run-web.py) passes the verified app-only SQLite library to Next and its Python children. Production units require the runtime; no system library is changed.
 With `llm.researchRuntime=langgraph`, the worker uses `.venv-research/bin/python`; the API and watcher keep standard-library Python. Both agent loops share the same scoped tools, model transport and daily budget. The model selects public searches, reads, link navigation and follow-up searches; the harness never exposes a shell, authenticated browser or mutation tool. Up to four distinct queries and twelve tool calls fit within the configured model rounds and a ten-minute budget checked between operations. Official pages return bounded labeled links, phrase-focused excerpts and continuation offsets; repeated reads use a per-job cache. Answers persist source retrieval dates, hashes and excerpt offsets. No implicit network retry, alternate model or remote framework tracing is enabled.
-`job_scopes` maps specialist job IDs to a `route_id`; unmapped jobs remain general. Messages and tool records carry nullable `route_id`; NULL preserves general chat. The original seven-column job table remains compatible with older general-chat writes. Status/history, model history, conversation search, source tools and retry enforce the selected scope. Scholarship context contains only the selected route, relevant whitelisted owner fields, route overlay/checklist, associated reusable preparation, source notes and calendar events. Background reviews remain general. The model settings, daily budget and serial worker are shared; pending-job limits apply per conversation. A schema migration preserves existing data. Roll out web and worker together after active work finishes, so an older worker never handles new scoped jobs.
+`job_scopes` maps specialist job IDs to a `route_id`; unmapped jobs remain general. Messages and tool records carry nullable `route_id`; NULL preserves general chat. Foreign keys and triggers constrain job references and stored scopes; schema versions reject a newer incompatible store. Migration preserves dangling historic references in archived placeholder jobs, which cannot be retried. Status/history, model history, conversation search, source tools and retry enforce the selected scope. Scholarship context contains only the selected route, relevant whitelisted owner fields, route overlay/checklist, associated reusable preparation, source notes and calendar events. Background reviews remain general. The model settings, daily budget and serial worker are shared; pending-job limits apply per conversation. Versioned migration preserves existing data and saves a consistent pre-migration chat copy. Stop old writers and roll out web/worker together after active work finishes. Explicit retry IDs are recorded transactionally; a delayed request cannot reset a completed answer to QUEUED.
 Jobs move `QUEUED` → `RUNNING` → `DONE`/`FAILED`; interrupted running work is retained as failed for explicit retry. Restarting is not a safe way to finish an active job.
 Owner-enabled context uses a field whitelist and scrubbing; credentials and private Calendar/Drive links must stay out of model traffic. Search queries contain public scholarship topics only.
 Forced demo isolates conversation storage and disables model credentials/context. Read-only research tools and fetched/model text remain untrusted evidence.
@@ -154,14 +161,15 @@ Private names below come from source contracts; no local file values are require
 
 | Ignored path | Purpose |
 | --- | --- |
-| `private/profile.local.json`, `private/overlay.local.json`, `private/milestones.local.json` | Personal profile, route plans/decisions, and milestones. |
-| `private/state.local.json`, `private/inbox.local.json` | Task/readiness/requirement progress and captured notes. |
-| `private/demo-overlay.local.json`, `private/demo-state.local.json`, `private/demo-inbox.local.json` | Isolated demo edits. |
+| `private/workspace.sqlite3`, `private/demo-workspace.sqlite3` | Canonical workspace entities/revision; forced demo uses the separate database. |
+| `private/profile.local.json`, `private/overlay.local.json`, `private/milestones.local.json`, `private/state.local.json`, `private/inbox.local.json` | Legacy migration inputs retained unchanged; not live state after private migration. Demo JSON is also an initialization input. |
 | `private/schola.local.json` | Model/search/access configuration and secrets; never browser data. |
 | `private/schola.sqlite3`, `private/demo-schola.sqlite3` | Conversations/jobs/provenance/call counters; SQLite may also create WAL/SHM sidecars. |
-| `private/schola-assistant.lock`, `private/watchtower.lock` | Live worker/scan locks; never remove a live owner's lock. |
+| `private/schola-assistant.lock`, `private/watchtower.lock`, `private/workspace-migration.lock`, `private/recovery.lock` | Worker, scan, workspace migration and recovery coordination; never delete live locks. |
 | `private/watchtower_state.local.json`, `private/watchtower/snapshots/`, `private/watchtower.local.log` | Local monitor status, public-source text snapshots, and scan log. |
-| `private/backups/before-import-*.local.json` | Complete pre-import recovery bundle; import validates first and restores previous files on a write failure. |
+| `private/backups/` | Workspace seed/pre-import JSON bundles and consistent pre-schema chat copies; additional migration safeguards, not complete-vault snapshots. |
+| `private/recovery/studab27-recovery-*` | Verified complete eligible-data snapshots with manifest; latest 14 verified copies retained. Plaintext protected by 0700/0600; off-device/encryption deferred. |
+| `private/runtime/sqlite-3.54.1/` | Pinned private SQLite library and checksum receipt; installed/attested without global library changes. |
 | `private/hq.local.json`, a new export directory inside `private/` | Optional legacy offline-export input and output destination. |
 
 Missing/ambiguous curriculum, graduation, funding, or achieved-score evidence stays `UNKNOWN`.
@@ -178,7 +186,9 @@ Outlooks are qualitative planning evidence, separate from eligibility and priori
 | Gate / task selection | Python evaluator and spoonfeeder | [test_schola.py](../tests/test_schola.py) |
 | Chat / model / search / background reviews | Assistant, config, chat API and client | [test_assistant.py](../tests/test_assistant.py) |
 | Fetch / baseline / PDF / SSRF behavior | Watcher | Monitoring checks in `test_schola.py` |
-| Login / origin / persistence / import recovery | Proxy, access, API, storage | Fictional production HTTP checks in `check-app.py` |
+| Workspace / migration / import / concurrent writes | Storage bridge, workspace store and shared database helper | [test_workspace_store.py](../tests/test_workspace_store.py), fictional HTTP fixtures in `check-app.py` |
+| Local snapshot / isolated restore / runtime | Recovery, maintenance and runtime modules plus installers | [test_recovery.py](../tests/test_recovery.py), [test_sqlite_runtime.py](../tests/test_sqlite_runtime.py); [DATABASE.md](DATABASE.md) runbook |
+| Login / origin | Proxy, access and API | Fictional production HTTP checks in `check-app.py` |
 | Styling / shell / interaction | Product direction, Workspace, UI, global/redesign CSS | Typecheck plus keyboard, responsive, contrast, reduced-motion, and error-state review |
 
 Run `npm run check` before handoff: TypeScript, Python and Node tests, public-data validation, local documentation targets, and the staged-blob privacy guard.
@@ -187,6 +197,6 @@ Run `npm run check` before handoff: TypeScript, Python and Node tests, public-da
 For production verification, use an isolated staging copy containing code and public fixtures when live `.next` is in use. Never run `next build` against the active runtime directory.
 From that staging copy, run `npm ci`, `npm run check`, `npm run build`, `python3 scripts/check-public-build.py`, then `python3 scripts/check-app.py`.
 The build check inspects emitted files and traces; the HTTP check uses a temporary fictional vault and ephemeral loopback port. These checks do not establish live deployment health.
-[install-app-services.py](../scripts/install-app-services.py) prepares web/assistant user services; [install-local-timer.py](../scripts/install-local-timer.py) prepares watcher service/timer. `--enable` starts/enables them and is an operational action.
+[install-app-services.py](../scripts/install-app-services.py) prepares web/assistant services; [install-local-timer.py](../scripts/install-local-timer.py) prepares the watcher schedule; [install-recovery-service.py](../scripts/install-recovery-service.py) prepares daily 03:17 WIB recovery. Each is opt-in through `--enable`. Install/attest the [private SQLite runtime](../scripts/install-sqlite-runtime.py) first. Follow the [database migration/rollback runbook](DATABASE.md#migration-and-deployment-runbook); older code with migrated data is not a valid rollback.
 Deployment/restarts must account for active jobs, preserve vault/configuration, and verify authenticated data and unauthenticated denial after the controlled switch. A successful build or service command alone is insufficient.
 Keep any local Graphify graph ignored under `graphify-out/`, scan code/public inputs only, and rebuild locally after source changes; it is a navigation aid, not authoritative eligibility evidence.

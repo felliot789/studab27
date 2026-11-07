@@ -8,6 +8,12 @@ export function text(value: unknown, max = 4000): string {
   if (typeof value !== "string" || value.length > max) throw new Error(`Text must be at most ${max} characters.`);
   return value;
 }
+export function isoDate(value: unknown): string {
+  const date = text(value, 10);
+  const parsed = new Date(`${date}T00:00:00Z`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(parsed.getTime()) || parsed.getUTCFullYear() < 1 || parsed.toISOString().slice(0, 10) !== date) throw new Error("Use a valid ISO calendar date.");
+  return date;
+}
 export function number(value: unknown, min = 0, max = 1000): number {
   if (typeof value !== "number" || !Number.isFinite(value) || value < min || value > max) throw new Error(`Number must be between ${min} and ${max}.`);
   return value;
@@ -26,7 +32,7 @@ export function validateProfile(value: unknown): Profile {
   number(snap.maxFamilyContributionIdrMPerMonth, 0, 100);
   return value as Profile;
 }
-export function validateOverlay(value: unknown, ids: Set<string>): Overlay {
+export function validateOverlay(value: unknown, ids: Set<string>, historical = false): Overlay {
   const o = object(value);
   if (!ids.has(text(o.routeId, 150))) throw new Error("Unknown scholarship route.");
   if (!APPLICATION_STATUSES.includes(o.applicationStatus as never)) throw new Error("Unknown application status.");
@@ -45,26 +51,27 @@ export function validateOverlay(value: unknown, ids: Set<string>): Overlay {
   }
   if (o.verifiedRules !== undefined) {
     const rule = object(o.verifiedRules);
-    if (rule.cycle !== "2027" || !safeUrl(text(rule.sourceUrl, 2000))?.startsWith("https://")) throw new Error("A current-cycle HTTPS source is required for a verified rule.");
+    if ((historical ? !/^\d{4}$/.test(text(rule.cycle, 4)) : rule.cycle !== "2027") || !safeUrl(text(rule.sourceUrl, 2000))?.startsWith("https://")) throw new Error("A current-cycle HTTPS source is required for a verified rule.");
     if (!text(rule.program, 500).trim()) throw new Error("Name the exact engineering program.");
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(text(rule.checkedAt, 10)) || !Number.isFinite(Date.parse(rule.checkedAt as string))) throw new Error("A valid checked date is required.");
+    isoDate(rule.checkedAt);
     for (const key of ["nationalCurriculumDirectEntry", "preGraduationApplicationAllowed"]) if (rule[key] !== undefined && typeof rule[key] !== "boolean") throw new Error("Rule values must be boolean or omitted when unknown.");
-    if (rule.finalDiplomaDeadline !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(text(rule.finalDiplomaDeadline, 10))) throw new Error("Use an ISO diploma deadline date.");
+    if (rule.finalDiplomaDeadline !== undefined) isoDate(rule.finalDiplomaDeadline);
   }
   return value as Overlay;
 }
 
-export function validateRequirementProgress(value: unknown, routes: Route[]): NonNullable<AppState["requirements"]> {
+export function validateRequirementProgress(value: unknown, routes: Route[], retainedRouteIds?: Set<string>): NonNullable<AppState["requirements"]> {
   const byRoute = object(value);
   for (const [routeId, entries] of Object.entries(byRoute)) {
     const route = routes.find(r => r.id === routeId);
-    if (!route) throw new Error("Unknown scholarship checklist.");
-    const items = route.applicationGuide?.sections.flatMap(s => s.items) || [];
+    if (!route && !retainedRouteIds?.has(routeId)) throw new Error("Unknown scholarship checklist.");
+    const items = route?.applicationGuide?.sections.flatMap(s => s.items) || [];
     for (const [id, raw] of Object.entries(object(entries))) {
       const item = items.find(i => i.id === id), progress = object(raw);
-      if (!item) throw new Error("Unknown checklist step.");
+      if (!item && !retainedRouteIds) throw new Error("Unknown checklist step.");
+      text(id, 100);
       if (typeof progress.status !== "string" || !["TODO", "DOING", "DONE", "NOT_NEEDED"].includes(progress.status)) throw new Error("Unknown checklist status.");
-      if (progress.status === "NOT_NEEDED" && !item.optional) throw new Error("Only optional or conditional steps can be marked not needed.");
+      if (progress.status === "NOT_NEEDED" && !retainedRouteIds && item && !item.optional) throw new Error("Only optional or conditional steps can be marked not needed.");
       if (progress.note !== undefined) text(progress.note, 2000);
       if (progress.updatedAt !== undefined && !Number.isFinite(Date.parse(text(progress.updatedAt, 100)))) throw new Error("Invalid checklist date.");
     }

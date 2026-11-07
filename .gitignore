@@ -6,7 +6,7 @@
 !.env.example
 
 # Dependencies, builds, monitoring output and local tools
-node_modules/
+node_modules
 .next/
 out/
 dist/
@@ -14,7 +14,7 @@ coverage/
 __pycache__/
 *.pyc
 .venv/
-/.venv-research/
+/.venv-research
 *.tsbuildinfo
 /graphify-out/
 /.impeccable/

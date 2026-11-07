@@ -22,8 +22,9 @@ After=network-online.target
 [Service]
 Type=oneshot
 WorkingDirectory={str(root).replace('%', '%%')}
-ExecStart={quote(sys.executable)} -m schola.watcher
+ExecStart={quote(sys.executable)} {quote(root / "scripts/run-python.py")} -m schola.watcher
 Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=STUDAB27_REQUIRE_SQLITE_RUNTIME=1
 UMask=0077
 NoNewPrivileges=true
 TimeoutStartSec=25min

@@ -6,15 +6,16 @@ Public code and scholarship references live in Git. Student profiles, financial 
 
 ## Continuing the project
 
-Start with [AGENTS.md](AGENTS.md) for the reading order and working rules. [PRODUCT.md](PRODUCT.md) defines the product; [the repository map](docs/REPO_MAP.md) traces the implementation; [decisions](docs/DECISIONS.md) explain the choices; [the handoff](docs/HANDOFF.md) records the dated baseline, checks, and remaining work. These files work with any coding harness and require no graph tool.
+Start with [AGENTS.md](AGENTS.md) for the reading order and working rules. [PRODUCT.md](PRODUCT.md) defines the product; [the repository map](docs/REPO_MAP.md) traces the implementation; [decisions](docs/DECISIONS.md) explain the choices; [the handoff](docs/HANDOFF.md) records the dated baseline, checks, and remaining work. [Database and recovery](docs/DATABASE.md) describes the authoritative stores, migrations, snapshots and rollback. These files work with any coding harness and require no graph tool.
 
 ## Run locally
 
-Requires Node.js 22.18+ (tested with Node 24), npm, Python 3.11+, and Git. On Linux, Poppler's `pdftotext` enables PDF monitoring. The worker has no Python package dependencies. Calendar unit checks use Node's built-in TypeScript support and test runner.
+Requires Node.js 22.18+ (tested with Node 24), npm, Python 3.11+, and Git. Production uses Linux and an existing C compiler to build the pinned app-only SQLite library; no global library is replaced. Poppler's `pdftotext` enables PDF monitoring. The built-in worker has no Python package dependencies. Calendar unit checks use Node's built-in TypeScript support and test runner.
 
 ```sh
 npm ci
 python3 scripts/install-hooks.py
+python3 scripts/install-sqlite-runtime.py
 npm run dev
 ```
 
@@ -23,6 +24,7 @@ Open [the local workspace](http://127.0.0.1:3270). The server binds to loopback.
 For a production build:
 
 ```sh
+python3 scripts/install-sqlite-runtime.py --check
 npm run build
 python3 scripts/check-public-build.py
 npm start
@@ -30,7 +32,7 @@ npm start
 
 These build commands assume this checkout is not serving a running production instance. If it is, build and validate a separate staging checkout first: Next rewrites `.next`, which the live server still needs. Deploy that tested version in a planned restart after active Schola jobs finish. The [repository map](docs/REPO_MAP.md#change-entry-points-and-verification) lists the checks and runtime boundaries.
 
-Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
+Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path and verified app-only SQLite library. Production start requires that runtime. For an existing vault, follow the [migration runbook](docs/DATABASE.md#migration-and-deployment-runbook) before exposing the new release. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
 
 ## Finding your work
 
@@ -87,7 +89,7 @@ python3 -m venv .venv-research
 .venv-research/bin/python -m unittest discover -s tests
 ```
 
-Set `llm.researchRuntime` to `langgraph` and run the worker with `.venv-research/bin/python -m schola.assistant worker`. The service installer selects that interpreter for a new installation. It preserves differing existing units for local review. The web API, watcher and deterministic planner retain their standard-library environment. A missing selected research runtime fails the saved job explicitly; it does not silently repeat a paid request using another engine. `builtin` remains available for a minimal installation.
+Set `llm.researchRuntime` to `langgraph`, attest the interpreter with `python3 scripts/install-sqlite-runtime.py --check`, and run the worker with `.venv-research/bin/python scripts/run-python.py -m schola.assistant worker`. The service installer selects that interpreter for a new installation. It preserves differing existing units for local review. The web API, watcher and deterministic planner retain their standard-library environment. A missing selected research runtime fails the saved job explicitly; it does not silently repeat a paid request using another engine. `builtin` remains available for a minimal installation.
 
 | Setting | Purpose |
 | --- | --- |
@@ -106,7 +108,7 @@ Open **Schola** in the app. Messages become durable SQLite jobs, so closing a ta
 
 Each scholarship page also offers **Ask about this scholarship**. This opens a private Schola popup scoped to that route's catalogue entry, sources, dates, checklist and relevant personal context. Its history, conversation search and draft stay separate from general Schola and other scholarships. General Schola keeps its existing conversation and handles comparisons and background source reviews. Model settings, call budgets and the single worker are shared; each conversation can queue one request. Closing the popup preserves the draft and queued work. This is a separate conversation with the same configured model, not a separately trained model.
 
-Deploy scoped chat changes to the web app and Python worker together, after active jobs finish. The worker must load the new scope-aware code before the new web app accepts scholarship messages; an older worker cannot preserve their scope. SQLite adds a job-scope mapping and nullable scope columns on messages/tools at first access, keeping existing history in general Schola. The original job table stays compatible with older general-chat writes.
+Deploy scoped chat changes to the web app and Python worker together, after active jobs finish. The worker must load the new scope-aware code before the new web app accepts scholarship messages; an older worker cannot preserve their scope. Versioned SQLite migrations preserve existing history, constrain job references and scopes, and record explicit retry identifiers. Stop old writers before migration; do not mix releases against a migrated vault. Delayed retries cannot requeue a completed answer. See the [database schema and runbook](docs/DATABASE.md).
 
 Tools can read the current plan, compare catalogue routes, search public topics, inspect official HTML/PDF sources, and find older conversation statements. Research is iterative: the model chooses queries, reads evidence, follows useful returned official links or PDFs and revises a search when necessary. A long source can be searched for a literal phrase or continued from its returned offset. Pages and repeated queries are cached within the job; source dates, hashes and excerpt offsets are saved with the answer. Admission, award selection, funding, obligations and cycle dates remain separate questions.
 
@@ -120,9 +122,10 @@ The assistant can review new `CHANGED` events after a completed watchtower scan.
 
 ## Homelab hosting and phone access
 
-After configuration, build and check before enabling the user services:
+After configuration, install/attest the runtime, then build and check before enabling the user services. For an existing deployment, use the [coordinated migration procedure](docs/DATABASE.md#migration-and-deployment-runbook) instead of rebuilding its active output:
 
 ```sh
+python3 scripts/install-sqlite-runtime.py
 npm run check
 npm run build
 python3 scripts/check-public-build.py
@@ -152,7 +155,7 @@ The phone layout uses bottom navigation, cards by default, larger form controls,
 
 ## Private data and demo mode
 
-Without `private/profile.local.json` and `private/overlay.local.json`, the app loads fictional public examples. To force the demo even when a real vault exists:
+Before database initialization, the app imports the owner profile/overlay pair when both exist, or initializes fictional examples when neither exists. A partial pair fails closed. After migration, `private/workspace.sqlite3` is authoritative; preserved legacy JSON is not live state. To force the separate demo stores even when a real vault exists:
 
 ```sh
 STUDAB27_DEMO=1 npm run dev
@@ -166,15 +169,27 @@ python3 scripts/bootstrap-private.py --seed /absolute/path/to/project-seed.md
 
 The bootstrap never overwrites existing files. Running it without `--seed` copies fictional examples into the local vault. Do not put the combined original seed document into tracked source.
 
-Open **Your local vault** from the shield button to download a private JSON backup or restore a StudAb27 v1 export. Imports show a review step, validate every route, and keep a recovery bundle under `private/backups/` before replacing files. A failed write attempts rollback from that bundle. File writes use atomic replacement; this single-process local app serializes mutations. Use a database and transactions before adding multiple server workers.
+Open **Your local vault** from the shield button to download or restore a StudAb27 v1 workspace export. Export reads one committed database snapshot. Import validates the complete bundle, preserves retired identifiers and unknown fields, saves a pre-import bundle under `private/backups/`, and commits all workspace entities in one SQLite transaction. Revision checks reject a competing write with HTTP 409; refresh and retry. The workspace limit is 16 MiB, with a shared 32 MiB import/bridge limit for JSON overhead. A workspace export does not include conversations, settings or original supporting files.
 
 The optional offline Drive mirror exporter writes into the ignored vault:
 
 ```sh
-python3 -m schola.drive_sync private/exports/my-backup
+python3 scripts/run-python.py -m schola.drive_sync private/exports/my-backup
 ```
 
-It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Documents`, `04_Financial_Documents`, `05_Profile_Evidence`, `06_Offers_and_Decisions`, `07_Inbox`, and `99_Archive`. Existing export folders are preserved. JSON exports do not include original imported DOCX/XLSX, supporting documents, conversation SQLite data or model/access settings: back up those separately. **Google Drive and Calendar are not connected or automatically synchronized.** Imported Calendar links are historical references; no Calendar events are created.
+It maps records to `00_HQ`, `01_Catalogue`, `02_Applications`, `03_School_Documents`, `04_Financial_Documents`, `05_Profile_Evidence`, `06_Offers_and_Decisions`, `07_Inbox`, and `99_Archive`. Existing export folders are preserved. This mirror uses the canonical workspace after migration. It does not include original imported DOCX/XLSX, supporting documents, conversation SQLite data or model/access settings. Use complete local snapshots for that coverage. **Google Drive and Calendar are not connected or automatically synchronized.** Imported Calendar links are historical references; no Calendar events are created.
+
+## Local recovery
+
+```sh
+python3 scripts/run-python.py -m schola.recovery create
+python3 scripts/run-python.py -m schola.maintenance health
+python3 scripts/install-recovery-service.py
+```
+
+Complete snapshots in `private/recovery/` cover both owner databases, eligible vault configuration/original files/monitor baselines, public definitions and runtime metadata. SQLite is copied through its backup API; manifests verify hashes, integrity and foreign keys. Restore drills require a new isolated directory and cannot overwrite the live vault. After a successful drill, `python3 scripts/install-recovery-service.py --enable` schedules daily backups at 03:17 WIB with up to ten minutes of delay. Retention keeps the latest 14 verified snapshots; recovery health becomes stale after 48 hours.
+
+Snapshots contain plaintext credentials and documents, protected by 0700/0600 permissions. The user selected local recovery first; **off-device storage and encryption remain deferred**. See [coverage, exclusions and the restore/rollback runbook](docs/DATABASE.md#complete-local-snapshots) before relying on a copy. No cloud service is connected.
 
 ## What Schola does
 
@@ -191,7 +206,7 @@ Scholarship benefits, requirements, and deadlines in the original catalogue are 
 Run one local scan:
 
 ```sh
-python3 -m schola.watcher
+python3 scripts/run-python.py -m schola.watcher
 ```
 
 Results go to `private/watchtower_state.local.json`; text snapshots stay under `private/watchtower/snapshots/`. The monitor fetches catalogue sources, scoped source-note URLs, and at most two discovered same-host PDF links per page. It limits response size/read time, uses four workers with per-host serialization, validates and pins public IPs for each HTTP(S) redirect, and prevents overlapping scans with a file lock. It does not crawl entire university websites, run JavaScript, bypass access controls, or interpret every changed sentence.
@@ -226,7 +241,7 @@ python3 scripts/check-public-build.py
 python3 scripts/check-app.py
 ```
 
-Checks cover conservative gates, task queues, source baselines/errors and public-IP pinning, staged privacy, durable chat/retries, JSON tool compatibility, model budgets, context redaction, demo isolation and degraded search. The production HTTP check uses a disposable fictional workspace for persistence, exact hosts/origins, login, forged cookies, HTTPS cookie flags, protected exports and import recovery. The build check scans emitted code for seed identifiers and configured secrets, and traces for private/env paths. Stubbed provider tests do not prove a particular live model works; test the configured model separately. Fetch success and a timer do not prove every scholarship rule is verified.
+Checks cover conservative gates, task queues, source baselines/errors and public-IP pinning, staged privacy, transactional workspace migration/import/crash recovery, concurrent revision conflicts, schema constraints, durable chat/retry receipts, complete local restore drills, JSON tool compatibility, model budgets, context redaction, demo isolation and degraded search. The production HTTP check uses a disposable fictional workspace for persistence, exact hosts/origins, login, forged cookies, HTTPS cookie flags, protected exports and import recovery. The build check scans emitted code for seed identifiers and configured secrets, and traces for private/env paths. Stubbed provider tests do not prove a particular live model works; test the configured model separately. Fetch success and a timer do not prove every scholarship rule is verified.
 
 ## Optional code graph
 

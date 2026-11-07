@@ -22,6 +22,7 @@ import uuid
 from zoneinfo import ZoneInfo
 
 from .config import load as load_config, model_settings, public_status
+from .database import connect, ensure_wal
 from .evaluator import evaluate_all
 from .research_harness import run_agent
 from .research_sources import read_source_excerpt
@@ -93,41 +94,157 @@ def settings(root):
     return load_config(root)
 
 
+CHAT_SCHEMA_VERSION = 1
+CHAT_SCHEMA = (
+    """CREATE TABLE jobs(id TEXT PRIMARY KEY NOT NULL, kind TEXT NOT NULL CHECK(length(kind)>0),
+      prompt TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('QUEUED','RUNNING','DONE','FAILED')),
+      error TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)""",
+    """CREATE TABLE job_scopes(job_id TEXT PRIMARY KEY NOT NULL REFERENCES jobs(id) ON DELETE RESTRICT,
+      route_id TEXT NOT NULL CHECK(length(route_id)>0))""",
+    """CREATE TABLE messages(id INTEGER PRIMARY KEY, role TEXT NOT NULL CHECK(role IN ('user','assistant')),
+      content TEXT NOT NULL, job_id TEXT REFERENCES jobs(id) ON DELETE RESTRICT, created_at TEXT NOT NULL,
+      meta TEXT NOT NULL DEFAULT '{}' CHECK(json_valid(meta)), route_id TEXT)""",
+    """CREATE TABLE tools(id INTEGER PRIMARY KEY, job_id TEXT REFERENCES jobs(id) ON DELETE RESTRICT,
+      name TEXT, summary TEXT, created_at TEXT NOT NULL, route_id TEXT)""",
+    "CREATE TABLE kv(key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL CHECK(json_valid(value)))",
+    "CREATE TABLE calls(day TEXT PRIMARY KEY NOT NULL, count INTEGER NOT NULL CHECK(typeof(count)='integer' AND count>=0))",
+    """CREATE TABLE retry_requests(id TEXT PRIMARY KEY NOT NULL, job_id TEXT NOT NULL REFERENCES jobs(id) ON DELETE RESTRICT,
+      created_at TEXT NOT NULL)""",
+    """CREATE TABLE legacy_job_references(job_id TEXT PRIMARY KEY NOT NULL REFERENCES jobs(id) ON DELETE RESTRICT,
+      reason TEXT NOT NULL)""",
+    "CREATE INDEX jobs_pending ON jobs(status,created_at)",
+    "CREATE INDEX jobs_recent ON jobs(created_at DESC)",
+    "CREATE INDEX job_scopes_route ON job_scopes(route_id,job_id)",
+    "CREATE INDEX messages_scope ON messages(route_id,id)",
+    "CREATE INDEX messages_job ON messages(job_id)",
+    "CREATE INDEX tools_scope ON tools(route_id,id)",
+    "CREATE INDEX tools_job ON tools(job_id)",
+    "CREATE INDEX retry_requests_job ON retry_requests(job_id)",
+)
+
+
+def migration_backup(connection, path, version):
+    # The caller holds BEGIN IMMEDIATE. A separate reader backs up the committed
+    # pre-migration snapshot while other writers are excluded; backing up the
+    # writer connection itself would wait on its own open write transaction.
+    destination = path.parent / "backups"
+    destination.mkdir(exist_ok=True, mode=0o700)
+    target = destination / (path.stem + f"-schema-{version}-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + "-" + uuid.uuid4().hex[:8] + ".sqlite3")
+    descriptor = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    os.close(descriptor)
+    try:
+        with closing(connect(path, readonly=True)) as source, closing(sqlite3.connect(target)) as backup:
+            source.backup(backup)
+            backup.execute("PRAGMA journal_mode=DELETE")
+            if backup.execute("PRAGMA quick_check").fetchone()[0] != "ok":
+                raise ValueError("The pre-migration recovery copy failed its integrity check.")
+        with target.open("rb") as saved:
+            os.fsync(saved.fileno())
+        descriptor = os.open(destination, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    except Exception:
+        target.unlink(missing_ok=True)
+        raise
+
+
+def migrate_chat(connection, path):
+    version = connection.execute("PRAGMA user_version").fetchone()[0]
+    if version > CHAT_SCHEMA_VERSION:
+        raise ValueError("This conversation database needs a newer StudAb27 version. Existing data was preserved.")
+    ensure_wal(connection)
+    if version == CHAT_SCHEMA_VERSION:
+        return
+    connection.execute("BEGIN IMMEDIATE")
+    try:
+        # Another API process may have migrated while this connection waited.
+        version = connection.execute("PRAGMA user_version").fetchone()[0]
+        if version > CHAT_SCHEMA_VERSION:
+            raise ValueError("This conversation database needs a newer StudAb27 version. Existing data was preserved.")
+        if version == CHAT_SCHEMA_VERSION:
+            connection.execute("COMMIT")
+            return
+        tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        legacy = [table for table in ("jobs", "job_scopes", "messages", "tools", "kv", "calls") if table in tables]
+        if legacy:
+            migration_backup(connection, path, version)
+        for table in legacy:
+            connection.execute(f"ALTER TABLE {table} RENAME TO __legacy_{table}")
+        for statement in CHAT_SCHEMA:
+            connection.execute(statement)
+        if "jobs" in legacy:
+            connection.execute("INSERT INTO jobs SELECT id,kind,prompt,status,error,created_at,updated_at FROM __legacy_jobs")
+        # Keep dangling historic references intact, including their exact job IDs.
+        # Archived placeholders are DONE, never retried, and omitted from queues.
+        for table in ("messages", "tools", "job_scopes"):
+            if table not in legacy:
+                continue
+            for row in connection.execute(f"SELECT DISTINCT job_id FROM __legacy_{table} WHERE job_id IS NOT NULL AND job_id NOT IN (SELECT id FROM jobs)"):
+                job_id = row[0]
+                timestamp = now()
+                connection.execute("INSERT INTO jobs VALUES(?,'legacy-reference','','DONE',NULL,?,?)", (job_id, timestamp, timestamp))
+                connection.execute("INSERT INTO legacy_job_references VALUES(?,?)", (job_id, "Original job was absent before schema migration; historical references retained."))
+        if "job_scopes" in legacy:
+            connection.execute("INSERT INTO job_scopes SELECT job_id,route_id FROM __legacy_job_scopes")
+        for table, columns in (("messages", "id,role,content,job_id,created_at,meta"),
+                               ("tools", "id,job_id,name,summary,created_at")):
+            if table in legacy:
+                has_scope = any(row["name"] == "route_id" for row in connection.execute(f"PRAGMA table_info(__legacy_{table})"))
+                connection.execute(f"INSERT INTO {table}({columns},route_id) SELECT {columns},{'route_id' if has_scope else 'NULL'} FROM __legacy_{table}")
+        for table in ("kv", "calls"):
+            if table in legacy:
+                connection.execute(f"INSERT INTO {table} SELECT * FROM __legacy_{table}")
+        # A dangling job can still have an unambiguous specialist history.
+        for row in connection.execute("SELECT job_id FROM legacy_job_references WHERE job_id NOT IN (SELECT job_id FROM job_scopes)"):
+            scopes = {item[0] for item in connection.execute("SELECT route_id FROM messages WHERE job_id=? UNION SELECT route_id FROM tools WHERE job_id=?", (row[0], row[0]))}
+            if len(scopes) == 1 and None not in scopes:
+                connection.execute("INSERT INTO job_scopes VALUES(?,?)", (row[0], scopes.pop()))
+        for table in ("messages", "tools"):
+            if connection.execute(f"SELECT 1 FROM {table} LEFT JOIN job_scopes USING(job_id) WHERE {table}.job_id IS NOT NULL AND {table}.route_id IS NOT job_scopes.route_id LIMIT 1").fetchone():
+                raise ValueError("Conversation scope history is inconsistent; migration stopped and existing data was preserved.")
+            for operation in ("INSERT", "UPDATE"):
+                connection.execute(f"""CREATE TRIGGER {table}_scope_{operation.lower()} BEFORE {operation} ON {table}
+                  WHEN NEW.job_id IS NOT NULL AND NEW.route_id IS NOT (SELECT route_id FROM job_scopes WHERE job_id=NEW.job_id)
+                  BEGIN SELECT RAISE(ABORT,'Message/tool scope must match its job'); END""")
+        connection.execute("""CREATE TRIGGER job_scopes_insert BEFORE INSERT ON job_scopes
+          WHEN EXISTS(SELECT 1 FROM messages WHERE job_id=NEW.job_id AND route_id IS NOT NEW.route_id)
+            OR EXISTS(SELECT 1 FROM tools WHERE job_id=NEW.job_id AND route_id IS NOT NEW.route_id)
+          BEGIN SELECT RAISE(ABORT,'A saved conversation scope cannot be changed'); END""")
+        # Scope is immutable after content exists, preventing accidental moves of
+        # one conversation's history into another conversation.
+        for operation in ("UPDATE", "DELETE"):
+            connection.execute(f"""CREATE TRIGGER job_scopes_{operation.lower()} BEFORE {operation} ON job_scopes
+              WHEN EXISTS(SELECT 1 FROM messages WHERE job_id=OLD.job_id) OR EXISTS(SELECT 1 FROM tools WHERE job_id=OLD.job_id)
+              BEGIN SELECT RAISE(ABORT,'A saved conversation scope cannot be changed'); END""")
+        if connection.execute("PRAGMA foreign_key_check").fetchone():
+            raise ValueError("Conversation references failed validation; existing data was preserved.")
+        for table in reversed(legacy):
+            connection.execute(f"DROP TABLE __legacy_{table}")
+        connection.execute(f"PRAGMA user_version={CHAT_SCHEMA_VERSION}")
+        connection.execute("COMMIT")
+    except Exception:
+        connection.execute("ROLLBACK")
+        raise
+
+
 def db(root):
     vault = root / "private"
     vault.mkdir(exist_ok=True, mode=0o700)
     name = "demo-schola.sqlite3" if os.environ.get("STUDAB27_DEMO") == "1" else "schola.sqlite3"
-    connection = sqlite3.connect(vault / name, timeout=10, isolation_level=None)
-    connection.row_factory = sqlite3.Row
-    connection.executescript("""
-      PRAGMA journal_mode=WAL;
-      PRAGMA busy_timeout=10000;
-      CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY, kind TEXT NOT NULL, prompt TEXT NOT NULL,
-        status TEXT NOT NULL, error TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
-      CREATE TABLE IF NOT EXISTS job_scopes(job_id TEXT PRIMARY KEY, route_id TEXT NOT NULL);
-      CREATE TABLE IF NOT EXISTS messages(id INTEGER PRIMARY KEY, role TEXT NOT NULL, content TEXT NOT NULL,
-        job_id TEXT, created_at TEXT NOT NULL, meta TEXT NOT NULL DEFAULT '{}');
-      CREATE TABLE IF NOT EXISTS tools(id INTEGER PRIMARY KEY, job_id TEXT, name TEXT, summary TEXT,
-        created_at TEXT NOT NULL);
-      CREATE TABLE IF NOT EXISTS kv(key TEXT PRIMARY KEY, value TEXT NOT NULL);
-      CREATE TABLE IF NOT EXISTS calls(day TEXT PRIMARY KEY, count INTEGER NOT NULL);
-    """)
-    # Keep jobs at seven columns: a loaded older worker inserts all seven values.
-    # Missing scope rows mean general Schola. Old message/tool writers name their
-    # columns, so nullable additions preserve their writes and existing history.
-    connection.execute("BEGIN IMMEDIATE")
+    path = vault / name
+    connection = connect(path)
     try:
-        for table in ("messages", "tools"):
-            if "route_id" not in {row["name"] for row in connection.execute(f"PRAGMA table_info({table})")}:
-                connection.execute(f"ALTER TABLE {table} ADD COLUMN route_id TEXT")
-        connection.execute("COMMIT")
+        migrate_chat(connection, path)
+        for suffix in ("", "-wal", "-shm"):
+            sidecar = path.with_name(name + suffix)
+            if sidecar.exists():
+                sidecar.chmod(0o600)
+        return connection
     except Exception:
-        connection.execute("ROLLBACK")
         connection.close()
         raise
-    for path in vault.glob(name + "*"):
-        path.chmod(0o600)
-    return connection
 
 
 def put(connection, key, value):
@@ -154,14 +271,16 @@ def enqueue(connection, prompt, job_id=None, kind="chat", route_id=None):
     if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 6000:
         raise ValueError("Write a message of 1–6000 characters.")
     job_id = job_id or str(uuid.uuid4())
-    if not re.fullmatch(r"[a-zA-Z0-9_-]{12,80}", job_id):
+    if not isinstance(job_id, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{12,80}", job_id):
         raise ValueError("Invalid message identifier.")
     connection.execute("BEGIN IMMEDIATE")
     try:
-        existing = connection.execute("SELECT jobs.id,job_scopes.route_id FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE jobs.id=?", (job_id,)).fetchone()
+        existing = connection.execute("SELECT jobs.id,jobs.prompt,jobs.kind,job_scopes.route_id FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE jobs.id=?", (job_id,)).fetchone()
         if existing:
             if existing["route_id"] != route_id:
                 raise ValueError("That message identifier belongs to another conversation.")
+            if existing["prompt"] != prompt.strip() or existing["kind"] != kind:
+                raise ValueError("That message identifier was already used for different content.")
             connection.execute("COMMIT")
             return job_id
         if connection.execute("SELECT 1 FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? AND status IN ('QUEUED','RUNNING')", (route_id,)).fetchone():
@@ -190,19 +309,28 @@ def api(root, request):
             model_settings(config)
             return {"ok": True, "jobId": enqueue(connection, request.get("message"), request.get("id"), route_id=route_id), "routeId": route_id}
         if action == "retry":
-            job = connection.execute("SELECT jobs.*,job_scopes.route_id FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE jobs.id=? AND job_scopes.route_id IS ?", (request.get("jobId"), route_id)).fetchone()
-            if not job:
-                raise ValueError("That message is not available to retry.")
-            if job["status"] in ("QUEUED", "RUNNING"):
-                return {"ok": True, "jobId": job["id"], "routeId": route_id}
-            if job["status"] != "FAILED":
-                raise ValueError("That reply has already completed.")
-            model_settings(config)
+            retry_id = request.get("id")
+            if retry_id is not None and (not isinstance(retry_id, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{12,80}", retry_id)):
+                raise ValueError("Invalid retry identifier.")
             connection.execute("BEGIN IMMEDIATE")
             try:
-                if connection.execute("SELECT 1 FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? AND status IN ('QUEUED','RUNNING')", (route_id,)).fetchone():
-                    raise ValueError("Schola is finishing another reply. Retry this message afterwards.")
-                connection.execute("UPDATE jobs SET status='QUEUED',error=NULL,updated_at=? WHERE id=?", (now(), job["id"]))
+                # Read status after taking the writer lock. A delayed request
+                # must never overwrite DONE with QUEUED after another retry ran.
+                job = connection.execute("SELECT jobs.*,job_scopes.route_id FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE jobs.id=? AND job_scopes.route_id IS ? AND NOT EXISTS(SELECT 1 FROM legacy_job_references WHERE job_id=jobs.id)", (request.get("jobId"), route_id)).fetchone()
+                if not job:
+                    raise ValueError("That message is not available to retry.")
+                previous = connection.execute("SELECT job_id FROM retry_requests WHERE id=?", (retry_id,)).fetchone() if retry_id else None
+                if previous and previous["job_id"] != job["id"]:
+                    raise ValueError("That retry identifier belongs to another message.")
+                if not previous and job["status"] not in ("QUEUED", "RUNNING"):
+                    if job["status"] != "FAILED":
+                        raise ValueError("That reply has already completed.")
+                    model_settings(config)
+                    if connection.execute("SELECT 1 FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? AND status IN ('QUEUED','RUNNING')", (route_id,)).fetchone():
+                        raise ValueError("Schola is finishing another reply. Retry this message afterwards.")
+                    connection.execute("UPDATE jobs SET status='QUEUED',error=NULL,updated_at=? WHERE id=? AND status='FAILED'", (now(), job["id"]))
+                if retry_id and not previous:
+                    connection.execute("INSERT INTO retry_requests VALUES(?,?,?)", (retry_id, job["id"], now()))
                 connection.execute("COMMIT")
             except Exception:
                 connection.execute("ROLLBACK")
@@ -210,16 +338,24 @@ def api(root, request):
             return {"ok": True, "jobId": job["id"], "routeId": route_id}
         if action != "status":
             raise ValueError("Unknown Schola request.")
+        connection.execute("BEGIN")
         messages = [dict(r) for r in connection.execute("SELECT * FROM (SELECT id,role,content,job_id AS jobId,created_at AS createdAt,meta FROM messages WHERE route_id IS ? ORDER BY id DESC LIMIT 80) ORDER BY id", (route_id,))]
         for message in messages:
             message["meta"] = json.loads(message["meta"])
-        jobs = [dict(r) for r in connection.execute("SELECT jobs.id,kind,status,error,created_at AS createdAt,updated_at AS updatedAt FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? ORDER BY created_at DESC LIMIT 8", (route_id,))]
+        jobs = [dict(r) for r in connection.execute("SELECT jobs.id,kind,status,error,created_at AS createdAt,updated_at AS updatedAt FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? AND NOT EXISTS(SELECT 1 FROM legacy_job_references WHERE job_id=jobs.id) ORDER BY created_at DESC LIMIT 8", (route_id,))]
         tools = [dict(r) for r in connection.execute("SELECT job_id AS jobId,name,summary,created_at AS createdAt FROM tools WHERE route_id IS ? ORDER BY id DESC LIMIT 30", (route_id,))]
         day = datetime.now(timezone.utc).date().isoformat()
         count = connection.execute("SELECT count FROM calls WHERE day=?", (day,)).fetchone()
-        return {"routeId": route_id, "messages": messages, "jobs": jobs, "tools": tools, "settings": public_status(config),
-                "callsToday": count[0] if count else 0, "workerSeenAt": get(connection, "heartbeat"),
-                "search": get(connection, search_key(route_id), {"state": "UNTESTED", "message": "No search has been attempted by Schola in this conversation yet."})}
+        successful = connection.execute("SELECT MAX(updated_at) FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE status='DONE' AND job_scopes.route_id IS ? AND NOT EXISTS(SELECT 1 FROM legacy_job_references WHERE job_id=jobs.id)", (route_id,)).fetchone()[0]
+        worker_error = get(connection, "worker_error")
+        health = {"state": "NEEDS_ATTENTION" if worker_error else ("OK" if get(connection, "heartbeat") else "UNSEEN"),
+                  "lastSuccessfulJobAt": successful, "lastErrorAt": get(connection, "worker_last_error_at"),
+                  "errorCode": worker_error}
+        result = {"routeId": route_id, "messages": messages, "jobs": jobs, "tools": tools, "settings": public_status(config),
+                  "callsToday": count[0] if count else 0, "workerSeenAt": get(connection, "heartbeat"), "workerHealth": health,
+                  "search": get(connection, search_key(route_id), {"state": "UNTESTED", "message": "No search has been attempted by Schola in this conversation yet."})}
+        connection.execute("COMMIT")
+        return result
 
 
 def context(root, allowed, route_id=None):
@@ -231,10 +367,18 @@ def context(root, allowed, route_id=None):
     routes = [{**route, "scholarshipOutlook": outlooks[route["id"]]} if route["id"] in outlooks else route for route in routes]
     guides = read(root, public + "application_guides.json", {})
     routes = [{**route, "applicationGuide": guides[route["id"]]} if route["id"] in guides else route for route in routes]
-    profile = read(root, "private/profile.local.json") if allowed else None
-    profile = profile or read(root, public + "profile.example.json", {})
-    overlays = read(root, "private/overlay.local.json") if allowed else None
-    overlays = overlays or read(root, public + "overlay.example.json", [])
+    # Canonical workspace reads are a single committed snapshot. Once present,
+    # an invalid/newer store must fail rather than resurrect stale legacy files.
+    from .workspace_store import snapshot_if_initialized
+    workspace = snapshot_if_initialized(root) if allowed else None
+    if workspace is not None:
+        profile, overlays = workspace["profile"], workspace["overlays"]
+        allowed = allowed and workspace["mode"] == "PRIVATE"
+    else:
+        profile = read(root, "private/profile.local.json") if allowed else None
+        profile = profile or read(root, public + "profile.example.json", {})
+        overlays = read(root, "private/overlay.local.json") if allowed else None
+        overlays = overlays or read(root, public + "overlay.example.json", [])
     # Only these fields may leave the vault. Private Calendar/Drive URLs and
     # source documents are never loaded into model context.
     safe_snapshot = {k: v for k, v in profile.get("snapshot", {}).items() if k in (
@@ -244,9 +388,9 @@ def context(root, allowed, route_id=None):
         "routeId", "personalStrategyTier", "estimatedFamilyGapIdrMPerMonth", "personalSatTargetNote",
         "personalRiskNote", "applicationStatus", "costEstimate", "notes", "verifiedRules", "saved",
         "tracked", "mainTarget", "pursuitLevel")} for o in overlays]
-    milestones = read(root, "private/milestones.local.json", []) if allowed else []
+    milestones = workspace["milestones"] if workspace is not None else (read(root, "private/milestones.local.json", []) if allowed else [])
     milestones = [{k: v for k, v in m.items() if k in ("date", "title", "timeWIB", "notes")} for m in milestones]
-    state = read(root, "private/state.local.json", {}) if allowed else {}
+    state = workspace["state"] if workspace is not None else (read(root, "private/state.local.json", {}) if allowed else {})
     payload = {"profile": {"snapshot": safe_snapshot}, "routes": routes, "overlays": safe_overlays,
                "calendarEvents": read(root, public + "calendar_events.json", []),
                "milestones": milestones, "state": state, "tasks": read(root, public + "tasks.json", []),
@@ -696,6 +840,7 @@ def process_job(root, connection, job, config):
     try:
         connection.execute("INSERT INTO messages(role,content,job_id,created_at,meta,route_id) VALUES('assistant',?,?,?,?,?)", (text[:20000], job["id"], now(), json.dumps(meta), route_id))
         connection.execute("UPDATE jobs SET status='DONE',updated_at=? WHERE id=?", (now(), job["id"]))
+        put(connection, "worker_error", None)
         connection.execute("COMMIT")
     except Exception:
         connection.execute("ROLLBACK")
@@ -728,31 +873,48 @@ def queue_changes(root, connection, config):
 
 def worker(root, once=False):
     (root / "private").mkdir(exist_ok=True, mode=0o700)
-    with (root / "private/schola-assistant.lock").open("w") as lock, closing(db(root)) as connection:
+    with (root / "private/schola-assistant.lock").open("w") as lock:
+        # Acquire singleton ownership before initializing or touching jobs.
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        connection.execute("UPDATE jobs SET status='FAILED',error='Worker restarted during this reply. Your message is saved; retry explicitly.',updated_at=? WHERE status='RUNNING'", (now(),))
-        while True:
-            put(connection, "heartbeat", now())
-            try:
-                config = settings(root)
-                job = connection.execute("SELECT * FROM jobs WHERE status='QUEUED' ORDER BY created_at LIMIT 1").fetchone()
-                if not job:
-                    queue_changes(root, connection, config)
+        with closing(db(root)) as connection:
+            interrupted = connection.execute("UPDATE jobs SET status='FAILED',error='Worker restarted during this reply. Your message is saved; retry explicitly.',updated_at=? WHERE status='RUNNING'", (now(),)).rowcount
+            if interrupted:
+                put(connection, "worker_error", "INTERRUPTED_JOB")
+                put(connection, "worker_last_error_at", now())
+            while True:
+                put(connection, "heartbeat", now())
+                try:
+                    config = settings(root)
+                    if get(connection, "worker_error") == "LOCAL_DATA_ERROR":
+                        put(connection, "worker_error", None)
                     job = connection.execute("SELECT * FROM jobs WHERE status='QUEUED' ORDER BY created_at LIMIT 1").fetchone()
-                if job:
-                    connection.execute("UPDATE jobs SET status='RUNNING',updated_at=? WHERE id=?", (now(), job["id"]))
-                    try:
-                        process_job(root, connection, job, config)
-                    except Exception as exc:
-                        message = str(exc)[:500] if isinstance(exc, ValueError) else f"Reply interrupted ({type(exc).__name__}). Your message is saved; retry explicitly."
-                        connection.execute("UPDATE jobs SET status='FAILED',error=?,updated_at=? WHERE id=?", (message, now(), job["id"]))
-            except Exception:
-                # Configuration/file errors are visible in status without spilling
-                # endpoint bodies, credentials or profile data into the journal.
-                print("Schola worker: local configuration/data needs attention.", file=sys.stderr, flush=True)
-            if once:
-                return
-            time.sleep(4)
+                    if not job:
+                        queue_changes(root, connection, config)
+                        job = connection.execute("SELECT * FROM jobs WHERE status='QUEUED' ORDER BY created_at LIMIT 1").fetchone()
+                    if job:
+                        connection.execute("UPDATE jobs SET status='RUNNING',updated_at=? WHERE id=?", (now(), job["id"]))
+                        try:
+                            process_job(root, connection, job, config)
+                        except Exception as exc:
+                            message = str(exc)[:500] if isinstance(exc, ValueError) else f"Reply interrupted ({type(exc).__name__}). Your message is saved; retry explicitly."
+                            connection.execute("BEGIN IMMEDIATE")
+                            try:
+                                connection.execute("UPDATE jobs SET status='FAILED',error=?,updated_at=? WHERE id=?", (message, now(), job["id"]))
+                                put(connection, "worker_error", "JOB_FAILED")
+                                put(connection, "worker_last_error_at", now())
+                                connection.execute("COMMIT")
+                            except Exception:
+                                connection.execute("ROLLBACK")
+                                raise
+                except Exception:
+                    # Health exposes codes/times only, never exception text,
+                    # endpoint bodies, credentials, prompts or profile data.
+                    put(connection, "worker_error", "LOCAL_DATA_ERROR")
+                    put(connection, "worker_last_error_at", now())
+                    print("Schola worker: local configuration/data needs attention.", file=sys.stderr, flush=True)
+                if once:
+                    return
+                time.sleep(4)
 
 
 def main():

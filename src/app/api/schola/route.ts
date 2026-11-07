@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { baseData, emptyState, inboxPath, loadDashboard, python, readJson, root, serialized, statePath, vault, writeJson } from "@/lib/storage";
+import { baseData, loadDashboard, python, readJson, root, saveWorkspace, serialized, vault } from "@/lib/storage";
 import { type AppState, type Dashboard, type Evaluation, type InboxItem, type Task } from "@/lib/schema";
-import { number, object, text, validateOverlay, validateProfile, validateRequirementProgress } from "@/lib/validation";
-import { jsonBody } from "@/lib/request-body";
+import { isoDate, number, object, text, validateOverlay, validateProfile, validateRequirementProgress } from "@/lib/validation";
+import { jsonBody, IMPORT_MAX_BYTES } from "@/lib/request-body";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -17,7 +17,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const input = await jsonBody(request);
+    const input = await jsonBody(request, IMPORT_MAX_BYTES);
     if (input.action === "simulate") {
       const base = await baseData();
       const sat = number(input.sat, 1350, 1560), cap = number(input.cap, 0, 100);
@@ -26,26 +26,27 @@ export async function POST(request: NextRequest) {
     }
     return await serialized(async () => {
       const base = await baseData();
-      const state = await readJson<AppState>(statePath(base.mode), emptyState());
+      const state: AppState = base.workspace.state;
       const now = new Date().toISOString();
       switch (input.action) {
         case "requirement": {
           const routeId = text(input.routeId, 150), id = text(input.id, 100);
           const prior = state.requirements?.[routeId]?.[id];
           const progress = { status: input.status, note: input.note === undefined ? prior?.note || "" : input.note, updatedAt: now };
-          const checked = validateRequirementProgress({ [routeId]: { [id]: progress } }, base.routes);
+          const checked = validateRequirementProgress({ [routeId]: { [id]: { ...progress, status: input.status === undefined ? "TODO" : input.status } } }, base.routes);
+          if (input.status === undefined && prior) checked[routeId][id].status = prior.status;
           state.requirements = { ...state.requirements, [routeId]: { ...state.requirements?.[routeId], ...checked[routeId] } };
           break;
         }
         case "tracking": {
           const id = text(input.id, 150), command = text(input.command, 30);
-          if (!base.overlays.some(o => o.routeId === id) || !["add", "remove", "main"].includes(command)) throw new Error("Unknown tracker action.");
+          if (!base.routes.some(route => route.id === id) || !base.overlays.some(o => o.routeId === id) || !["add", "remove", "main"].includes(command)) throw new Error("Unknown tracker action.");
           const updated = base.overlays.map(o => o.routeId === id
             ? { ...o, tracked: command !== "remove", mainTarget: command === "main" || (command === "add" && !!o.mainTarget), pursuitLevel: command === "main" ? "FOCUS" : o.pursuitLevel }
             : command === "main" ? { ...o, mainTarget: false } : o);
           const ids = new Set(base.routes.map(r => r.id));
-          updated.forEach(o => validateOverlay(o, ids));
-          await writeJson(path.join(vault, base.mode === "PRIVATE" ? "overlay.local.json" : "demo-overlay.local.json"), updated);
+          validateOverlay(updated.find(o => o.routeId === id), ids, true);
+          await saveWorkspace(base.workspace, { overlays: updated });
           return NextResponse.json({ ok: true });
         }
         case "task": {
@@ -76,27 +77,25 @@ export async function POST(request: NextRequest) {
           if ("pursuitLevel" in patch && patch.pursuitLevel !== "FOCUS") candidate.mainTarget = false;
           if (patch.pursuitLevel === null) delete candidate.pursuitLevel;
           if (patch.costEstimate === null) delete candidate.costEstimate;
-          const updated = validateOverlay(candidate, new Set(base.routes.map(r => r.id)));
-          // Demo edits live separately and cannot modify the public fictional preset.
-          const destination = path.join(vault, base.mode === "PRIVATE" ? "overlay.local.json" : "demo-overlay.local.json");
-          await writeJson(destination, base.overlays.map(o => o.routeId === id ? updated : o));
+          const updated = validateOverlay(candidate, new Set(base.routes.map(r => r.id)), patch.verifiedRules === undefined);
+          await saveWorkspace(base.workspace, { overlays: base.overlays.map(o => o.routeId === id ? updated : o) });
           return NextResponse.json({ ok: true });
         }
         case "inbox": {
           const captured = text(input.text, 4000).trim();
           if (!captured) throw new Error("Add a link or note first.");
-          const inbox = await readJson<InboxItem[]>(inboxPath(base.mode), []);
+          const inbox: InboxItem[] = base.workspace.inbox;
           if (inbox.length >= 500) throw new Error("Inbox has 500 items; triage or export before adding more.");
           inbox.unshift({ id: crypto.randomUUID(), text: captured, createdAt: now, status: "NEW" });
-          await writeJson(inboxPath(base.mode), inbox);
+          await saveWorkspace(base.workspace, { inbox });
           return NextResponse.json({ ok: true });
         }
         case "triage": {
           const id = text(input.id, 100);
           if (!["NEW", "TRIAGED"].includes(String(input.status))) throw new Error("Unknown inbox status.");
-          const inbox = await readJson<InboxItem[]>(inboxPath(base.mode), []);
+          const inbox: InboxItem[] = base.workspace.inbox;
           if (!inbox.some(i => i.id === id)) throw new Error("Unknown inbox item.");
-          await writeJson(inboxPath(base.mode), inbox.map(i => i.id === id ? { ...i, status: input.status as InboxItem["status"] } : i));
+          await saveWorkspace(base.workspace, { inbox: inbox.map(i => i.id === id ? { ...i, status: input.status as InboxItem["status"] } : i) });
           return NextResponse.json({ ok: true });
         }
         case "scan": {
@@ -115,60 +114,45 @@ export async function POST(request: NextRequest) {
         case "import": {
           if (process.env.STUDAB27_DEMO === "1") throw new Error("Import is disabled while demo mode is forced.");
           const bundle = object(input.bundle);
-          if (bundle.format !== "studab27-v1") throw new Error("Unsupported export format.");
+          if (bundle.format !== "studab27-v1" || (bundle.schemaVersion !== undefined && bundle.schemaVersion !== 1)) throw new Error("Unsupported export format.");
           const profile = validateProfile(bundle.profile);
-          if (!Array.isArray(bundle.overlays) || bundle.overlays.length !== base.routes.length) throw new Error("Import must include all catalogue overlays.");
-          const ids = new Set(base.routes.map(r => r.id));
-          const overlays = bundle.overlays.map(v => validateOverlay(v, ids));
-          if (new Set(overlays.map(o => o.routeId)).size !== ids.size) throw new Error("Duplicate or missing route overlays.");
+          if (!Array.isArray(bundle.overlays)) throw new Error("Import must include scholarship route plans.");
+          const ids = new Set(bundle.overlays.map(v => text(object(v).routeId, 150)));
+          const overlays = bundle.overlays.map(v => validateOverlay(v, ids, true));
+          if (ids.size !== overlays.length) throw new Error("Duplicate route overlays.");
           if (overlays.filter(o => o.mainTarget).length > 1) throw new Error("Choose one main target.");
           if (!Array.isArray(bundle.milestones) || !Array.isArray(bundle.inbox)) throw new Error("Milestones and inbox arrays are required.");
           for (const raw of bundle.milestones) {
             const m = object(raw); text(m.title, 1000);
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(text(m.date, 10))) throw new Error("Invalid milestone date.");
+            isoDate(m.date);
           }
           if (bundle.inbox.length > 500) throw new Error("Too many inbox items.");
           for (const raw of bundle.inbox) {
             const i = object(raw); text(i.id, 100); text(i.text, 4000); text(i.createdAt, 100);
+            if (!Number.isFinite(Date.parse(i.createdAt as string))) throw new Error("Invalid inbox date.");
             if (!["NEW", "TRIAGED"].includes(String(i.status))) throw new Error("Invalid inbox status.");
           }
           const importedState = object(bundle.state);
           const taskStates = object(importedState.tasks), brickStates = object(importedState.bricks);
-          if (importedState.requirements !== undefined) validateRequirementProgress(importedState.requirements, base.routes);
-          const importedTasks = await python<Task[]>("schola.spoonfeeder", { ...base, tasks: base.tasks.filter(t => !t.generated), profile, overlays, milestones: bundle.milestones, command: "pool" });
+          if (importedState.requirements !== undefined) validateRequirementProgress(importedState.requirements, base.routes, ids);
           for (const [id, value] of Object.entries(taskStates)) {
-            if (!importedTasks.some(t => t.id === id)) throw new Error("Unknown imported task.");
+            text(id, 100);
             const entry = object(value);
             if (entry.status !== undefined && entry.status !== "DONE") throw new Error("Invalid task status.");
             for (const key of ["snoozedUntil", "replacedAt"]) if (entry[key] !== undefined && !Number.isFinite(Date.parse(String(entry[key])))) throw new Error("Invalid task date.");
           }
-          for (const [key, done] of Object.entries(brickStates)) if (typeof done !== "boolean" || !base.bricks.some(b => b.items.some(i => `${b.id}:${i.id}` === key))) throw new Error("Invalid document checklist.");
-          const files = { "profile.local.json": profile, "overlay.local.json": overlays, "milestones.local.json": bundle.milestones, "inbox.local.json": bundle.inbox, "state.local.json": importedState };
-          // Keep a complete pre-import recovery bundle before touching existing files.
-          const backup: Record<string, unknown> = {};
-          for (const name of Object.keys(files)) backup[name] = await readJson<unknown>(path.join(vault, name), null);
-          const backupDir = path.join(vault, "backups");
-          await fs.mkdir(backupDir, { recursive: true, mode: 0o700 });
-          await writeJson(path.join(backupDir, `before-import-${Date.now()}.local.json`), backup);
-          try {
-            for (const [name, value] of Object.entries(files)) await writeJson(path.join(vault, name), value);
-          } catch {
-            for (const [name, value] of Object.entries(backup)) {
-              if (value === null) await fs.rm(path.join(vault, name), { force: true });
-              else await writeJson(path.join(vault, name), value);
-            }
-            throw new Error("Import failed; previous data was restored from the recovery bundle.");
-          }
+          for (const [key, done] of Object.entries(brickStates)) { text(key, 100); if (typeof done !== "boolean") throw new Error("Invalid document checklist."); }
+          await saveWorkspace(base.workspace, { profile, overlays, milestones: bundle.milestones as typeof base.milestones, inbox: bundle.inbox as InboxItem[], state: importedState as AppState }, true);
           return NextResponse.json({ ok: true });
         }
         default: throw new Error("Unknown Schola action.");
       }
       state.updatedAt = now;
-      await writeJson(statePath(base.mode), state);
+      await saveWorkspace(base.workspace, { state });
       return NextResponse.json({ ok: true });
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed; local files were preserved.";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json({ error: message }, { status: error && typeof error === "object" && "conflict" in error && error.conflict ? 409 : 400 });
   }
 }

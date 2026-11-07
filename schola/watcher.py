@@ -24,6 +24,7 @@ import time
 from urllib.parse import urljoin, urlsplit
 from datetime import datetime, timezone
 
+from .files import atomic_json, atomic_write
 from .research_sources import MAX_CANDIDATE_LINKS, prioritize_source_links, source_link
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,14 +38,6 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def atomic_json(path, data):
-    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    temp = path.with_suffix(".tmp")
-    with temp.open("w") as f:
-        temp.chmod(0o600)
-        json.dump(data, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-    temp.replace(path)
 
 
 def validate_public_url(url):
@@ -206,10 +199,7 @@ def record_success(url, result, previous, snapshots, route_ids):
         changes = [line[:350] for line in difflib.unified_diff(old.splitlines(), text.splitlines(), n=1) if line.startswith(("+", "-")) and not line.startswith(("+++", "---"))]
         event = {"kind": "CHANGED", "summary": "Official-source text changed. Review before updating any rule or deadline.", "excerpt": "\n".join(changes[:12]) if old else "Text changed; prior local text snapshot is unavailable."}
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    temporary = path.with_suffix(".tmp")
-    temporary.write_text(text)
-    temporary.chmod(0o600)
-    temporary.replace(path)
+    atomic_write(path, text)
     record = {"status": "OK", "hash": digest, "lastCheckedAt": timestamp, "lastSuccessAt": timestamp, "routeIds": route_ids, "pdfLinks": result["pdfLinks"], "finalUrl": result["finalUrl"]}
     if event:
         event.update({"url": url, "routeIds": route_ids, "at": timestamp, "id": hashlib.sha256(f"{url}{digest}{timestamp}".encode()).hexdigest()[:20]})

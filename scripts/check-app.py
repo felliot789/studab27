@@ -134,11 +134,11 @@ def main():
             assert request()["overlays"][0]["saved"] is True
             assert request()["state"]["requirements"] == progress
             bad_progress = json.loads(json.dumps(bundle))
-            bad_progress["state"]["requirements"][guide_id][step["id"]]["status"] = "NOT_NEEDED"
+            bad_progress["state"]["requirements"][guide_id][step["id"]]["status"] = "AUTOMATIC"
             request(value={"action": "import", "bundle": bad_progress}, expect=400)
             assert request()["state"]["requirements"] == progress
             assert list((scratch / "private/backups").glob("*.local.json"))
-            bad = {**bundle, "overlays": bundle["overlays"][:-1]}
+            bad = {**bundle, "overlays": [*bundle["overlays"], bundle["overlays"][0]]}
             request(value={"action": "import", "bundle": bad}, expect=400)
             assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
             assert request("/api/schola/chat")["messages"] == []

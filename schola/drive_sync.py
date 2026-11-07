@@ -3,6 +3,9 @@ import argparse
 import json
 from pathlib import Path
 
+from .files import atomic_json, atomic_write
+from .workspace_store import snapshot_if_initialized, _legacy
+
 FOLDERS = ["00_HQ", "01_Catalogue", "02_Applications", "03_School_Documents", "04_Financial_Documents", "05_Profile_Evidence", "06_Offers_and_Decisions", "07_Inbox", "99_Archive"]
 
 
@@ -15,15 +18,18 @@ def export(root, destination):
         raise ValueError("Existing exports are preserved; choose a new destination")
     for folder in FOLDERS:
         (destination / folder).mkdir(parents=True, mode=0o700)
+    workspace = snapshot_if_initialized(root) or _legacy(root)
     for filename, folder in (("profile", "00_HQ"), ("hq", "00_HQ"), ("overlay", "00_HQ"), ("milestones", "00_HQ"), ("state", "00_HQ"), ("inbox", "07_Inbox")):
         source = vault / f"{filename}.local.json"
-        if source.exists():
-            target = destination / folder / source.name
-            target.write_bytes(source.read_bytes())
-            target.chmod(0o600)
+        key = "overlays" if filename == "overlay" else filename
+        target = destination / folder / source.name
+        if workspace is not None and key in workspace:
+            atomic_json(target, workspace[key])
+        elif filename == "hq" and workspace["mode"] == "PRIVATE" and source.exists():
+            atomic_write(target, source.read_bytes())
     target = destination / "01_Catalogue" / "scholarships_2027.json"
-    target.write_bytes((root / "data/public/scholarships_2027.json").read_bytes())
-    (destination / "00_HQ/export-manifest.local.json").write_text(json.dumps({"format": "studab27-drive-mirror-v1", "cloudSynced": False, "folders": FOLDERS}, indent=2))
+    atomic_write(target, (root / "data/public/scholarships_2027.json").read_bytes())
+    atomic_json(destination / "00_HQ/export-manifest.local.json", {"format": "studab27-drive-mirror-v1", "cloudSynced": False, "folders": FOLDERS, "workspaceRevision": workspace.get("revision")})
     return destination
 
 
