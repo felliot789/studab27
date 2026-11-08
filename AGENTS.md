@@ -33,6 +33,7 @@ Keep context small: follow the map into the files needed for the task rather tha
 - Use installed graphify instructions before other work when the user types `/graphify`. Keep any generated graph local and exclude the vault.
 - Optional code navigation: `npm run map` builds an ignored, code-only Graphify graph without model calls. Query it narrowly, verify findings against source, and rebuild after code changes. See [README.md](README.md#optional-code-graph).
 - Update `docs/REPO_MAP.md` when responsibilities or data flows change, `docs/DECISIONS.md` when a significant choice changes, and `docs/HANDOFF.md` with the baseline commit, work remaining, and checks actually run. `npm run check` includes local documentation-link checks; Graphify is not required for it.
+- After each completed, verified accomplishment, commit the relevant reviewed changes and push the current task branch to `origin`. Run appropriate checks and the privacy review first, keep private data and unrelated work out of the commit, and verify the remote commit matches. Use normal pushes; do not force-push or merge into another branch without authorization.
 - A running production service uses `.next`. Build and validate a separate staging checkout before a planned deployment; never run `npm run build` over the output currently being served. Do not restart workers with active jobs as a side effect of unrelated work.
 
 <!-- BEGIN:nextjs-agent-rules -->
