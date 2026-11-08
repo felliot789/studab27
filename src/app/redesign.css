@@ -21,6 +21,7 @@
 .ask-schola:hover { color: var(--accent); }
 .ask-schola { white-space: nowrap; }
 .mobile-brand, .mobile-more { display: none; }
+.mobile-brand .brand-logo { display: none; width: 144px; }
 .main-content { max-width: 1250px; padding: 44px 52px 60px; }
 .view-briefing { max-width: 1200px; padding-top: 32px; }
 .view-detail { max-width: 1170px; }
@@ -284,7 +285,7 @@
   .topbar { padding: 0 28px; height: 65px; }
   .topbar-location { display: none; }
   .mobile-brand { display: inline-block; font-size: 20px; letter-spacing: -.04em; font-weight: 600; }
-  .mobile-brand span { color: var(--accent); font-weight: 400; }
+  .mobile-brand > span > span { color: var(--accent); font-weight: 400; }
   .mobile-more { display: inline-flex; }
   .main-content { padding: 32px 28px 105px; }
   .view-briefing { padding-top: 24px; }
@@ -297,6 +298,14 @@
   .toast { bottom: 83px; }
   .view-schola { padding-bottom: 75px; }
   .schola-corner { min-height: calc(100dvh - 180px); }
+}
+@media (min-width: 390px) and (max-width: 900px) {
+  .mobile-brand .brand-logo { display: block; }
+  .mobile-brand > span { display: none; }
+}
+@media (max-width: 389px) {
+  .ask-schola span { display: none; }
+  .ask-schola { min-width: 44px; min-height: 44px; justify-content: center; }
 }
 @media (max-width: 650px) {
   .topbar { padding: 0 17px; }

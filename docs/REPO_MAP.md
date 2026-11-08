@@ -34,6 +34,7 @@ flowchart TD
 
 All dashboard entry pages call `loadDashboard()` and declare `force-dynamic`.
 Shared view state, action dispatch, refresh, navigation, busy state, errors, and vault controls belong to [Workspace](../src/components/workspace.tsx).
+Workspace and [Login](../src/app/login/page.tsx) statically import the supplied [header logo](../src/assets/studab27-logo.svg). [Responsive styles](../src/app/redesign.css) show the mobile wordmark from 390px and retain compact text below that width; the desktop sidebar and sign-in screen have their own sizes.
 
 | URL / entry point | Main responsibility |
 | --- | --- |

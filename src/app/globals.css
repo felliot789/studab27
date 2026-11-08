@@ -48,10 +48,9 @@ button, a, input, select, textarea, summary { -webkit-tap-highlight-color: trans
 ::selection { background: var(--accent-bg); color: var(--ink); }
 .app-shell { display: grid; grid-template-columns: 224px minmax(0, 1fr); min-height: 100dvh; }
 .sidebar { height: 100dvh; position: sticky; top: 0; padding: 32px 16px 16px; background: var(--sidebar); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
-.brand { display: inline-flex; align-items: center; gap: 10px; font-size: 23px; letter-spacing: -.035em; font-weight: 600; padding: 0 12px; }
-.brand-year { color: var(--accent); font-weight: 400; }
-.brand-mark { position: relative; width: 30px; height: 31px; font-family: Georgia, serif; font-size: 28px; line-height: 1; color: var(--accent); }
-.brand-mark svg { position: absolute; width: 12px; height: 12px; top: -2px; right: -2px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.brand { display: inline-flex; align-items: center; padding: 0 12px; }
+/* Blend the supplied logo's black backdrop into the dark shell. */
+.brand-logo { display: block; width: 164px; max-width: 100%; height: auto; mix-blend-mode: screen; }
 .sidebar-subtitle { color: var(--faint); font-size: 12px; padding: 6px 13px 36px; }
 .sidebar nav { display: flex; flex-direction: column; gap: 6px; }
 .nav-link { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border-radius: 7px; color: var(--muted); font-size: 12.5px; transition: background 160ms, color 160ms; }
@@ -438,8 +437,8 @@ h1 { font: 400 36px/1.2 Georgia, "Times New Roman", serif; letter-spacing: -.025
 .catalogue-filters .filters { margin-block: 14px 24px; }
 .login-page { display: flex; align-items: center; justify-content: center; min-height: 100dvh; padding: max(28px,env(safe-area-inset-top)) 24px max(36px,env(safe-area-inset-bottom)); }
 .login-content { max-width: 400px; width: 100%; }
-.login-brand { display: block; font-size: 23px; font-weight: 600; letter-spacing: -.025em; margin-bottom: 50px; }
-.login-brand span, .login-content > svg { color: var(--accent); }
+.login-brand { width: 220px; margin-bottom: 50px; }
+.login-content > svg { color: var(--accent); }
 .login-content h1 { font-size: 32px; margin-top: 22px; line-height: 1.25; }
 .login-content > p { margin-block: 17px 28px; color: var(--muted); }
 .login-content .stacked-form label { font-size: 14px; }

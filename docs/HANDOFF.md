@@ -1,5 +1,15 @@
 # Handoff
 
+## Header branding update — 2026-11-08
+
+Implementation baseline: `568bbfd`. Deployed production build: `Yz_yz_ltzda6Uy1rg1_lp`. The supplied logo is embedded unchanged in a local SVG viewport that trims its empty margins. The sidebar and sign-in screen use the full logo; mobile headers show it from 390px, with compact text below that width. Narrow headers retain labeled, touch-sized Schola/tools controls. See [Workspace](../src/components/workspace.tsx), [Login](../src/app/login/page.tsx), [logo asset](../src/assets/studab27-logo.svg), and [responsive styles](../src/app/redesign.css).
+
+Validation: a separate checkout passed `npm ci`, `npm run check` (86 Python tests, six optional-runtime skips; 17 Node tests), production build, emitted-build privacy review and the fictional HTTP checks. Browser previews checked 320, 375, 390, 430, 768, 1024 and the default 1280px desktop layout; header bounds did not overlap or overflow. Sign-in was reviewed at 320px and desktop, and mobile tools opened and closed with focus restored. These are browser viewport checks, not a physical-phone test. The code-only local graph was rebuilt without model calls.
+
+Deployment switched only the tested web build after zero active jobs. Protected workspace fingerprints and configuration matched before/after, the worker PID stayed unchanged, login and the unauthenticated static logo returned 200, and unauthenticated API access remained 401. Both stores and local recovery remain healthy. The previous build is retained under the ignored deployment vault for rollback; this change requires no database migration.
+
+## Database reliability baseline
+
 **Database reliability release deployed: 2026-11-07 23:51 WIB. Code checkpoint: `5d1fcd2055892129bfb4e15d3672a5f7376fd872`; prior baseline: `e707179ebe80057bb6e7efdc8428f778c1a8afd4`.** Production build: `arBO0Kidm4QYZMcRsAIGv`. Check `git status --short --branch` and `git log -1 --oneline` before editing; a later documentation-only commit records these results.
 
 ## Resume here

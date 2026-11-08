@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
+import logo from "@/assets/studab27-logo.svg";
 import { Icon } from "@/components/ui";
 
 export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  return <main className="login-page"><div className="login-content"><span className="login-brand">StudAb<span>27</span></span><Icon name="shield" size={32} /><h1>Sign in</h1><p>Sign in to your private scholarship workspace.</p><form className="stacked-form" onSubmit={async e => {
+  return <main className="login-page"><div className="login-content"><Image src={logo} alt="StudAb27" width={701} height={144} className="brand-logo login-brand" loading="eager" unoptimized /><Icon name="shield" size={32} /><h1>Sign in</h1><p>Sign in to your private scholarship workspace.</p><form className="stacked-form" onSubmit={async e => {
     e.preventDefault(); setError(""); setBusy(true);
     const password = new FormData(e.currentTarget).get("password");
     try {
