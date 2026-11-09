@@ -1,5 +1,13 @@
 # Handoff
 
+## Narrow mobile logo correction — 2026-11-09
+
+Baseline: `0fef7d5`. Deployed build: `lTccU59g1Ngk2Avd5JUWY`. The earlier text fallback below 390px still displayed the old wordmark on the tracker. The mobile header now uses the supplied logo at every phone width, shrinking within the available space while keeping its controls intact. The logo asset, desktop sidebar and sign-in branding are unchanged. See [Workspace](../src/components/workspace.tsx) and [responsive styles](../src/app/redesign.css).
+
+The isolated checkout passed `npm ci`, `npm run check` (86 Python tests, six optional-runtime skips; 17 Node tests), production build, emitted-build privacy review and fictional HTTP checks. Browser checks covered 320, 360, 375, 389, 390, 430, 768, 900, 901 and 1280px. The mobile logo remained visible, header controls stayed within the viewport without overlap, both tracker URLs worked, and the mobile tools opened and closed with focus restored. These are viewport checks, not physical-phone evidence. The code-only graph was rebuilt locally.
+
+The tested web build was switched after zero active jobs. Live authenticated `/` and `/scholarships` returned the supplied logo without the old mobile wordmark. Workspace/configuration fingerprints and the worker PID were preserved; the unauthenticated logo loaded and API access remained 401. The previous build is retained under the ignored deployment vault. No worker restart, data migration or model request was needed.
+
 ## Header branding update — 2026-11-08
 
 Implementation baseline: `568bbfd`. Deployed production build: `Yz_yz_ltzda6Uy1rg1_lp`. The supplied logo is embedded unchanged in a local SVG viewport that trims its empty margins. The sidebar and sign-in screen use the full logo; mobile headers show it from 390px, with compact text below that width. Narrow headers retain labeled, touch-sized Schola/tools controls. See [Workspace](../src/components/workspace.tsx), [Login](../src/app/login/page.tsx), [logo asset](../src/assets/studab27-logo.svg), and [responsive styles](../src/app/redesign.css).
