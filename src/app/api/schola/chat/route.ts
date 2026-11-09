@@ -11,7 +11,7 @@ async function assistant(payload: unknown): Promise<Record<string, unknown>> {
   const currentMode = await mode();
   return new Promise((resolve, reject) => {
     const child = execFile(/* turbopackIgnore: true */ process.env.SCHOLA_PYTHON || "python3", ["-m", "schola.assistant", "api"], { cwd: process.cwd(), timeout: 10000, maxBuffer: 3 * 1024 * 1024, env: { ...process.env, STUDAB27_DEMO: currentMode === "DEMO" ? "1" : "0" } }, (error, stdout) => {
-      if (error) { reject(new Error("Schola’s local conversation store is unavailable. Your existing messages are preserved.")); return; }
+      if (error) { reject(new Error("Schola’s local conversation store is unavailable. Existing messages are preserved.")); return; }
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error("Schola could not read this conversation.")); }
     });
     child.stdin?.on("error", () => {});

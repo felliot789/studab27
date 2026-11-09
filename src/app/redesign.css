@@ -3,7 +3,7 @@
 [hidden] { display: none !important; }
 .app-shell { grid-template-columns: 220px minmax(0, 1fr); }
 .sidebar { padding: 34px 16px 20px; }
-.sidebar-subtitle { padding-bottom: 41px; }
+.sidebar .brand { margin-bottom: 32px; }
 .nav-link { min-height: 47px; font-size: 13px; padding-inline: 13px; }
 .sidebar nav { gap: 5px; }
 .sidebar-bottom { padding-top: 48px; }

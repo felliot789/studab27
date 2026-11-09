@@ -284,7 +284,7 @@ def enqueue(connection, prompt, job_id=None, kind="chat", route_id=None):
             connection.execute("COMMIT")
             return job_id
         if connection.execute("SELECT 1 FROM jobs LEFT JOIN job_scopes ON jobs.id=job_scopes.job_id WHERE job_scopes.route_id IS ? AND status IN ('QUEUED','RUNNING')", (route_id,)).fetchone():
-            raise ValueError("Schola is finishing the current message. You can close this tab and return.")
+            raise ValueError("Schola is finishing the current message. Processing continues after this tab closes.")
         timestamp = now()
         connection.execute("INSERT INTO jobs(id,kind,prompt,status,error,created_at,updated_at) VALUES(?,?,?,?,?,?,?)", (job_id, kind, prompt.strip(), "QUEUED", None, timestamp, timestamp))
         if route_id is not None:
@@ -678,7 +678,7 @@ def json_reply(text):
                 return value
         except ValueError:
             continue
-    raise ValueError("The model returned no valid JSON tool reply. Your saved message can be retried.")
+    raise ValueError("The model returned no valid JSON tool reply. The saved message can be retried.")
 
 
 def completion(connection, config, messages, allow_tools=True):
@@ -720,7 +720,7 @@ def completion(connection, config, messages, allow_tools=True):
     except HTTPError as exc:
         raise ValueError(f"The configured model endpoint returned HTTP {exc.code}. Check its model, credentials and tool support locally.") from None
     except Exception as exc:
-        raise ValueError(f"The model request failed ({type(exc).__name__}). Your message is saved; retry explicitly.") from None
+        raise ValueError(f"The model request failed ({type(exc).__name__}). Message saved; retry explicitly.") from None
     try:
         message = response["choices"][0]["message"]
         if not isinstance(message, dict) or (not message.get("content") and not message.get("tool_calls")):
@@ -764,7 +764,7 @@ def process_job(root, connection, job, config):
     def complete(history, allow_tools=True):
         nonlocal format_repairs
         if time.monotonic() - started > 600:
-            raise ValueError("This reply reached its ten-minute work budget. Your message is saved; retry explicitly.")
+            raise ValueError("This reply reached its ten-minute work budget. Message saved; retry explicitly.")
         put(connection, "heartbeat", now())
         if not allow_tools:
             history = [*history, {"role": "user", "content": "Tool budget reached. Give a concise answer using collected evidence; explicitly state anything still unknown."}]
@@ -781,11 +781,11 @@ def process_job(root, connection, job, config):
         nonlocal total_tools
         total_tools += 1
         if total_tools > 12 or time.monotonic() - started > 600:
-            raise ValueError("This reply reached its bounded research budget. Your message is saved.")
+            raise ValueError("This reply reached its bounded research budget. Message saved.")
         put(connection, "heartbeat", now())
         try:
             result = model_safe(run_tool(root, connection, config, data, name, arguments), config)
-            summary = {"get_briefing": "Read your current plan", "search_catalogue": "Looked in the catalogue", "inspect_route": "Compared route evidence", "search_web": "Searched official domains", "read_source": "Read an official source", "search_conversation": "Looked in conversation memory"}.get(name, "Tool completed")
+            summary = {"get_briefing": "Read the current plan", "search_catalogue": "Looked in the catalogue", "inspect_route": "Compared route evidence", "search_web": "Searched official domains", "read_source": "Read an official source", "search_conversation": "Looked in conversation memory"}.get(name, "Tool completed")
             if name == "read_source":
                 final_url = result["finalUrl"]
                 previous = sources.get(final_url, {})
@@ -816,7 +816,7 @@ def process_job(root, connection, job, config):
             if not calls:
                 break
             if not isinstance(calls, list) or len(calls) > 5 or round_number == rounds:
-                raise ValueError("Model exceeded the bounded tool budget. Your message is saved.")
+                raise ValueError("Model exceeded the bounded tool budget. Message saved.")
             messages.append(answer)
             for call in calls:
                 name = call.get("function", {}).get("name", "")
@@ -877,7 +877,7 @@ def worker(root, once=False):
         # Acquire singleton ownership before initializing or touching jobs.
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         with closing(db(root)) as connection:
-            interrupted = connection.execute("UPDATE jobs SET status='FAILED',error='Worker restarted during this reply. Your message is saved; retry explicitly.',updated_at=? WHERE status='RUNNING'", (now(),)).rowcount
+            interrupted = connection.execute("UPDATE jobs SET status='FAILED',error='Worker restarted during this reply. Message saved; retry explicitly.',updated_at=? WHERE status='RUNNING'", (now(),)).rowcount
             if interrupted:
                 put(connection, "worker_error", "INTERRUPTED_JOB")
                 put(connection, "worker_last_error_at", now())
@@ -896,7 +896,7 @@ def worker(root, once=False):
                         try:
                             process_job(root, connection, job, config)
                         except Exception as exc:
-                            message = str(exc)[:500] if isinstance(exc, ValueError) else f"Reply interrupted ({type(exc).__name__}). Your message is saved; retry explicitly."
+                            message = str(exc)[:500] if isinstance(exc, ValueError) else f"Reply interrupted ({type(exc).__name__}). Message saved; retry explicitly."
                             connection.execute("BEGIN IMMEDIATE")
                             try:
                                 connection.execute("UPDATE jobs SET status='FAILED',error=?,updated_at=? WHERE id=?", (message, now(), job["id"]))

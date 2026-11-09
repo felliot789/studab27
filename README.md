@@ -40,7 +40,7 @@ Always use the npm launch scripts or the installed service: they supply the runt
 | --- | --- |
 | Tracker `/` or `/scholarships` | Explicitly tracked scholarships, pursuit priorities, application progress, and the next checklist step |
 | Explore `/scholarships?browse=1` | All 57 public routes, outlook filters, and an action to add any route to the tracker |
-| Scholarship `/scholarships/[id]` | One permanent page with Checklist, Description, Dates, Your plan, Sources, and a scholarship-specific Schola popup; `?tab=overview` opens Description |
+| Scholarship `/scholarships/[id]` | One permanent page with Checklist, Description, Dates, Plan, Sources, and a scholarship-specific Schola popup; `?tab=overview` opens Description |
 | Documents `/documents` | Per-scholarship document steps and a separate reusable-pack view; actual files remain in your own folders |
 | Calendar `/calendar` | Tracked, saved, and active routes by default, plus an All routes switch and month/agenda views |
 | Schola `/schola` | Your durable conversation and read-only research tools |

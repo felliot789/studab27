@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
     if (request.headers.get("origin") !== origin) return new NextResponse("Same-origin requests are required.", { status: 403 });
   }
   if (!["/login", "/api/session"].includes(request.nextUrl.pathname) && !validSession(request.cookies.get(sessionCookie)?.value, settings)) {
-    if (request.nextUrl.pathname.startsWith("/api/")) return NextResponse.json({ error: "Sign in to your workspace." }, { status: 401 });
+    if (request.nextUrl.pathname.startsWith("/api/")) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
     return NextResponse.redirect(new URL("/login", origin));
   }
   return NextResponse.next();

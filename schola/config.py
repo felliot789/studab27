@@ -19,7 +19,7 @@ def model_settings(config):
     endpoint = str(llm.get("baseUrl", "")).rstrip("/")
     parsed = urlsplit(endpoint)
     if parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment:
-        raise ValueError("Set llm.baseUrl to your trusted custom v1 endpoint")
+        raise ValueError("Set llm.baseUrl to a trusted custom v1 endpoint")
     if parsed.scheme == "http" and parsed.hostname not in ("127.0.0.1", "localhost", "::1"):
         raise ValueError("Remote model endpoints require HTTPS")
     if not llm.get("model") or not llm.get("apiKey"):

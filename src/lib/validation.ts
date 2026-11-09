@@ -42,7 +42,7 @@ export function validateOverlay(value: unknown, ids: Set<string>, historical = f
   if (o.saved !== undefined && typeof o.saved !== "boolean") throw new Error("Saved must be true or false.");
   for (const field of ["tracked", "mainTarget"]) if (o[field] !== undefined && typeof o[field] !== "boolean") throw new Error(`${field} must be true or false.`);
   if (o.pursuitLevel !== undefined && (typeof o.pursuitLevel !== "string" || !["FOCUS", "SECONDARY", "BACKUP"].includes(o.pursuitLevel))) throw new Error("Unknown pursuit level.");
-  if (o.mainTarget && (!o.tracked || o.pursuitLevel !== "FOCUS")) throw new Error("Your main target must be tracked as Focus.");
+  if (o.mainTarget && (!o.tracked || o.pursuitLevel !== "FOCUS")) throw new Error("The main target must be tracked as Focus.");
   if (o.notes !== undefined) text(o.notes);
   if (o.costEstimate !== undefined) {
     const cost = object(o.costEstimate);

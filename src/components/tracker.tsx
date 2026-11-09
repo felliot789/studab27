@@ -20,8 +20,8 @@ export default function Tracker({ data, act, busy }: ViewProps) {
   const routes = trackedRoutes(data.routes, data.overlays);
   const upcoming = upcomingEvents(data.calendarEvents, data.overlays);
   return <>
-    <PageHeading title="Your scholarship tracker" extra={<Link className="button secondary" href="/scholarships?browse=1"><Icon name="plus" size={17} />Add scholarship</Link>}>Pick a scholarship, follow its checklist, and keep your progress here.</PageHeading>
-    {!!routes.length && <p className="tracker-intro">{routes.length} scholarship{routes.length === 1 ? "" : "s"} tracked. Add more whenever you need.</p>}
+    <PageHeading title="Scholarship tracker" extra={<Link className="button secondary" href="/scholarships?browse=1"><Icon name="plus" size={17} />Add scholarship</Link>}>Application checklists, progress, and deadlines.</PageHeading>
+    {!!routes.length && <p className="tracker-intro">{routes.length} scholarship{routes.length === 1 ? "" : "s"} tracked.</p>}
     {(["FOCUS", "SECONDARY", "BACKUP", "UNSET"] as PursuitGroup[]).map(group => {
       const members = routes.filter(route => pursuitLevel(data.overlays.find(o => o.routeId === route.id)!) === group);
       if (!members.length) return null;
@@ -33,7 +33,7 @@ export default function Tracker({ data, act, busy }: ViewProps) {
           return <article className={`tracker-row ${overlay.mainTarget ? "main-target" : ""}`} key={route.id} aria-label={route.institution}>
             <div className="tracker-identity"><div className="tracker-country"><CountryLabel country={route.country} />{overlay.mainTarget && <Badge tone="success">Main target</Badge>}</div><h3><Link href={`/scholarships/${route.id}`}>{route.institution}</Link></h3><p>{route.scholarshipName}</p>
               <div className="tracker-progress"><span>{progress.total ? `${progress.done} of ${progress.total} steps done` : "Checklist to research"}</span>{progress.total > 0 && <div className="progress-track" role="progressbar" aria-label={`${route.institution} checklist`} aria-valuenow={progress.done} aria-valuemin={0} aria-valuemax={progress.total}><span style={{ width: `${progress.done / progress.total * 100}%` }} /></div>}</div>
-              <p className="tracker-next"><span>Next step</span>{progress.next?.title || (progress.total ? "Checklist complete. Check your portal for updates." : "Review the official requirements for your programme.")}</p>
+              <p className="tracker-next"><span>Next step</span>{progress.next?.title || (progress.total ? "Checklist complete. Check the application portal for updates." : "Review the official programme requirements.")}</p>
               <p className="tracker-date"><Icon name="calendar" size={15} />{nextDate ? `${dateLabel(eventDay(nextDate)!, true)} · ${nextDate.title}` : "2027 dates still to confirm"}</p>
             </div>
             <div className="tracker-actions"><PursuitControls overlay={overlay} act={act} busy={busy} /><div className="tracker-page-links"><Link className="text-button" href={`/scholarships/${route.id}?tab=overview`}>Read description</Link><Link className={`button ${overlay.mainTarget ? "primary" : "secondary"}`} href={`/scholarships/${route.id}`}>Open checklist<Icon name="arrow" size={16} /></Link></div></div>
@@ -41,7 +41,7 @@ export default function Tracker({ data, act, busy }: ViewProps) {
         })}
       </section>;
     })}
-    {!routes.length && <div className="empty-state"><Icon name="bookmark" size={30} /><h2>Start with one scholarship</h2><p>Add an opportunity you want to work on. Its progress, documents, and dates will stay together here.</p><Link className="button primary" href="/scholarships?browse=1">Choose a scholarship<Icon name="arrow" size={16} /></Link></div>}
-    <details className="tracker-help"><summary>How priorities work</summary><dl>{(["FOCUS", "SECONDARY", "BACKUP", "UNSET"] as PursuitGroup[]).map(group => <div key={group}><dt>{PURSUIT_LABELS[group]}</dt><dd>{PURSUIT_HELP[group]}</dd></div>)}</dl><p>Priority is how much attention you want to give an application. Application progress records where you are. Changing either keeps your checklist and notes.</p></details>
+    {!routes.length && <div className="empty-state"><Icon name="bookmark" size={30} /><h2>No tracked scholarships</h2><p>Add a scholarship to track its checklist, documents, and dates.</p><Link className="button primary" href="/scholarships?browse=1">Choose a scholarship<Icon name="arrow" size={16} /></Link></div>}
+    <details className="tracker-help"><summary>How priorities work</summary><dl>{(["FOCUS", "SECONDARY", "BACKUP", "UNSET"] as PursuitGroup[]).map(group => <div key={group}><dt>{PURSUIT_LABELS[group]}</dt><dd>{PURSUIT_HELP[group]}</dd></div>)}</dl><p>Priority sets an application’s focus level. Application progress records its current stage. Changing either preserves checklist progress and notes.</p></details>
   </>;
 }

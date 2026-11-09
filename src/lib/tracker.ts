@@ -3,10 +3,10 @@ import type { AppState, Overlay, PursuitLevel, Route } from "./schema";
 export type PursuitGroup = PursuitLevel | "UNSET";
 export const PURSUIT_LABELS: Record<PursuitGroup, string> = { FOCUS: "Focus", SECONDARY: "Secondary", BACKUP: "Backup", UNSET: "Decide later" };
 export const PURSUIT_HELP: Record<PursuitGroup, string> = {
-  FOCUS: "Work on these regularly.",
-  SECONDARY: "Pursue when you have the time.",
-  BACKUP: "Keep these open. Their dates still appear in your calendar.",
-  UNSET: "Tracked, with priority still to choose.",
+  FOCUS: "Primary applications.",
+  SECONDARY: "Secondary applications.",
+  BACKUP: "Alternative applications; dates remain on the calendar.",
+  UNSET: "Tracked; priority not set.",
 };
 export const REQUIREMENT_LABELS = { TODO: "Not started", DOING: "In progress", DONE: "Done", NOT_NEEDED: "Not needed" } as const;
 export const BASIS_LABELS = { CURRENT: "2027 source", GENERAL: "General guidance", RECHECK: "Recheck for 2027" } as const;

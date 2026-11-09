@@ -1,5 +1,13 @@
 # Handoff
 
+## Objective interface copy — 2026-11-09
+
+Baseline: `ea31373`. Deployed build: `pzP3gtWiLI7rW0DV5gBZa`. Removed the sidebar subtitle, private workspace footer, and sign-in taglines. Page titles, tabs, instructions, empty states, notifications, Schola suggestions, and future worker status/error messages now use objective wording. Checklist guides, reusable document packs, and generated task descriptions use the same tone. Practical privacy disclosures, restore consent, evidence limits, and the fictional-demo indicator remain. [PRODUCT.md](../PRODUCT.md#brand-personality) records the copy convention. No schema, source URL, requirement ID, or stored owner record changed.
+
+The isolated checkout passed `npm ci`, `npm run check` (86 Python tests, six optional-runtime skips; 17 Node tests), production build, emitted-build privacy review, and fictional HTTP checks. Browser verification covered 15 pages at 320, 390, and 1280px: 45 page/viewport checks with no horizontal overflow, direct reader address, or browser errors. Mobile tools, vault, and scholarship Schola dialogs worked; tools restored keyboard focus. Screenshots of tracker and sign-in layouts were visually reviewed. These are browser viewport checks, not physical-phone evidence. Public JSON structure/source URLs and string-only Python changes were checked; the local code-only graph was rebuilt without model calls.
+
+Deployment waited for zero active Schola jobs, switched only the tested web build, and reloaded the idle worker for its changed status strings. Workspace, conversation/job records, configuration, and existing worker-error metadata matched their pre-switch fingerprints; both timers remained active. Authenticated pages/dashboard/chat/export passed, unauthenticated API access remained 401, both stores were healthy, and local recovery remained verified. The initial verification helper used an incorrect recovery-health field name and automatically restored the old build; correcting that helper and repeating the switch passed all checks. Rollback builds remain in the ignored deployment vault. No live model request or historical conversation rewrite was used.
+
 ## Narrow mobile logo correction — 2026-11-09
 
 Baseline: `0fef7d5`. Deployed build: `lTccU59g1Ngk2Avd5JUWY`. The earlier text fallback below 390px still displayed the old wordmark on the tracker. The mobile header now uses the supplied logo at every phone width, shrinking within the available space while keeping its controls intact. The logo asset, desktop sidebar and sign-in branding are unchanged. See [Workspace](../src/components/workspace.tsx) and [responsive styles](../src/app/redesign.css).

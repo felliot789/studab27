@@ -2,7 +2,7 @@
   "route-14-italy-politecnico-di-torino": {
     "cycle": "2027 entry",
     "reviewedAt": "2026-11-04",
-    "summary": "Prepare two applications: admission to PoliTO and financial support from EDISU Piemonte. The full 2027/28 calls still need checking.",
+    "summary": "Admission to PoliTO and financial support from EDISU Piemonte use separate applications. The full 2027/28 calls still need checking.",
     "sources": [
       {
         "id": "call",
@@ -52,7 +52,7 @@
           },
           {
             "id": "test-route",
-            "title": "Confirm the entrance test you can take",
+            "title": "Confirm the available entrance test",
             "detail": "The 2027/28 page accepts in-person TOLC@UNI and CEnT@UNI, excluding remote versions. Check venues and any alternative-test provisions before booking.",
             "kind": "TASK",
             "basis": "CURRENT",
@@ -62,7 +62,7 @@
           },
           {
             "id": "programme-language",
-            "title": "Confirm your programme and teaching language",
+            "title": "Confirm the programme and teaching language",
             "detail": "Check diploma acceptance, pre-graduation applications and the language requirement for the exact degree.",
             "kind": "TASK",
             "basis": "RECHECK",
@@ -72,7 +72,7 @@
           },
           {
             "id": "school-record",
-            "title": "Prepare your academic record",
+            "title": "Prepare academic records",
             "detail": "Collect school records and check which years and translations the new call requires.",
             "kind": "DOCUMENT",
             "basis": "RECHECK",
@@ -94,7 +94,7 @@
           },
           {
             "id": "language-proof",
-            "title": "Check your language certificate",
+            "title": "Check the language certificate",
             "detail": "Confirm the accepted test, validity and score-reporting method for the programme.",
             "kind": "DOCUMENT",
             "basis": "RECHECK",
@@ -143,7 +143,7 @@
           {
             "id": "edisu-access",
             "title": "Arrange access to EDISU",
-            "detail": "Check the temporary-access-code process if you have no SPID or CIE. Access is separate from Apply@polito.",
+            "detail": "Check the temporary-access-code process for applicants without SPID or CIE. Access is separate from Apply@polito.",
             "kind": "TASK",
             "basis": "RECHECK",
             "sourceIds": [
@@ -177,7 +177,7 @@
   "route-12-hungary-stipendium-hungaricum": {
     "cycle": "2027 entry",
     "reviewedAt": "2026-11-04",
-    "summary": "Prepare the scholarship application and the sending-partner nomination process. The reviewed application pack is for 2026/27; update it when the 2027/28 call appears.",
+    "summary": "The scholarship application and sending-partner nomination are separate steps. The reviewed application pack is for 2026/27; recheck against the 2027/28 call when published.",
     "sources": [
       {
         "id": "apply",
@@ -206,7 +206,7 @@
           {
             "id": "check-call",
             "title": "Check the 2027/28 call",
-            "detail": "Confirm the new cycle and your sending country's nomination procedure before relying on dates.",
+            "detail": "Confirm the new cycle and the relevant sending country's nomination procedure before relying on dates.",
             "kind": "TASK",
             "basis": "RECHECK",
             "sourceIds": [
@@ -215,7 +215,7 @@
           },
           {
             "id": "programme-choices",
-            "title": "Choose and rank your programmes",
+            "title": "Choose and rank programmes",
             "detail": "The previous call allowed two choices. Check eligible fields, entry requirements and language evidence for each.",
             "kind": "TASK",
             "basis": "RECHECK",
@@ -226,7 +226,7 @@
           {
             "id": "nomination",
             "title": "Complete the sending-partner requirements",
-            "detail": "Find your country's current nomination instructions and keep the submission confirmation.",
+            "detail": "Find the relevant country's current nomination instructions and keep the submission confirmation.",
             "kind": "TASK",
             "basis": "RECHECK",
             "sourceIds": [
@@ -285,7 +285,7 @@
           {
             "id": "identity",
             "title": "Prepare passport or identity evidence",
-            "detail": "Check the passport-data-page requirement and the process if your passport is still pending.",
+            "detail": "Check the passport-data-page requirement and the process for a pending passport.",
             "kind": "DOCUMENT",
             "basis": "RECHECK",
             "sourceIds": [
@@ -311,7 +311,7 @@
           {
             "id": "submit",
             "title": "Submit and keep the portal confirmation",
-            "detail": "Review uploads and the application statement yourself before submitting.",
+            "detail": "Review uploads and the application statement before submitting.",
             "kind": "TASK",
             "basis": "RECHECK",
             "sourceIds": [
@@ -357,7 +357,7 @@
   "route-17-italy-university-of-padua": {
     "cycle": "2027 entry",
     "reviewedAt": "2026-11-04",
-    "summary": "Track degree admission and the Veneto regional scholarship separately. Information Engineering is an English-taught option to investigate; the regional-aid evidence is still for 2026/27.",
+    "summary": "Degree admission and the Veneto regional scholarship are separate processes. Information Engineering is an English-taught option to investigate; the regional-aid evidence is still for 2026/27.",
     "sources": [
       {
         "id": "programme",
@@ -392,7 +392,7 @@
           {
             "id": "programme",
             "title": "Confirm the degree and 2027 applicant call",
-            "detail": "Review Information Engineering and the call for your citizenship and residence category.",
+            "detail": "Review Information Engineering and the call for the relevant citizenship and residence category.",
             "kind": "TASK",
             "basis": "RECHECK",
             "sourceIds": [
@@ -423,7 +423,7 @@
           {
             "id": "motivation",
             "title": "Draft the programme motivation letter",
-            "detail": "Explain your reasons for this particular programme.",
+            "detail": "Explain the reasons for selecting this programme.",
             "kind": "DOCUMENT",
             "basis": "GENERAL",
             "sourceIds": [
@@ -443,7 +443,7 @@
           },
           {
             "id": "qualification",
-            "title": "Prepare your school qualification",
+            "title": "Prepare the school qualification",
             "detail": "Check whether an enrolment or provisional certificate is appropriate while the final diploma is pending.",
             "kind": "DOCUMENT",
             "basis": "GENERAL",
@@ -454,8 +454,8 @@
           },
           {
             "id": "passport",
-            "title": "Prepare your passport copy",
-            "detail": "Use the identity document required for your applicant category.",
+            "title": "Prepare a passport copy",
+            "detail": "Use the identity document required for the relevant applicant category.",
             "kind": "DOCUMENT",
             "basis": "GENERAL",
             "sourceIds": [
@@ -565,7 +565,7 @@
         "items": [
           {
             "id": "eligibility",
-            "title": "Check eligibility for your intake",
+            "title": "Check eligibility for the selected intake",
             "detail": "Confirm nationality and graduation timing in the 2027 guide.",
             "kind": "TASK",
             "basis": "CURRENT",
@@ -688,7 +688,7 @@
           {
             "id": "school-context",
             "title": "Prepare school context",
-            "detail": "Consider the optional school profile and school report.",
+            "detail": "The school profile and school report are optional.",
             "kind": "DOCUMENT",
             "basis": "CURRENT",
             "sourceIds": [
@@ -732,7 +732,7 @@
   "route-35-türkiye-türkiye-scholarships": {
     "cycle": "2027 entry",
     "reviewedAt": "2026-11-04",
-    "summary": "Prepare a Türkiye Scholarships application with university and programme preferences. The general rules are available; confirm the 2027 call and each programme's requirements.",
+    "summary": "Türkiye Scholarships applications include university and programme preferences. The general rules are available; the 2027 call and each programme's requirements need confirmation.",
     "sources": [
       {
         "id": "criteria",
@@ -777,7 +777,7 @@
           {
             "id": "programmes",
             "title": "Choose available engineering programmes",
-            "detail": "Check teaching language, admission tests and the programmes offered to you in TBBS.",
+            "detail": "Check teaching language, admission tests and the programmes available to the applicant in TBBS.",
             "kind": "TASK",
             "basis": "GENERAL",
             "sourceIds": [
@@ -835,7 +835,7 @@
           {
             "id": "graduation",
             "title": "Prepare graduation evidence",
-            "detail": "Check which provisional evidence is accepted if your final diploma is pending.",
+            "detail": "Check which provisional evidence is accepted while the final diploma is pending.",
             "kind": "DOCUMENT",
             "basis": "GENERAL",
             "sourceIds": [
@@ -869,7 +869,7 @@
           {
             "id": "motivation",
             "title": "Prepare motivation and activity evidence",
-            "detail": "Relate your interests, programme preferences and activities to the selection criteria.",
+            "detail": "Relate interests, programme preferences and activities to the selection criteria.",
             "kind": "DOCUMENT",
             "basis": "GENERAL",
             "sourceIds": [

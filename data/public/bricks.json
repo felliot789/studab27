@@ -3,7 +3,7 @@
     "id": "school",
     "folder": "03_School_Documents",
     "title": "School documents",
-    "description": "One clean school pack, reused across applications.",
+    "description": "School records reused across applications.",
     "items": [
       {
         "id": "transcript",
@@ -51,7 +51,7 @@
     "id": "financial",
     "folder": "04_Financial_Documents",
     "title": "Financial documents",
-    "description": "An inventory first. Translations after the rules are confirmed.",
+    "description": "Financial document inventory; translations follow confirmed requirements.",
     "items": [
       {
         "id": "income",

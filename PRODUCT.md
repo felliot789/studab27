@@ -30,7 +30,7 @@ Scholarships can be filtered by Realistic, Reach, Lottery, or Unknown, with a vi
 
 ## Brand Personality
 
-Professional, concise, and factual. Preserve the dark, restrained interface. Use descriptive headings, specific instructions, and neutral status messages. Avoid motivational slogans, forced optimism, coaching language, and patronizing reassurance. Urgency must come from published dates and explicit requirements.
+Professional, concise, and factual. Preserve the dark, restrained interface. Use descriptive headings, specific instructions, and neutral status messages. Keep interface copy objective: name the page, action, or state without addressing the reader as "you" or "your." Omit self-referential workspace, privacy, and hosting taglines. Keep practical privacy disclosures and evidence limits beside the relevant action. Avoid motivational slogans, forced optimism, coaching language, and patronizing reassurance. Urgency must come from published dates and explicit requirements.
 
 ## Anti-references
 

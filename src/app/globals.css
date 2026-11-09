@@ -51,7 +51,6 @@ button, a, input, select, textarea, summary { -webkit-tap-highlight-color: trans
 .brand { display: inline-flex; align-items: center; padding: 0 12px; }
 /* Blend the supplied logo's black backdrop into the dark shell. */
 .brand-logo { display: block; width: 164px; max-width: 100%; height: auto; mix-blend-mode: screen; }
-.sidebar-subtitle { color: var(--faint); font-size: 12px; padding: 6px 13px 36px; }
 .sidebar nav { display: flex; flex-direction: column; gap: 6px; }
 .nav-link { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border-radius: 7px; color: var(--muted); font-size: 12.5px; transition: background 160ms, color 160ms; }
 .nav-link svg { flex-shrink: 0; }
@@ -358,7 +357,6 @@ h1 { font: 400 36px/1.2 Georgia, "Times New Roman", serif; letter-spacing: -.025
   .app-shell { display: block; }
   .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 20px 22px 10px; }
   .brand { padding: 0; font-size: 22px; align-self: flex-start; }
-  .sidebar-subtitle { display: none; }
   .sidebar nav { flex-direction: row; overflow-x: auto; padding: 17px 0 0; gap: 8px; }
   .nav-link { flex: 0 0 auto; padding: 10px 11px; gap: 7px; font-size: 11px; }
   .nav-link small { display: none; }
@@ -439,12 +437,10 @@ h1 { font: 400 36px/1.2 Georgia, "Times New Roman", serif; letter-spacing: -.025
 .login-content { max-width: 400px; width: 100%; }
 .login-brand { width: 220px; margin-bottom: 50px; }
 .login-content > svg { color: var(--accent); }
-.login-content h1 { font-size: 32px; margin-top: 22px; line-height: 1.25; }
-.login-content > p { margin-block: 17px 28px; color: var(--muted); }
+.login-content h1 { font-size: 32px; margin: 22px 0 28px; line-height: 1.25; }
 .login-content .stacked-form label { font-size: 14px; }
 .login-content .stacked-form input { font-size: 16px; min-height: 48px; }
 .login-content .button { width: 100%; min-height: 48px; justify-content: space-between; font-size: 14px; }
-.login-content > .fine-print { font-size: 12px; }
 .view-schola { max-width: 1000px; padding-top: 26px; padding-bottom: 15px; display: flex; }
 .schola-corner { flex: 1; min-width: 0; min-height: calc(100dvh - 110px); display: flex; flex-direction: column; }
 .chat-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
