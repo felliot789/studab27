@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { safeUrl } from "@/lib/schema";
 import { Badge, dateTime, External, Icon } from "./ui";
+import ScholarshipDraftsButton from "./scholarship-drafts";
 
 type Message = { id: number; role: "user" | "assistant"; content: string; jobId: string; createdAt: string; meta: { model?: string; kind?: string; sources?: { url: string; retrievedAt: string; kind: string }[] } };
 type Job = { id: string; kind: string; status: "QUEUED" | "RUNNING" | "DONE" | "FAILED"; error?: string; createdAt: string };
@@ -93,6 +94,7 @@ export default function ScholaChat({ route, embedded = false }: { route?: ChatRo
   ] : suggestions;
   const conversation = <>
     <header className="chat-heading"><div><span className="chat-glyph" aria-hidden="true">✳</span><div><Heading id={titleId}>Schola</Heading><p>{route ? `${route.institution} · ${route.scholarshipName}` : "Scholarship research and application planning."}</p></div></div><Badge tone={workerOnline && !needsAttention ? "success" : "warning"}>{!workerOnline ? "Worker offline" : needsAttention ? "Needs attention" : "Online"}</Badge></header>
+    {!route && <div className="schola-drafts-entry"><ScholarshipDraftsButton /><p>Research a new opportunity or review saved scholarship drafts.</p></div>}
     <details className="connection-details">
       <summary><Icon name="shield" size={15} />{!data ? "Loading connection settings…" : data.settings.contextAllowed ? route ? "Scholarship context enabled" : "Project context enabled" : "Fictional context only"}<Icon name="chevron" size={13} /></summary>
       {data ? <div>

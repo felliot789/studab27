@@ -6,6 +6,7 @@ import { activeApplication, dateLabel, eventDay, upcomingEvents } from "@/lib/ca
 import type { OutlookCategory } from "@/lib/schema";
 import { OUTLOOK_CATEGORIES, OUTLOOK_EXPLANATIONS, OUTLOOK_LABELS, matchesOutlook, outlookCategory } from "@/lib/scholarship-outlook";
 import ScholarshipOutlook from "./scholarship-outlook";
+import ScholarshipDraftsButton from "./scholarship-drafts";
 import { Badge, CountryLabel, Icon, PageHeading, type ViewProps } from "./ui";
 
 export default function Catalogue({ data, act, busy }: ViewProps) {
@@ -21,7 +22,7 @@ export default function Catalogue({ data, act, busy }: ViewProps) {
   const hasFilters = !!query || country !== "all" || tier !== "all" || budget !== "all" || scope !== "all" || outlook !== "ALL" || hideLottery;
   const next = upcomingEvents(data.calendarEvents, data.overlays, true);
   const trackedCount = data.overlays.filter(o => o.tracked).length;
-  return <><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/scholarships"><Icon name="back" size={16} />Back to tracker</Link></nav><PageHeading title="Explore scholarships">Browse scholarships, compare evidence, and add applications to the tracker.</PageHeading>
+  return <><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/scholarships"><Icon name="back" size={16} />Back to tracker</Link></nav><PageHeading title="Explore scholarships" extra={<ScholarshipDraftsButton />}>Browse scholarships, compare evidence, and add applications to the tracker.</PageHeading>
     <section className="outlook-organizer" aria-labelledby="outlook-heading">
       <div className="section-line"><h2 id="outlook-heading">Scholarship outlook</h2><span>Admission + award selection</span></div>
       <p id="outlook-help" role="status">{outlook === "ALL" ? "Outlooks assess admission and award selection. They do not establish individual award probabilities." : OUTLOOK_EXPLANATIONS[outlook]}</p>

@@ -11,6 +11,7 @@ import socket
 import subprocess
 import tempfile
 import time
+import uuid
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from urllib.parse import quote
@@ -61,6 +62,10 @@ def main():
             assert data["mode"] == "DEMO" and len(data["briefing"]["cards"]) == 3
             assert {r["id"] for r in data["routes"]} == expected_routes
             assert {e["id"] for e in data["calendarEvents"]} == expected_events
+            scholarship_api = "/api/schola/scholarships"
+            assert request(scholarship_api) == {"drafts": [], "mode": "DEMO"}
+            request(scholarship_api, {"action": "start", "id": str(uuid.uuid4()), "query": "Fictional scholarship"}, expect=400)
+            assert request(scholarship_api)["drafts"] == []
             for route in ("/", "/scholarships", "/scholarships?browse=1", "/today", "/applications", "/calendar", "/documents", "/documents?tab=reusable", "/updates", "/settings", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
             for route in data["routes"]:
                 request("/scholarships/" + quote(route["id"]))
@@ -144,6 +149,65 @@ def main():
             bad = {**bundle, "overlays": [*bundle["overlays"], bundle["overlays"][0]]}
             request(value={"action": "import", "bundle": bad}, expect=400)
             assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 6
+            # No model is configured: a failed enqueue must still preserve the
+            # lead, which can be reviewed manually without any network traffic.
+            draft_id = str(uuid.uuid4())
+            lead = {"action": "start", "id": draft_id, "query": "Fictional HTTP engineering award for 2027",
+                    "sourceUrl": "https://university.edu/fixture"}
+            request(scholarship_api, lead, expect=400)
+            draft_list = request(scholarship_api)
+            assert draft_list["mode"] == "PRIVATE" and len(draft_list["drafts"]) == 1
+            failed = draft_list["drafts"][0]
+            assert failed["id"] == draft_id and failed["status"] == "FAILED" and failed["query"] == lead["query"]
+            assert failed["fields"]["officialSourceUrl"] == lead["sourceUrl"] and failed["error"]
+            request(scholarship_api, {"action": "retry", "id": draft_id, "revision": failed["revision"]}, expect=400)
+            retried = request(scholarship_api)["drafts"][0]
+            assert retried["status"] == "FAILED" and retried["jobId"] != failed["jobId"] and retried["fields"] == failed["fields"]
+            failed = retried
+            fields = {**failed["fields"], "country": "Australia", "institution": "Fictional HTTP University",
+                      "scholarshipName": "Fictional HTTP Engineering Award", "benefitsCoverage": "Tuition support; living costs UNKNOWN",
+                      "unresolvedQuestions": ["2027 entry and Indonesian eligibility remain UNKNOWN"]}
+            ready = request(scholarship_api, {"action": "save", "id": draft_id, "revision": failed["revision"], "fields": fields})["draft"]
+            assert ready["status"] == "READY" and ready["fields"] == fields
+            before_conflict = request()["state"]
+            request(scholarship_api, {"action": "save", "id": draft_id, "revision": failed["revision"], "fields": fields}, expect=409)
+            assert request()["state"] == before_conflict
+            assert {r["id"] for r in request()["routes"]} == expected_routes
+            accept = {"action": "accept", "id": draft_id, "revision": ready["revision"], "fields": fields}
+            accepted = request(scholarship_api, accept)
+            local_id = "local-" + draft_id
+            assert accepted["routeId"] == local_id and not accepted["duplicate"] and accepted["draft"]["status"] == "ACCEPTED"
+            local_data = request()
+            assert {r["id"] for r in local_data["routes"]} == expected_routes | {local_id}
+            local_route = next(r for r in local_data["routes"] if r["id"] == local_id)
+            assert local_route["local"] and local_route["deadlineWindow2027"] == "UNKNOWN" and not local_route.get("applicationGuide")
+            local_plan = next(o for o in local_data["overlays"] if o["routeId"] == local_id)
+            assert not local_plan.get("tracked") and not local_plan.get("mainTarget") and "pursuitLevel" not in local_plan
+            assert {e["id"] for e in local_data["calendarEvents"]} == expected_events
+            assert not any(e["routeId"] == local_id for e in local_data["calendarEvents"])
+            assert fields["scholarshipName"].encode() in request("/scholarships?browse=1")
+            assert fields["scholarshipName"].encode() in request("/scholarships/" + local_id + "?tab=overview")
+            repeated = request(scholarship_api, accept)
+            assert repeated["routeId"] == local_id and repeated["draft"] == accepted["draft"]
+            assert request()["state"] == local_data["state"]
+            local_bundle = request("/api/schola/export")
+            assert local_bundle["state"]["localScholarships"][local_id]["scholarshipName"] == fields["scholarshipName"]
+            assert local_bundle["state"]["scholarshipDrafts"][draft_id] == accepted["draft"]
+            request(value={"action": "brick", "key": "profile:sat-ticket", "done": False})
+            request(value={"action": "import", "bundle": local_bundle})
+            assert request()["state"] == local_bundle["state"]
+            assert request(scholarship_api)["drafts"] == [accepted["draft"]]
+            assert {r["id"] for r in request()["routes"]} == expected_routes | {local_id}
+            # Imports must validate the local catalogue before replacing any
+            # existing workspace state, including unrelated profile fields.
+            preserved = request("/api/schola/export")
+            for malicious_url in ("http://127.0.0.1/private", "https://university.edu/fixture?token=fictional-secret"):
+                invalid = json.loads(json.dumps(preserved))
+                invalid["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] = 99
+                invalid["state"]["localScholarships"][local_id]["officialSourceUrl"] = malicious_url
+                request(value={"action": "import", "bundle": invalid}, expect=400)
+                current = request("/api/schola/export")
+                assert all(current[key] == preserved[key] for key in ("revision", "profile", "overlays", "milestones", "state", "inbox"))
             assert request("/api/schola/chat")["messages"] == []
             scoped_chat = request("/api/schola/chat?routeId=" + quote(rid))
             assert scoped_chat["routeId"] == rid and scoped_chat["messages"] == []
@@ -155,8 +219,9 @@ def main():
             password, salt = "fictional-http-password", "1234567890abcdef1234567890abcdef"
             access = {"enabled": True, "origins": [origin, "https://workspace.example:9443", "https://workspace.example:10000"], "sessionSecret": "fictional-session-secret-for-http-tests", "passwordSalt": salt, "passwordHash": hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=32768, r=8, p=1, maxmem=64*1024*1024).hex()}
             (scratch / "private/schola.local.json").write_text(json.dumps({"access": access, "llm": {"baseUrl": "http://127.0.0.1:1/v1", "model": "fixture", "apiKey": "fictional-fixture-key"}, "search": {"provider": "disabled"}}))
-            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat"):
+            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", scholarship_api):
                 request(route, expect=401)
+            request(scholarship_api, {"action": "save", "id": draft_id, "revision": accepted["draft"]["revision"], "fields": fields}, expect=401)
             request("/api/session", {"password": "incorrect"}, expect=401)
             request("/api/session", {"password": password}, headers={"Origin": "https://attacker.invalid"}, expect=403)
             request("/api/session", {"password": password})
@@ -172,7 +237,7 @@ def main():
             assert [m["content"] for m in request("/api/schola/chat", headers=chat_headers)["messages"]] == ["Fictional general question"]
             assert request("/api/schola/chat?routeId=" + quote(data["routes"][1]["id"]), headers=chat_headers)["messages"] == []
             request("/api/schola/chat", {**scoped_message, "routeId": data["routes"][1]["id"]}, headers=chat_headers, expect=400)
-            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", "/schola"):
+            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", scholarship_api, "/schola"):
                 request(route, headers={"Cookie": cookie})
             request(headers={"Cookie": "studab27-session=forged"}, expect=401)
             for host in ("workspace.example.attacker.invalid:10000", "workspace.example:9000", "workspace.example"):
@@ -202,7 +267,7 @@ def main():
             request(headers={"Host": "workspace.example:10000", "Cookie": lan_cookie}, expect=401)
             request(headers={**lan_headers, "Cookie": cookie}, expect=401)
             request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={**lan_headers, "Cookie": lan_cookie, "Origin": "http://attacker.invalid"}, expect=403)
-            print(f"Production HTTP: tracker, documents, {len(expected_routes)} scholarship pages, priority changes, checklist persistence, safe removal, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
+            print(f"Production HTTP: tracker, documents, {len(expected_routes)} public scholarship pages, reviewed local additions, draft conflicts, checklist persistence, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)

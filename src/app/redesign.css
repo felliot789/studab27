@@ -28,6 +28,64 @@
 .page-heading { padding: 8px 0 34px; }
 .page-heading h1 { font-size: clamp(30px, 2.8vw, 39px); letter-spacing: -.025em; line-height: 1.18; }
 .page-heading p { font-size: 14px; line-height: 1.75; margin-top: 14px; }
+.schola-drafts-entry { margin: 0 0 22px; }
+.schola-drafts-entry p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+.scholarship-drafts-dialog { width: min(670px, 100vw); }
+.scholarship-drafts, .draft-editor, .draft-fields { min-width: 0; }
+.draft-intro p { max-width: 70ch; }
+.draft-error { margin-top: 18px; font-size: 14px; overflow-wrap: anywhere; }
+.draft-lead label, .draft-fields label { font-size: 13px; line-height: 1.6; }
+.draft-lead textarea { min-height: 80px; }
+.field-optional { color: var(--muted); font-weight: 400; }
+.draft-list-item { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 18px 0; border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); text-align: left; }
+.draft-list-item:hover strong { color: var(--accent); }
+.draft-list-item > span { min-width: 0; }
+.draft-list-item > span:last-child { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.draft-list-item strong { font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.draft-list-item small { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; }
+.draft-list-item .badge { white-space: normal; }
+.draft-back { margin-top: 14px; }
+.draft-editor-heading { padding: 16px 0 20px; }
+.draft-editor-heading h3 { font-size: 21px; line-height: 1.4; margin-bottom: 12px; overflow-wrap: anywhere; }
+.draft-editor-heading p { font-size: 12px; color: var(--muted); margin-top: 10px; }
+.draft-fields { gap: 18px; }
+.draft-fields fieldset { min-width: 0; width: 100%; padding: 0; margin: 0; border: 0; }
+.draft-fields legend { padding: 0; margin: 0 0 16px; font-size: 15px; font-weight: 500; }
+.draft-fields label { display: block; width: 100%; }
+.draft-fields input, .draft-fields textarea { width: 100%; display: block; margin-top: 7px; font-size: 14px; }
+.draft-funding { margin-top: 17px; }
+.draft-identity-grid { display: flex; flex-wrap: wrap; gap: 17px; margin-bottom: 17px; }
+.draft-identity-grid label { flex: 1 1 210px; min-width: 0; }
+.draft-identity-grid label:first-child { flex-basis: 100%; }
+.draft-more { margin-top: 20px; border-block: 1px solid var(--line); }
+.draft-more summary { padding-block: 15px; font-size: 13px; color: var(--ink); line-height: 1.6; }
+.draft-more > div { display: flex; flex-direction: column; gap: 17px; padding-block: 4px 20px; }
+.draft-actions { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; align-items: center; }
+.draft-unsaved, .draft-notice { color: var(--muted); font-size: 13px; }
+.draft-unsaved .text-button { margin-left: 4px; }
+.draft-matches { margin-bottom: 24px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; }
+.draft-matches h4, .draft-sources h4 { font-size: 14px; font-weight: 500; }
+.draft-matches p, .draft-sources > p { color: var(--muted); font-size: 13px; margin: 8px 0; }
+.draft-matches a { display: block; font-size: 13px; margin-top: 13px; overflow-wrap: anywhere; }
+.draft-matches a:hover { color: var(--accent); }
+.draft-matches a small { display: inline-block; color: var(--muted); margin-inline: 8px; }
+.draft-matches a svg { display: inline; vertical-align: middle; }
+.draft-sources { padding: 24px 0; margin-top: 24px; border-top: 1px solid var(--line); }
+.draft-sources article { padding-block: 17px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.draft-sources .source-link { font-size: 13px; }
+.draft-sources article p { white-space: pre-wrap; color: var(--muted); font-size: 13px; margin-top: 8px; }
+.draft-sources article small { display: block; color: var(--muted); font-size: 12px; margin-top: 8px; }
+.draft-accepted { padding-block: 8px 20px; }
+.draft-accepted > p { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+.draft-accepted > .fine-print { margin: 12px 0 0; }
+@media (max-width: 480px) {
+  .scholarship-drafts-dialog .drawer-inner { padding-inline: 18px; }
+  .draft-list-item { flex-wrap: wrap; gap: 10px; }
+  .draft-list-item > span:first-child { flex-basis: 100%; }
+  .draft-list-item > span:last-child { width: 100%; justify-content: space-between; }
+  .draft-fields input, .draft-fields textarea, .draft-lead input, .draft-lead textarea { font-size: 16px; }
+  .draft-actions .button { flex: 1 1 auto; }
+}
 .button { min-height: 42px; padding: 10px 16px; font-size: 12px; }
 .icon-button { min-width: 40px; min-height: 40px; }
 .text-button { min-height: 35px; }

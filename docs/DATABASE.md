@@ -6,7 +6,7 @@ This describes the implementation and maintenance procedure, not a live deployme
 
 | Store | Responsibility |
 | --- | --- |
-| `private/workspace.sqlite3` | Profile, route plans, milestones, inbox, task progress, reusable-document readiness and scholarship checklist progress. |
+| `private/workspace.sqlite3` | Profile, route plans, milestones, inbox, task progress, reusable-document readiness and scholarship checklist progress, scholarship drafts and accepted local catalogue entries. |
 | `private/schola.sqlite3` | Conversation jobs, messages, research provenance, budgets, worker state and explicit retry receipts. |
 | `private/demo-workspace.sqlite3`, `private/demo-schola.sqlite3` | Isolated stores when `STUDAB27_DEMO=1`; owner credentials/context and import are disabled. |
 | `data/public/` | Versioned catalogue, guides, calendar, source reviews and fictional examples. |
@@ -29,6 +29,8 @@ Before initialization, both owner profile and overlay must exist to select PRIVA
 | `migrations` | Applied workspace schema version, time and description. |
 
 Definitions may retire a route, task or guide item without deleting private history. Migration, export/import and database reads retain those identifiers and unknown fields. New interactive edits still validate against current public definitions. A stored retired route does not become a currently available scholarship.
+
+Drafts and accepted additions are validated optional objects in `workspace_meta.state_extra`, under `scholarshipDrafts` and `localScholarships`. They retain stable UUID-based identities, source findings, unresolved questions and per-draft revisions. The SQL schema remains v1. A portable workspace export includes both objects; the separately versioned public catalogue and chat remain outside that bundle. Local records cannot shadow public route IDs or import field reviews as verified eligibility.
 
 ### Conversation entities
 

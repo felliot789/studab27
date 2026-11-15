@@ -31,6 +31,7 @@ export type CalendarEvent = {
   sourceReview: { status: string; note: string; reviewedAt: string; scope: string; evidence: Evidence[] };
 };
 export type Route = {
+  local?: boolean;
   id: string; country: string; institution: string; scholarshipName: string;
   fundingType: string; engineeringFit: string; benefitsCoverage: string; satRole: string;
   suggestedSatBenchmark: string; languageOrTestNotes: string; deadlineWindow2027: string;
@@ -69,7 +70,7 @@ export type Task = { id: string; category: "DECISION_GATE" | "VERIFY_RULE" | "DO
 export type Brick = { id: string; folder: string; title: string; description: string; items: { id: string; label: string }[] };
 export type Milestone = { date: string; title: string; timeWIB?: string; notes?: string; calendarUrl?: string };
 export type InboxItem = { id: string; text: string; createdAt: string; status: "NEW" | "TRIAGED" };
-export type AppState = { tasks: Record<string, { status?: "DONE"; snoozedUntil?: string; replacedAt?: string }>; bricks: Record<string, boolean>; requirements?: Record<string, Record<string, RequirementProgress>>; updatedAt?: string };
+export type AppState = { tasks: Record<string, { status?: "DONE"; snoozedUntil?: string; replacedAt?: string }>; bricks: Record<string, boolean>; requirements?: Record<string, Record<string, RequirementProgress>>; scholarshipDrafts?: Record<string, import("./scholarship-drafts").ScholarshipDraft>; localScholarships?: Record<string, Route>; updatedAt?: string };
 export type SourceNote = { id: string; routeId?: string; checkedAt: string; cycle: string; title: string; summary: string; sourceUrl: string; secondaryUrl?: string; deadlineAt?: string; deadlineDate?: string; deadlineLabel?: string; verifiedField: string };
 export type WatchEvent = { id: string; at: string; url: string; kind: "BASELINE" | "CHANGED" | "ERROR"; summary: string; excerpt: string; routeIds: string[] };
 export type WatchState = { lastRunAt: string | null; runStartedAt?: string; running?: boolean; runComplete?: boolean; scope?: string; progress?: { checked: number; total: number }; summary?: { checked: number; ok: number; errors: number }; sources: Record<string, { status: string; hash?: string; lastCheckedAt?: string; lastSuccessAt?: string; error?: string; routeIds?: string[] }>; events: WatchEvent[] };

@@ -28,7 +28,8 @@ def export(root, destination):
         elif filename == "hq" and workspace["mode"] == "PRIVATE" and source.exists():
             atomic_write(target, source.read_bytes())
     target = destination / "01_Catalogue" / "scholarships_2027.json"
-    atomic_write(target, (root / "data/public/scholarships_2027.json").read_bytes())
+    from .catalogue import all_routes
+    atomic_json(target, all_routes(root, workspace))
     atomic_json(destination / "00_HQ/export-manifest.local.json", {"format": "studab27-drive-mirror-v1", "cloudSynced": False, "folders": FOLDERS, "workspaceRevision": workspace.get("revision")})
     return destination
 

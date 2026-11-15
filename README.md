@@ -64,6 +64,12 @@ Published times with known zones convert to WIB. Date-only records stay on the p
 
 `scripts/prepare-catalogue.py REVIEW_DIRECTORY` creates the public projection from reviewed research with explicit per-record review dates and unique route/event IDs. Catalogue size is data-driven; new routes also need aligned fictional overlays. It allowlists public facts and source URLs, excluding raw imports, local source filenames, snapshots, hashes, and private review metadata. `scripts/validate-data.py` checks all route/event relationships and date-evidence boundaries. Schola can inspect the same reviewed events without converting candidate dates into verified rules.
 
+## Add a scholarship
+
+Open Explore Scholarships or general Schola, choose **Add new scholarship**, and enter a public scholarship name/question with an optional source URL. Research runs as a durable job. Reopen Scholarship drafts to review findings, edit missing details, check possible duplicates, and explicitly **Add to Explore**. A failed request retains its lead for editing or explicit retry. Adding does not track the scholarship or set a priority.
+
+Accepted additions are local workspace records, merged with the public catalogue at request time. Workspace export/import and full local recovery include drafts and accepted entries; they stay out of Git until separately reviewed for publication. Research evidence does not establish eligibility or confirmed calendar dates, and this flow does not generate a checklist.
+
 ## Schola model and conversation
 
 Put the model connection in an ignored `.env` once:

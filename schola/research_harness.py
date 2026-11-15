@@ -16,6 +16,62 @@ class ResearchLimit(ValueError):
     """A research run exhausted an explicit local limit."""
 
 
+def budget_message(*, remaining_tools, remaining_rounds):
+    """Give each model reply its actual remaining local budget."""
+    if remaining_tools <= 0 or remaining_rounds <= 0:
+        return {"role": "user", "content": "Research budget reached. Answer now using collected evidence, cite sources, and mark unresolved facts UNKNOWN. Do not request more tools."}
+    return {"role": "user", "content": (
+        f"Research budget: {remaining_tools} tool calls and {remaining_rounds} further model replies remain after this reply. "
+        "Use focused source queries and continuation offsets; avoid rereading whole pages. "
+        "Reserve the final reply for synthesis. If evidence remains incomplete, explain the gaps and mark unresolved facts UNKNOWN."
+    )}
+
+
+def prepare_reply(reply, tool_names, *, allow_tools, remaining_tools):
+    """Validate a complete batch before execution, marking over-budget calls.
+
+    Every requested call keeps its ID and receives a result, including skipped
+    calls. Unknown tools and malformed arguments remain errors, not executions.
+    """
+    if not isinstance(reply, dict):
+        raise ValueError("The model returned an invalid research reply. Retry explicitly.")
+    raw_calls = reply.get("tool_calls")
+    if raw_calls is None:
+        raw_calls = []
+    if not isinstance(raw_calls, list) or len(raw_calls) > 32:
+        raise ValueError("The model returned invalid research tool calls. Retry explicitly.")
+    if raw_calls and not allow_tools:
+        raise ResearchLimit("The final research reply requested tools despite the synthesis-only limit. Retry explicitly.")
+    calls, normalized_calls, seen = [], [], set()
+    for call in raw_calls:
+        try:
+            call_id, function = call["id"], call["function"]
+            name, encoded = function["name"], function["arguments"]
+            if (not isinstance(call_id, str) or not call_id.strip() or len(call_id) > 200
+                    or call_id in seen or not isinstance(name, str) or name not in tool_names
+                    or not isinstance(encoded, str)):
+                raise ValueError()
+            arguments = json.loads(encoded)
+            if not isinstance(arguments, dict):
+                raise ValueError()
+        except (KeyError, TypeError, ValueError):
+            raise ValueError("The model requested an unavailable research tool or malformed arguments.") from None
+        seen.add(call_id)
+        calls.append((call_id, name, arguments, len(calls) < remaining_tools))
+        normalized_calls.append({"id": call_id, "type": "function", "function": {"name": name, "arguments": encoded}})
+    content = reply.get("content") or ""
+    if not isinstance(content, str) or (not content.strip() and not calls):
+        raise ValueError("The model returned no usable research reply. Retry explicitly.")
+    normalized = {"role": "assistant", "content": content}
+    if normalized_calls:
+        normalized["tool_calls"] = normalized_calls
+    return normalized, calls
+
+
+def skipped_tool_result():
+    return {"state": "BUDGET_EXHAUSTED", "error": "This tool call was not executed because the research tool budget is exhausted. Use collected evidence and mark unresolved facts UNKNOWN."}
+
+
 def run_agent(messages, tool_specs, complete, execute_tool, *, max_rounds=6,
               max_tools=12, max_seconds=600):
     """Return a normalized final reply; both callbacks run on this thread.
@@ -60,38 +116,23 @@ def run_agent(messages, tool_specs, complete, execute_tool, *, max_rounds=6,
             raise ResearchLimit("Research model-round limit reached. Retry explicitly.")
         counts["model"] += 1
         allow_tools = counts["model"] < max_rounds and counts["tools"] < max_tools
-        history = state["messages"]
-        if not allow_tools:
-            history = [*history, {"role": "user", "content": "Research limit reached. Answer now using collected evidence, cite sources, and mark unresolved eligibility UNKNOWN. Do not request more tools."}]
+        history = [*state["messages"], budget_message(
+            remaining_tools=max_tools - counts["tools"], remaining_rounds=max_rounds - counts["model"])]
         reply = complete(history, allow_tools=allow_tools)
         check_time()
-        if not isinstance(reply, dict):
-            raise ValueError("The model returned an invalid research reply. Retry explicitly.")
-        calls = []
-        for call in reply.get("tool_calls") or []:
-            if not allow_tools or len(calls) + counts["tools"] >= max_tools:
-                raise ResearchLimit("Research tool limit reached. Retry explicitly.")
-            function = call["function"]
-            args = json.loads(function["arguments"])
-            if function["name"] not in names or not isinstance(args, dict):
-                raise ValueError("The model requested an unavailable research tool.")
-            calls.append((call["id"], function["name"], args))
-        content = reply.get("content") or ""
-        if not isinstance(content, str) or (not content.strip() and not calls):
-            raise ValueError("The model returned no usable research reply. Retry explicitly.")
-        normalized = {"role": "assistant", "content": content}
-        if calls:
-            normalized["tool_calls"] = reply["tool_calls"]
+        normalized, calls = prepare_reply(reply, names, allow_tools=allow_tools,
+                                          remaining_tools=max_tools - counts["tools"])
         return {"messages": [*state["messages"], normalized], "reply": normalized, "calls": calls}
 
     async def tool_step(state):
         results = []
-        for call_id, name, arguments in state["calls"]:
+        for call_id, name, arguments, admitted in state["calls"]:
             check_time()
-            if counts["tools"] >= max_tools:
-                raise ResearchLimit("Research tool limit reached. Retry explicitly.")
-            counts["tools"] += 1
-            result = execute_tool(name, arguments)
+            if admitted:
+                counts["tools"] += 1
+                result = execute_tool(name, arguments)
+            else:
+                result = skipped_tool_result()
             check_time()
             results.append({"role": "tool", "tool_call_id": call_id,
                             "content": json.dumps(result, ensure_ascii=False)})

@@ -56,7 +56,9 @@ export async function baseData() {
   const overlays = [...workspace.overlays];
   for (const route of catalogue) if (!overlays.some(plan => plan.routeId === route.id)) overlays.push({ routeId: route.id, applicationStatus: "NOT_STARTED", personalStrategyTier: "", estimatedFamilyGapIdrMPerMonth: "", personalSatTargetNote: "", personalRiskNote: "" });
   workspace.overlays = overlays;
-  const routes = catalogue.map(route => ({ ...route, scholarshipOutlook: outlooks[route.id], applicationGuide: guides[route.id] }));
+  const local = currentMode === "PRIVATE" ? Object.values(workspace.state.localScholarships || {}) : [];
+  const routes = [...catalogue, ...local].map(route => ({ ...route, scholarshipOutlook: outlooks[route.id], applicationGuide: guides[route.id] }));
+  for (const route of local) if (!overlays.some(plan => plan.routeId === route.id)) overlays.push({ routeId: route.id, applicationStatus: "NOT_STARTED", personalStrategyTier: "", estimatedFamilyGapIdrMPerMonth: "", personalSatTargetNote: "", personalRiskNote: "" });
   const tasks = await python<Task[]>("schola.spoonfeeder", { tasks: templates, routes, profile, overlays, bricks, milestones, command: "pool" });
   return { mode: currentMode, routes, profile, overlays, tasks, bricks, sourceNotes, milestones, calendarEvents, workspace };
 }

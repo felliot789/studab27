@@ -95,6 +95,8 @@ def validate(value):
     if not all(isinstance(value[key], list) for key in ('overlays', 'milestones', 'inbox')):
         raise ValueError('Workspace lists are required.')
     state = value['state']
+    from .catalogue import validate_catalogue_state
+    validate_catalogue_state(state)
     if not isinstance(state, dict) or not all(isinstance(state.get(key), dict) for key in ('tasks', 'bricks')):
         raise ValueError('Workspace progress objects are required.')
     plans = [plan.get('routeId') if isinstance(plan, dict) else None for plan in value['overlays']]
