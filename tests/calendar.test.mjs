@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { activeApplication, eventClock, eventDay, inMyCalendar, todayWib, upcomingEvents } from "../src/lib/calendar.ts";
+import { activeApplication, dateLabel, eventClock, eventDay, inMyCalendar, todayWib, upcomingEvents } from "../src/lib/calendar.ts";
 
 const events = JSON.parse(readFileSync(new URL("../data/public/calendar_events.json", import.meta.url)));
 const overlays = JSON.parse(readFileSync(new URL("../data/public/overlay.example.json", import.meta.url)));
@@ -26,6 +26,14 @@ test("published fixed time zones cross the WIB day without inventing date-only c
   assert.equal(eventDay(dateOnly), dateOnly.date);
   assert.equal(eventClock(dateOnly), "Cutoff time not published");
   assert.equal(todayWib(new Date("2026-11-03T18:00:00Z")), "2026-11-04");
+});
+
+test("reused date formatters preserve date-only labels and follow the WIB day boundary", () => {
+  assert.equal(dateLabel("2026-11-03"), "3 Nov");
+  assert.equal(dateLabel("2026-11-03", true), "3 Nov 2026");
+  assert.equal(dateLabel("2026-11-03"), "3 Nov");
+  assert.equal(todayWib(new Date("2026-11-03T16:59:59Z")), "2026-11-03");
+  assert.equal(todayWib(new Date("2026-11-03T17:00:00Z")), "2026-11-04");
 });
 
 test("saved and active calendar scope preserves explicit application decisions", () => {

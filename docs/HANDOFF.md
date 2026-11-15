@@ -1,5 +1,33 @@
 # Handoff
 
+## UI navigation performance — 2026-11-16
+
+Implementation baseline: `bc99395`. Deployed web build: `rJahPZ8_dyfaWWsdxgnmN`. Page switching and opening scholarships were the reported slow paths. The existing Next.js/React UI and Python/SQLite storage remain in place.
+
+Pages and scoped dashboard refreshes now serialize the records required by their view. Scholarship pages retain the complete selected route, guide, plan, evaluation, shared readiness, source notes, dates and direct calendar prerequisites, including hidden tabs. Tracker and Documents retain tracked routes. Calendar retains the full selectable route/date inventory. Storage, revision checks, exports and the default full dashboard API keep their contracts; projection never writes back a partial snapshot. Duplicate local-route/draft stores stay on the server, with their existing review API still available.
+
+Secondary screen code and the scholarship chat popup load on demand with server rendering enabled. Dashboard derivation combines task-pool generation, evaluations and briefing in one Python invocation, reducing a dashboard load from four Python processes to two; ordinary mutations skip unused pool generation. Date formatters are reused, catalogue joins are indexed, and unchanged chat text is not reparsed while typing. Internal document-pack links use client navigation.
+
+A paired, alternating 20-sample loopback comparison used separate production builds, the same 68 public routes/200 events and three tracked fictional guided routes, with matched explicit fixture actions and no model requests. Times measure complete HTTP response reads, not browser interaction latency or phone network performance.
+
+| Measure | Before | After |
+| --- | --- | --- |
+| Tracker HTML response median | 168.0 ms | 85.2 ms |
+| Scholarship HTML response median | 166.5 ms | 86.3 ms |
+| Save plus Documents refresh median | 291.1 ms | 186.5 ms |
+| Tracker HTML body | 965,107 bytes | 52,014 bytes |
+| Scholarship HTML body | 996,035 bytes | 66,092 bytes |
+| Scholarship HTML gzip estimate | 92,067 bytes | 12,481 bytes |
+| Scoped scholarship dashboard JSON | 880,232 bytes | 12,316 bytes |
+
+Tracker initial script bodies decreased from 723,976 to 638,684 raw bytes (221,793 to 199,351 bytes with per-file gzip estimates). HTML and JSON figures are from the paired run; script figures are from separate cold-route asset inventories. Gzip figures are local compression estimates, not measured network transfer counts. These are fixture-specific measurements, not a promise of a fixed speedup on every device.
+
+Validation: isolated `npm ci`, `npm run check` (122 Python tests, 11 optional-runtime skips; 22 Node tests), production build, emitted-build privacy review (457 text files) and fictional HTTP checks passed. HTTP coverage includes all 68 public scholarship pages, scoped responses and cross-route calendar prerequisites, progress persistence, local additions, conflicts, export/import, sessions, exact origins and CSRF. Browser checks covered desktop and 320/390px viewports: tracker/detail/Documents/Calendar switching, hidden detail tabs, a saved checklist change, reusable documents, All routes, and closing/reopening an unsent scholarship-chat draft. No horizontal overflow or browser errors were observed. A read-only diff review found no actionable regressions; the ignored code-only graph was rebuilt without model calls.
+
+Deployment waited for zero active Schola jobs and an idle scan, then switched only the tested web build. Workspace/conversation records and configuration/monitor fingerprints matched before and after; full authenticated dashboard values also matched. Scoped private reads returned 200, unauthenticated API access remained 401, both stores and verified local recovery were healthy, both timers stayed active, and the worker PID was unchanged. The previous build and source checkpoint remain in the ignored deployment vault for rollback. No database migration, worker restart or model request was needed.
+
+Remaining limits: physical-phone and real-network interaction timings were not measured. The shell still mounts per page, and Catalogue/Calendar intentionally retain their full selectable records. If navigation remains slow on the target phone, profile that device/network before expanding the architecture or changing languages.
+
 ## Reviewable local scholarship additions — 2026-11-16
 
 Implementation baseline: `800348d`. Deployed build: `1YiYhJMqiu-gqH3TvKoLB`. Explore and general Schola now offer **Add new scholarship**: public research request → durable draft → review/edit → explicit **Add to Explore**. Drafts and accepted additions live in the canonical workspace state and survive workspace export/import, offline mirror and full local recovery. Accepted entries remain local, untracked and outside Git; they create no confirmed dates, researched guide, priority or eligibility rule. Exact institution/award duplicates return the existing entry; institution variants and shared source URLs also warn about possible matches without merging distinct awards. See [draft review](../src/components/scholarship-drafts.tsx), [catalogue store](../schola/catalogue.py) and [decision 13](DECISIONS.md#13-schola-proposes-explicit-acceptance-adds-to-the-local-catalogue).

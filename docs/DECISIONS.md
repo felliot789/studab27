@@ -2,6 +2,10 @@
 
 Read [PRODUCT.md](../PRODUCT.md) for the current product direction and [REPO_MAP.md](REPO_MAP.md) for implementation locations. These records explain choices; they do not record the owner's scholarship selections. Update an entry when its decision changes, with the reason and date.
 
+## Navigation payloads follow the visible view
+
+**Adopted: 2026-11-16.** Keep the existing Next.js/React UI and Python/SQLite storage. Page navigation previously serialized the entire dashboard, including unrelated scholarship research and calendar evidence. Project request-local data for each view before sending it to the browser, retain complete records for hidden scholarship tabs and calendar prerequisites, and load secondary screen code on demand. Scoped refreshes use the same projection; full exports and the default dashboard API keep their existing contracts. Combine Python derivation into one invocation rather than rewriting fast calculations in another language. Private reads remain authenticated, dynamic and uncached across requests.
+
 ## 1. A tracker is the primary workspace
 
 **Adopted: 2026-11-04.** Tracker, Documents, and Calendar are primary. The full catalogue, source monitoring, scenarios, and older briefing remain accessible as secondary tools. Tracking has no numerical cap; a small working set is a user choice.

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { gapText, label } from "@/lib/schema";
 import { activeApplication, dateLabel, eventDay, upcomingEvents } from "@/lib/calendar";
 import type { OutlookCategory } from "@/lib/schema";
@@ -13,9 +13,12 @@ export default function Catalogue({ data, act, busy }: ViewProps) {
   const [query, setQuery] = useState(""), [country, setCountry] = useState("all"), [scope, setScope] = useState("all");
   const [tier, setTier] = useState("all"), [budget, setBudget] = useState("all");
   const [outlook, setOutlook] = useState<OutlookCategory | "ALL">("ALL"), [hideLottery, setHideLottery] = useState(false);
+  const overlays = useMemo(() => new Map(data.overlays.map(o => [o.routeId, o])), [data.overlays]);
+  const evaluations = useMemo(() => new Map(data.evaluations.map(e => [e.routeId, e])), [data.evaluations]);
+  const search = query.toLowerCase();
   const matching = data.routes.filter(r => {
-    const o = data.overlays.find(o => o.routeId === r.id)!, e = data.evaluations.find(e => e.routeId === r.id)!;
-    return `${r.institution} ${r.scholarshipName} ${r.country}`.toLowerCase().includes(query.toLowerCase()) && (country === "all" || country === r.country) && (scope === "all" || o.tracked) && (tier === "all" || tier === o.personalStrategyTier) && (budget === "all" || budget === e.budget.status);
+    const o = overlays.get(r.id)!, e = evaluations.get(r.id)!;
+    return `${r.institution} ${r.scholarshipName} ${r.country}`.toLowerCase().includes(search) && (country === "all" || country === r.country) && (scope === "all" || o.tracked) && (tier === "all" || tier === o.personalStrategyTier) && (budget === "all" || budget === e.budget.status);
   });
   const filtered = matching.filter(r => matchesOutlook(r, outlook, hideLottery));
   const clearFilters = () => { setScope("all"); setQuery(""); setCountry("all"); setTier("all"); setBudget("all"); setOutlook("ALL"); setHideLottery(false); };
@@ -36,7 +39,7 @@ export default function Catalogue({ data, act, busy }: ViewProps) {
     <div className="discovery-tabs"><div className="text-tabs" role="group" aria-label="Scholarship selection"><button aria-pressed={scope === "all"} onClick={() => setScope("all")}>All scholarships <span>{data.routes.length}</span></button><button aria-pressed={scope === "tracked"} onClick={() => setScope("tracked")}>Tracked <span>{trackedCount}</span></button></div><details className="research-filters"><summary><Icon name="filter" size={16} />More filters{(tier !== "all" || budget !== "all") && " · active"}</summary><div><label>Strategy<select value={tier} onChange={e => setTier(e.target.value)}><option value="all">All strategy tiers</option>{[...new Set(data.overlays.map(o => o.personalStrategyTier))].sort().map(t => <option key={t}>{t}</option>)}</select></label><label>Monthly budget estimate<select value={budget} onChange={e => setBudget(e.target.value)}><option value="all">All budget estimates</option><option value="PASS">Within family cap</option><option value="FAIL">Over family cap</option><option value="UNKNOWN">Still to estimate</option></select></label></div></details></div>
     <div className="section-line list-caption"><span role="status">{filtered.length} scholarship{filtered.length === 1 ? "" : "s"}{hideLottery ? " · lottery hidden" : ""}</span>{hasFilters ? <button className="text-button" onClick={clearFilters}>Clear filters</button> : <span>2027 entry · open a label for its evidence</span>}</div>
     <div className="scholarship-list">{filtered.map(r => {
-      const o = data.overlays.find(o => o.routeId === r.id)!, e = data.evaluations.find(e => e.routeId === r.id)!, date = next.find(n => n.routeId === r.id);
+      const o = overlays.get(r.id)!, e = evaluations.get(r.id)!, date = next.find(n => n.routeId === r.id);
       return <article className="scholarship-row" key={r.id}><div className="scholarship-identity"><span className="eyebrow"><CountryLabel country={r.country} />{activeApplication(o) && <Badge>{label(o.applicationStatus)}</Badge>}</span><h2><Link href={`/scholarships/${r.id}?tab=overview`}>{r.institution}<Icon name="arrow" size={18} /></Link></h2><p>{r.scholarshipName}</p><ScholarshipOutlook route={r} /><span className="research-caption">{r.fundingType} · award terms to verify</span></div><div className="scholarship-next"><span>Next published date</span><strong>{date ? dateLabel(eventDay(date)!, true) : "Dates to confirm"}</strong>{date && <small>{date.title}</small>}<small>Monthly gap estimate: {gapText(e)}</small></div><button className={`save-button ${o.tracked ? "saved" : ""}`} disabled={busy} aria-pressed={!!o.tracked} aria-label={`${o.tracked ? "Stop tracking" : "Track"} ${r.institution}`} onClick={() => act({ action: "tracking", id: r.id, command: o.tracked ? "remove" : "add" }, o.tracked ? "Removed from tracker. Progress retained." : "Scholarship added to tracker.")}><Icon name={o.tracked ? "bookmark-filled" : "bookmark"} size={19} /><span>{o.tracked ? "Tracking" : "Track"}</span></button></article>;
     })}</div>
     {!filtered.length && <div className="empty-state"><Icon name="bookmark" size={30} /><h2>{scope === "tracked" && !trackedCount ? "No tracked scholarships" : outlook === "REALISTIC" ? "No options assessed as Realistic in this selection" : "No scholarships match"}</h2><p>{scope === "tracked" && !trackedCount ? "Track a scholarship to keep its progress and dates together." : outlook === "REALISTIC" ? "A generous award or a budget match does not establish a realistic path. Explore Unknown options for missing evidence, or broaden the filters." : "Try another outlook or clear the filters."}</p><button className="button primary" onClick={clearFilters}>Show all scholarships</button></div>}

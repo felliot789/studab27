@@ -6,12 +6,21 @@ import { baseData, loadDashboard, python, readJson, root, saveWorkspace, seriali
 import { type AppState, type Dashboard, type Evaluation, type InboxItem, type Task } from "@/lib/schema";
 import { isoDate, number, object, text, validateOverlay, validateProfile, validateRequirementProgress } from "@/lib/validation";
 import { jsonBody, IMPORT_MAX_BYTES } from "@/lib/request-body";
+import { isWorkspaceView, projectDashboard } from "@/lib/dashboard-view";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-export async function GET() {
-  try { return NextResponse.json(await loadDashboard()); }
+export async function GET(request: NextRequest) {
+  const view = request.nextUrl.searchParams.get("view");
+  const routeId = request.nextUrl.searchParams.get("routeId") || undefined;
+  if (view !== null && !isWorkspaceView(view)) return NextResponse.json({ error: "Unknown workspace view." }, { status: 400 });
+  if (view === "detail" && !routeId) return NextResponse.json({ error: "Choose a scholarship route." }, { status: 400 });
+  try {
+    const data = await loadDashboard();
+    if (view === "detail" && !data.routes.some(route => route.id === routeId)) return NextResponse.json({ error: "Scholarship route not found." }, { status: 404 });
+    return NextResponse.json(view === null ? data : projectDashboard(data, view, routeId));
+  }
   catch { return NextResponse.json({ error: "Could not load local data. Existing vault files were preserved; inspect the local server log." }, { status: 500 }); }
 }
 
@@ -22,7 +31,7 @@ export async function POST(request: NextRequest) {
       const base = await baseData();
       const sat = number(input.sat, 1350, 1560), cap = number(input.cap, 0, 100);
       if (!Number.isInteger(sat)) throw new Error("SAT score must be a whole number.");
-      return NextResponse.json({ evaluations: await python<Evaluation[]>("schola.evaluator", { ...base, sat, cap }) });
+      return NextResponse.json({ evaluations: await python<Evaluation[]>("schola.evaluator", { routes: base.routes, profile: base.profile, overlays: base.overlays, sat, cap }) });
     }
     return await serialized(async () => {
       const base = await baseData();
@@ -51,7 +60,8 @@ export async function POST(request: NextRequest) {
         }
         case "task": {
           const id = text(input.id, 100), command = text(input.command, 30);
-          if (!base.tasks.some(t => t.id === id)) throw new Error("Unknown briefing task.");
+          const tasks = await python<Task[]>("schola.spoonfeeder", { tasks: base.tasks, routes: base.routes, profile: base.profile, overlays: base.overlays, bricks: base.bricks, milestones: base.milestones, command: "pool" });
+          if (!tasks.some(t => t.id === id)) throw new Error("Unknown briefing task.");
           const prior = state.tasks[id] || {};
           if (command === "done") state.tasks[id] = { ...prior, status: "DONE" };
           else if (command === "snooze") state.tasks[id] = { ...prior, snoozedUntil: new Date(Date.now() + 86400000).toISOString() };

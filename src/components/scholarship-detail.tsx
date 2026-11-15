@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import type { CalendarEvent, Route } from "@/lib/schema";
 import { label } from "@/lib/schema";
@@ -8,9 +9,12 @@ import { EventDialog, EventRow } from "./calendar-event";
 import RoutePlan from "./route-plan";
 import ScholarshipOutlook from "./scholarship-outlook";
 import ApplicationChecklist from "./application-checklist";
-import ScholaChat from "./schola-chat";
 import { PursuitControls } from "./tracker";
 import { Badge, CountryLabel, Dialog, External, Icon, type ViewProps } from "./ui";
+
+const ScholaChat = dynamic(() => import("./schola-chat"), {
+  loading: () => <p role="status">Loading conversation…</p>,
+});
 
 const facts: [string, keyof Route][] = [["Coverage", "benefitsCoverage"], ["Engineering fit", "engineeringFit"], ["Tests and language", "languageOrTestNotes"], ["Apply before graduation", "preGradApplyAllowed"], ["Separate scholarship application", "separateScholarshipApp"], ["AI content policy", "aiContentPolicy"], ["SAT role", "satRole"], ["SAT benchmark · advisory", "suggestedSatBenchmark"], ["Renewal and bond", "renewalAndBondTerms"], ["Indonesian applicants", "indonesianApplicantNotes"], ["Program and teaching language", "programAndLanguageNotes"], ["Other caveats", "publicRiskOrCaveat"]];
 const tabs = [{ id: "checklist", title: "Checklist" }, { id: "overview", title: "Description" }, { id: "dates", title: "Dates" }, { id: "plan", title: "Plan" }, { id: "sources", title: "Sources" }];

@@ -19,13 +19,14 @@ flowchart TD
   Access --> Store[Python workspace_store: committed SQLite snapshot]
   Public --> Base[baseData: attach guides and outlooks]
   Store --> Base
-  Base --> Pool[Python spoonfeeder: task pool]
-  Pool --> Dashboard[Evaluator + briefing + state + watch status]
-  Dashboard --> Workspace[Workspace: client views]
+  Base --> Derived[Python dashboard: task pool + evaluator + briefing]
+  Derived --> Dashboard[State + watch status + request-local derived views]
+  Dashboard --> Projection[dashboard-view: records required by the page]
+  Projection --> Workspace[Workspace: client views loaded on demand]
   Workspace --> API[POST /api/schola]
   API --> Validate[Bounded JSON body + field validation]
   Validate --> Save[SQLite transaction + revision check / explicit action]
-  Save --> Refresh[GET /api/schola refresh]
+  Save --> Refresh[GET /api/schola with view scope]
   Refresh --> Workspace
 ```
 
@@ -34,8 +35,9 @@ flowchart TD
 
 ## Pages and frontend responsibilities
 
-All dashboard entry pages call `loadDashboard()` and declare `force-dynamic`.
+All dashboard entry pages call `loadDashboard()`, project the records needed by their view with [dashboard-view.ts](../src/lib/dashboard-view.ts), and declare `force-dynamic`. Scholarship pages retain the selected complete route, guide, plan, evaluation, source notes, dates and calendar prerequisites; Tracker and Documents retain tracked routes. Calendar keeps the full route/date inventory for its All routes switch. These projections do not write to storage or change exports. The full dashboard GET remains available; Workspace refreshes request their current view explicitly.
 Shared view state, action dispatch, refresh, navigation, busy state, errors, and vault controls belong to [Workspace](../src/components/workspace.tsx).
+Workspace loads secondary screens with `next/dynamic`; the scholarship Schola popup loads its chat code on opening. Server rendering remains enabled. [dashboard.py](../schola/dashboard.py) derives task pool, evaluations and briefing in one Python process, alongside the watch/schedule reads. `baseData()` returns task templates; only task mutations generate a pool to validate generated task IDs. Request-time access checks and SQLite revision checks remain authoritative; no shared private-data cache is used.
 Workspace and [Login](../src/app/login/page.tsx) statically import the supplied [header logo](../src/assets/studab27-logo.svg). [Responsive styles](../src/app/redesign.css) let the mobile wordmark shrink to the available header space while preserving the controls; the desktop sidebar and sign-in screen have their own sizes.
 
 | URL / entry point | Main responsibility |
@@ -88,7 +90,7 @@ sequenceDiagram
   DB->>DB: Replace entity rows; advance revision; COMMIT
   DB-->>S: Saved or conflict (no partial change)
   S-->>W: Saved / HTTP 409
-  W->>API: GET fresh Dashboard
+  W->>API: GET fresh Dashboard for the current view
   API-->>W: Updated shared state
   W-->>UI: Route checklist / Documents / Tracker counts refresh
 ```

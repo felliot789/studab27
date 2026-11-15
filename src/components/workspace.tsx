@@ -1,23 +1,28 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import logo from "@/assets/studab27-logo.svg";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IMPORT_MAX_BYTES } from "@/lib/request-limits";
 import type { Dashboard } from "@/lib/schema";
-import Briefing from "./briefing";
+import type { WorkspaceView as View } from "@/lib/dashboard-view";
 import Tracker from "./tracker";
-import Catalogue from "./catalogue";
-import Applications from "./applications";
-import Calendar from "./calendar";
-import ScholarshipDetail from "./scholarship-detail";
-import Bricks from "./bricks";
-import Watchtower from "./watchtower";
-import ScholaChat from "./schola-chat";
 import { Badge, Dialog, Icon, PageHeading, SignOut, type Action } from "./ui";
 
-type View = "tracker" | "briefing" | "catalogue" | "applications" | "calendar" | "bricks" | "watchtower" | "schola" | "settings" | "detail";
+function ViewLoading() {
+  return <section aria-busy="true" aria-label="Loading page"><div className="skeleton" /><div className="skeleton" /></section>;
+}
+const Briefing = dynamic(() => import("./briefing"), { loading: ViewLoading });
+const Catalogue = dynamic(() => import("./catalogue"), { loading: ViewLoading });
+const Applications = dynamic(() => import("./applications"), { loading: ViewLoading });
+const Calendar = dynamic(() => import("./calendar"), { loading: ViewLoading });
+const ScholarshipDetail = dynamic(() => import("./scholarship-detail"), { loading: ViewLoading });
+const Bricks = dynamic(() => import("./bricks"), { loading: ViewLoading });
+const Watchtower = dynamic(() => import("./watchtower"), { loading: ViewLoading });
+const ScholaChat = dynamic(() => import("./schola-chat"), { loading: ViewLoading });
+
 const nav = [
   { id: "tracker", href: "/scholarships", title: "Tracker", short: "Tracker", icon: "bookmark" },
   { id: "bricks", href: "/documents", title: "Documents", short: "Documents", icon: "layers" },
@@ -31,11 +36,13 @@ export default function Workspace({ initial, view, routeId, initialTab, calendar
   const saving = useRef(false);
   useEffect(() => { setData(initial); }, [initial]);
   const refresh = useCallback(async () => {
-    const response = await fetch("/api/schola", { cache: "no-store" });
+    const query = new URLSearchParams({ view });
+    if (routeId) query.set("routeId", routeId);
+    const response = await fetch(`/api/schola?${query}`, { cache: "no-store" });
     const value = await response.json();
     if (!response.ok) throw new Error(value.error || "Could not reload the workspace.");
     setData(value);
-  }, []);
+  }, [view, routeId]);
   useEffect(() => {
     if (view !== "watchtower" && !data.watch.running) return;
     const timer = setInterval(() => refresh().catch(() => setToast({ text: "Could not refresh source status. Displayed observations may be stale.", error: true })), 15000);

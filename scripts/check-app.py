@@ -26,7 +26,16 @@ def main():
             (scratch / name).symlink_to(root / name, target_is_directory=True)
         shutil.copytree(root / "data", scratch / "data")
         expected_routes = {r["id"] for r in json.loads((scratch / "data/public/scholarships_2027.json").read_text())}
-        expected_events = {e["id"] for e in json.loads((scratch / "data/public/calendar_events.json").read_text())}
+        calendar_path = scratch / "data/public/calendar_events.json"
+        events = json.loads(calendar_path.read_text())
+        source_notes = json.loads((scratch / "data/public/source_verifications.json").read_text())
+        # This fictional copy exercises a prerequisite outside the selected route.
+        selected_event = next(e for e in events if e["prerequisiteEventIds"] and any(n.get("routeId") == e["routeId"] for n in source_notes))
+        scoped_route_id = selected_event["routeId"]
+        cross_route_event = next(e for e in events if e["routeId"] != scoped_route_id)
+        selected_event["prerequisiteEventIds"].append(cross_route_event["id"])
+        calendar_path.write_text(json.dumps(events))
+        expected_events = {e["id"] for e in events}
         shutil.copy(root / "package.json", scratch / "package.json")
         with socket.socket() as s:
             s.bind(("127.0.0.1", 0))
@@ -62,6 +71,22 @@ def main():
             assert data["mode"] == "DEMO" and len(data["briefing"]["cards"]) == 3
             assert {r["id"] for r in data["routes"]} == expected_routes
             assert {e["id"] for e in data["calendarEvents"]} == expected_events
+            request("/api/schola?view=not-a-view", expect=400)
+            request("/api/schola?view=", expect=400)
+            request("/api/schola?view=detail", expect=400)
+            request("/api/schola?view=detail&routeId=not-a-route", expect=404)
+            detail = request("/api/schola?view=detail&routeId=" + quote(scoped_route_id))
+            assert detail["routes"] == [r for r in data["routes"] if r["id"] == scoped_route_id]
+            assert detail["overlays"] == [o for o in data["overlays"] if o["routeId"] == scoped_route_id]
+            assert detail["evaluations"] == [e for e in data["evaluations"] if e["routeId"] == scoped_route_id]
+            assert detail["sourceNotes"] == [n for n in data["sourceNotes"] if n.get("routeId") == scoped_route_id]
+            selected_events = [e for e in data["calendarEvents"] if e["routeId"] == scoped_route_id]
+            event_ids = {e["id"] for e in selected_events} | {p for e in selected_events for p in e["prerequisiteEventIds"]}
+            assert detail["calendarEvents"] == [e for e in data["calendarEvents"] if e["id"] in event_ids]
+            assert cross_route_event in detail["calendarEvents"]
+            assert detail["profile"] == data["profile"] and detail["bricks"] == data["bricks"]
+            assert len(json.dumps(detail)) < len(json.dumps(data)) / 2
+            assert {r["id"] for r in request()["routes"]} == expected_routes
             scholarship_api = "/api/schola/scholarships"
             assert request(scholarship_api) == {"drafts": [], "mode": "DEMO"}
             request(scholarship_api, {"action": "start", "id": str(uuid.uuid4()), "query": "Fictional scholarship"}, expect=400)
@@ -267,7 +292,7 @@ def main():
             request(headers={"Host": "workspace.example:10000", "Cookie": lan_cookie}, expect=401)
             request(headers={**lan_headers, "Cookie": cookie}, expect=401)
             request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={**lan_headers, "Cookie": lan_cookie, "Origin": "http://attacker.invalid"}, expect=403)
-            print(f"Production HTTP: tracker, documents, {len(expected_routes)} public scholarship pages, reviewed local additions, draft conflicts, checklist persistence, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
+            print(f"Production HTTP: tracker, documents, {len(expected_routes)} public scholarship pages, scoped dashboard and calendar prerequisites, reviewed local additions, draft conflicts, checklist persistence, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)

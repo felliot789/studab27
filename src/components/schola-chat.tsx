@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { memo, useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { safeUrl } from "@/lib/schema";
 import { Badge, dateTime, External, Icon } from "./ui";
 import ScholarshipDraftsButton from "./scholarship-drafts";
@@ -131,7 +131,7 @@ function inline(text: string): ReactNode[] {
     return part;
   });
 }
-function MessageText({ text }: { text: string }) {
+const MessageText = memo(function MessageText({ text }: { text: string }) {
   const lines = text.split("\n"), blocks: ReactNode[] = [];
   for (let i = 0; i < lines.length; i++) {
     if (!lines[i].trim()) continue;
@@ -144,4 +144,4 @@ function MessageText({ text }: { text: string }) {
     blocks.push(/^#{1,6}\s/.test(lines[i]) ? <h3 key={i}>{inline(lines[i].replace(/^#+\s/, ""))}</h3> : <p key={i}>{inline(lines[i])}</p>);
   }
   return <div className="chat-text">{blocks}</div>;
-}
+});

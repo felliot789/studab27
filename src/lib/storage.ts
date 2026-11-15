@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { ApplicationGuide, AppState, Brick, CalendarEvent, Dashboard, Evaluation, InboxItem, Milestone, Overlay, Profile, Route, ScholarshipOutlook, SourceNote, Task, WatchState } from "./schema";
+import type { ApplicationGuide, AppState, Brick, CalendarEvent, Dashboard, InboxItem, Milestone, Overlay, Profile, Route, ScholarshipOutlook, SourceNote, Task, WatchState } from "./schema";
 import { requireAccess } from "./access";
 
 const run = promisify(execFile);
@@ -59,8 +59,7 @@ export async function baseData() {
   const local = currentMode === "PRIVATE" ? Object.values(workspace.state.localScholarships || {}) : [];
   const routes = [...catalogue, ...local].map(route => ({ ...route, scholarshipOutlook: outlooks[route.id], applicationGuide: guides[route.id] }));
   for (const route of local) if (!overlays.some(plan => plan.routeId === route.id)) overlays.push({ routeId: route.id, applicationStatus: "NOT_STARTED", personalStrategyTier: "", estimatedFamilyGapIdrMPerMonth: "", personalSatTargetNote: "", personalRiskNote: "" });
-  const tasks = await python<Task[]>("schola.spoonfeeder", { tasks: templates, routes, profile, overlays, bricks, milestones, command: "pool" });
-  return { mode: currentMode, routes, profile, overlays, tasks, bricks, sourceNotes, milestones, calendarEvents, workspace };
+  return { mode: currentMode, routes, profile, overlays, tasks: templates, bricks, sourceNotes, milestones, calendarEvents, workspace };
 }
 
 export async function scheduleStatus() {
@@ -79,15 +78,14 @@ export async function scheduleStatus() {
 export async function loadDashboard(): Promise<Dashboard> {
   const base = await baseData();
   const { state, inbox } = base.workspace;
-  const [watch, schedule] = await Promise.all([
+  const { routes, profile, overlays, tasks, bricks, milestones } = base;
+  const [watch, schedule, derived] = await Promise.all([
     readJson<WatchState>(path.join(vault, "watchtower_state.local.json"), await readJson<WatchState>(path.join(publicDir, "watchtower_state.json"))),
     scheduleStatus(),
+    python<Pick<Dashboard, "evaluations" | "briefing">>("schola.dashboard", { routes, profile, overlays, tasks, bricks, milestones, state }),
   ]);
-  const { workspace: _snapshot, ...context } = base;
-  const payload = { ...context, state };
-  const [evaluations, briefing] = await Promise.all([python<Evaluation[]>("schola.evaluator", payload), python<Dashboard["briefing"]>("schola.spoonfeeder", payload)]);
   const { tasks: _tasks, workspace: _workspace, ...data } = base;
-  return { ...data, evaluations, briefing, state, inbox, watch, schedule };
+  return { ...data, ...derived, state, inbox, watch, schedule };
 }
 
 // SQLite revision checks coordinate independent processes; this queue avoids avoidable local conflicts.
