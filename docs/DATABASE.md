@@ -76,12 +76,12 @@ The watcher lock is acquired without waiting; an active scan is left alone and c
 
 The exclusion policy is deliberately scoped:
 
-- At the vault root: `recovery`, `backups`, `deployments`, `node_modules`, `.next`, `__pycache__`, `artifacts`, `.venv` and `.venv-research` directories; the selected recovery destination is also excluded.
+- At the vault root: `recovery`, `backups`, `deployments`, `releases`, `lan-previous-build`, `node_modules`, `.next`, `__pycache__`, `artifacts`, `.venv` and `.venv-research` directories; the selected recovery destination is also excluded. The two legacy release directories contain rollback artifacts and must not be copied into every data snapshot.
 - Known root demo workspace/chat/profile/overlay/state/milestone/inbox stores and their database sidecars.
 - Root lock, temporary, log, PID, socket and editor-backup files; watcher snapshot `.tmp` files; runtime installation lock and `.sqlite-*` staging directories.
 - Canonical database WAL/SHM/journal sidecars, whose committed content is captured through the database API instead of raw copying.
 
-Nested original-document folders named `cache`, `backups`, `deployments` or `artifacts`, and attached `.log`/`.tmp` files, are preserved. Eligible symlinks/special files, unexpected databases, unsafe paths or a changed supporting-file set cause failure rather than silent omission. Snapshot verification/restore reject links, traversal, missing/extra files and altered hashes. Missing databases are explicitly listed, permitting a pre-migration snapshot without inventing an initialized store.
+Nested original-document folders named `cache`, `backups`, `deployments`, `releases`, `lan-previous-build` or `artifacts`, and attached `.log`/`.tmp` files, are preserved. Eligible symlinks/special files, unexpected databases, unsafe paths or a changed supporting-file set cause failure rather than silent omission. Snapshot verification/restore reject links, traversal, missing/extra files and altered hashes. Missing databases are explicitly listed, permitting a pre-migration snapshot without inventing an initialized store.
 
 Snapshots are **plaintext private data, including credentials**: directories are 0700, files 0600. Hashes detect damaged copies; they are not encryption or an external signature. The user chose local recovery first. **Off-device storage and encryption are deferred**, and health/manifest output explicitly says off-device recovery is unverified. Same-host copies cannot protect against losing the host.
 

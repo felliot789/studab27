@@ -171,6 +171,7 @@ Private names below come from source contracts; no local file values are require
 | `private/schola-assistant.lock`, `private/watchtower.lock`, `private/workspace-migration.lock`, `private/recovery.lock` | Worker, scan, workspace migration and recovery coordination; never delete live locks. |
 | `private/watchtower_state.local.json`, `private/watchtower/snapshots/`, `private/watchtower.local.log` | Local monitor status, public-source text snapshots, and scan log. |
 | `private/backups/` | Workspace seed/pre-import JSON bundles and consistent pre-schema chat copies; additional migration safeguards, not complete-vault snapshots. |
+| `private/deployments/`, legacy `private/releases/` and `private/lan-previous-build/` | Operational rollback source/build/data copies; excluded from data recovery snapshots at the vault root only. |
 | `private/recovery/studab27-recovery-*` | Verified complete eligible-data snapshots with manifest; latest 14 verified copies retained. Plaintext protected by 0700/0600; off-device/encryption deferred. |
 | `private/runtime/sqlite-3.54.1/` | Pinned private SQLite library and checksum receipt; installed/attested without global library changes. |
 | `private/hq.local.json`, a new export directory inside `private/` | Optional legacy offline-export input and output destination. |

@@ -25,10 +25,10 @@ PREFIX = "studab27-recovery-"
 SNAPSHOT_NAME = re.compile(r"studab27-recovery-\d{8}T\d{12}Z-[0-9a-f]{12}\Z")
 DATABASES = ("private/workspace.sqlite3", "private/schola.sqlite3")
 # These are disposable or previous copies, not the current owner's state.
-EXCLUDED_DIRECTORIES = {"recovery", "backups", "deployments", "node_modules", ".next", "__pycache__", "artifacts", ".venv", ".venv-research"}
+EXCLUDED_DIRECTORIES = {"recovery", "backups", "deployments", "releases", "lan-previous-build", "node_modules", ".next", "__pycache__", "artifacts", ".venv", ".venv-research"}
 DEMO_FILES = {"demo-workspace.sqlite3", "demo-schola.sqlite3", "demo-profile.local.json", "demo-overlay.local.json", "demo-state.local.json", "demo-milestones.local.json", "demo-inbox.local.json"}
 VERSION_FILES = ("package.json", "package-lock.json", "requirements-research.txt", "requirements-sqlite.txt")
-EXCLUSIONS = ["recovery destination and known root-level previous recovery/backups/deployments or build/runtime cache directories", "known root-level demo workspace/chat/JSON stores and their sidecars", "root-level lock, temporary, log, pid and socket files; watcher snapshot temporaries and runtime installation lock/staging", "canonical SQLite WAL/SHM/journal sidecars (included through the SQLite backup API)", "source checkout, installed dependencies and build output (source/runtime versions recorded; reinstall separately); similarly named nested supporting-document folders are preserved"]
+EXCLUSIONS = ["recovery destination and known root-level previous recovery/backups/deployments, legacy release builds (releases/lan-previous-build), or build/runtime cache directories", "known root-level demo workspace/chat/JSON stores and their sidecars", "root-level lock, temporary, log, pid and socket files; watcher snapshot temporaries and runtime installation lock/staging", "canonical SQLite WAL/SHM/journal sidecars (included through the SQLite backup API)", "source checkout, installed dependencies and build output (source/runtime versions recorded; reinstall separately); similarly named nested supporting-document folders are preserved"]
 
 
 def _checked_path(value):

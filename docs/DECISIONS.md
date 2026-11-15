@@ -76,6 +76,8 @@ Use an app-only checksum-pinned SQLite library under the vault through launcher 
 
 Complete local snapshots include eligible vault/configuration/original files, both online SQLite backups, source baselines, public definitions and runtime/version records. Capture refuses active scans, unsafe paths/links, unknown databases or changing supporting files. Restore creates a new isolated directory. Daily 03:17 WIB scheduling is opt-in, retains the latest 14 verified snapshots and reports stale recovery after 48 hours. Damaged and unrecognized copies are preserved.
 
+**Clarified: 2026-11-15.** Vault-root operational copies, including legacy `releases` and `lan-previous-build`, are excluded from data snapshots. Identically named folders within original supporting documents remain eligible. Rollback source/build/data bundles are retained separately; generated build caches must not multiply with daily recovery copies.
+
 The user selected local recovery before choosing external storage. Copies are plaintext, protected by 0700/0600 permissions; encryption and off-device recovery are explicitly deferred. No cloud connection or host-loss protection is implied. See [DATABASE.md](DATABASE.md) for exact coverage, exclusions and operational procedures; [recovery.py](../schola/recovery.py) and [workspace_store.py](../schola/workspace_store.py) implement these boundaries.
 
 ## 13. Research extends the catalogue without moving owner state

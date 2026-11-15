@@ -37,7 +37,7 @@ class RecoveryChecks(unittest.TestCase):
                 connection.commit()
 
     def test_complete_snapshot_restore_and_permissions(self):
-        for directory in ("deployments", "backups", "node_modules", "recovery"):
+        for directory in ("deployments", "releases", "lan-previous-build", "backups", "node_modules", "recovery"):
             (self.vault / directory).mkdir(exist_ok=True, mode=0o700)
             (self.vault / directory / "excluded.txt").write_text("old copy")
         for name in ("demo-workspace.sqlite3", "demo-state.local.json", "runtime.tmp", "runtime.log"):
@@ -202,7 +202,7 @@ class RecoveryChecks(unittest.TestCase):
 
     def test_nested_supporting_files_are_never_mistaken_for_runtime_caches(self):
         expected = []
-        for name in ("cache", "caches", ".cache", "backups", "deployments", "artifacts", "demo-reference"):
+        for name in ("cache", "caches", ".cache", "backups", "deployments", "releases", "lan-previous-build", "artifacts", "demo-reference"):
             path = self.vault / "documents" / name / "original.txt"
             path.parent.mkdir(parents=True)
             path.write_text("fictional original supporting file")

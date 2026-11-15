@@ -1,5 +1,15 @@
 # Handoff
 
+## Recovery storage cleanup — 2026-11-15
+
+Baseline: `025066b`. Recovery now excludes the exact vault-root `releases` and `lan-previous-build` operational directories, which previously copied old builds and caches into every data snapshot. Identically named nested supporting-document folders remain included. Existing recovery tests cover both boundaries; [DATABASE.md](DATABASE.md) records the exclusions.
+
+A new lean snapshot passed full verification and an isolated restore drill: all 224 files, both logical database copies and the pinned SQLite runtime matched. Before pruning nine build-heavy snapshots, every non-build payload and original manifest was preserved in a private compressed history archive and checked against a separate hash inventory. This archive preserves historical data; it is not a complete snapshot accepted by the recovery CLI. The full migration checkpoint and its paired build, the fresh native snapshot, the latest compatible rollback source/build and small historical bundle metadata remain available. Ten obsolete build directories were removed. Local cleanup inventories and archive details remain in the ignored vault.
+
+Disk usage fell from about 4.9 GiB to 1.0 GiB. The current production build, dependencies and research environment were retained. Owner workspace/conversation records, eligible supporting-file hashes and configuration matched the pre-cleanup baseline. Authenticated tracker/dashboard/chat checks passed, unauthenticated API access remained 401, both stores and local recovery were healthy, and the web/worker PIDs stayed unchanged during cleanup. Both daily timers remain enabled; the normal 14-snapshot retention policy is unchanged.
+
+Validation passed `npm run check` under the research Python environment with the pinned SQLite library: 86 Python tests, 17 Node tests, TypeScript, public-data and documentation checks. The 15-test recovery suite also passed separately. The code-only local graph was rebuilt without model calls. No Next build, web/worker restart, migration or live model request was needed. Off-device recovery remains deferred.
+
 ## Engineering/CS research catalogue — 2026-11-15
 
 Baseline: `6e0ad4c`. A second returned research report provided literal official URLs after the first run's separate data files could not be retrieved. The report was treated as a discovery index, and official sources were independently checked before updating public facts. The lost research JSON was not recovered.
