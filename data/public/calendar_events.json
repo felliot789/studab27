@@ -3134,23 +3134,27 @@
     "prerequisiteEventIds": [
       "route-40-united-states-brown-university--event-001"
     ],
-    "sourceUrl": "https://admission.brown.edu/tuition-aid/financial-aid",
-    "sourceEvidence": "Brown explicitly dates CSS filing to Nov 2, 2026 and Feb 1, 2027.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://finaid.brown.edu/apply/first-year-international",
+    "sourceEvidence": "International aid instructions; ED 2026-11-02.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "CSS deadlines supported. FAFSA is not automatically applicable to an Indonesian international applicant.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 aid",
       "evidence": [
         {
-          "url": "https://admission.brown.edu/tuition-aid/financial-aid",
-          "checkedAt": "2026-11-03",
-          "finding": "Brown explicitly dates CSS filing to Nov 2, 2026 and Feb 1, 2027."
+          "url": "https://finaid.brown.edu/apply/first-year-international",
+          "checkedAt": "2026-11-15",
+          "finding": "International aid instructions",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 aid"
         }
       ]
     }
@@ -3209,23 +3213,27 @@
     "prerequisiteEventIds": [
       "route-40-united-states-brown-university--event-003"
     ],
-    "sourceUrl": "https://admission.brown.edu/tuition-aid/financial-aid",
-    "sourceEvidence": "Brown explicitly dates CSS filing to Nov 2, 2026 and Feb 1, 2027.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://finaid.brown.edu/apply/first-year-international",
+    "sourceEvidence": "International aid instructions; RD 2027-02-01.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "CSS deadlines supported. FAFSA is not automatically applicable to an Indonesian international applicant.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 aid",
       "evidence": [
         {
-          "url": "https://admission.brown.edu/tuition-aid/financial-aid",
-          "checkedAt": "2026-11-03",
-          "finding": "Brown explicitly dates CSS filing to Nov 2, 2026 and Feb 1, 2027."
+          "url": "https://finaid.brown.edu/apply/first-year-international",
+          "checkedAt": "2026-11-15",
+          "finding": "International aid instructions",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 aid"
         }
       ]
     }
@@ -3334,32 +3342,36 @@
     "round": "ED",
     "eventType": "FINANCIAL_AID_DEADLINE",
     "title": "Cornell ED international aid deadline",
-    "date": null,
+    "date": "2026-11-01",
     "time": null,
     "timezone": null,
     "windowText": null,
-    "dateStatus": "UNKNOWN",
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
-    "sourceEvidence": "Cornell separates ED/RD applications, supporting materials and international aid month/day deadlines.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.finaid.cornell.edu/first-year-and-transfer-students-international",
+    "sourceEvidence": "International aid requirements; ED 2026-11-01.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-11-01",
     "candidateTime": null,
     "candidateTimezone": null,
-    "calendarDateSupported": false,
+    "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
-      "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "The inspected schedule does not explicitly date these rules to 2027. A copyright year is not cycle evidence.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Fall 2027",
       "evidence": [
         {
-          "url": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "Cornell separates ED/RD applications, supporting materials and international aid month/day deadlines."
+          "url": "https://www.finaid.cornell.edu/first-year-and-transfer-students-international",
+          "checkedAt": "2026-11-15",
+          "finding": "International aid requirements",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Fall 2027"
         }
       ]
     }
@@ -3450,32 +3462,36 @@
     "round": "RD",
     "eventType": "FINANCIAL_AID_DEADLINE",
     "title": "Cornell RD international aid deadline",
-    "date": null,
+    "date": "2027-01-02",
     "time": null,
     "timezone": null,
     "windowText": null,
-    "dateStatus": "UNKNOWN",
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
-    "sourceEvidence": "Cornell separates ED/RD applications, supporting materials and international aid month/day deadlines.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.finaid.cornell.edu/first-year-and-transfer-students-international",
+    "sourceEvidence": "International aid requirements; RD 2027-01-02.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-01-02",
     "candidateTime": null,
     "candidateTimezone": null,
-    "calendarDateSupported": false,
+    "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
-      "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "The inspected schedule does not explicitly date these rules to 2027. A copyright year is not cycle evidence.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Fall 2027",
       "evidence": [
         {
-          "url": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "Cornell separates ED/RD applications, supporting materials and international aid month/day deadlines."
+          "url": "https://www.finaid.cornell.edu/first-year-and-transfer-students-international",
+          "checkedAt": "2026-11-15",
+          "finding": "International aid requirements",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Fall 2027"
         }
       ]
     }
@@ -3716,22 +3732,26 @@
       "route-44-united-states-duke-university--event-003"
     ],
     "sourceUrl": "https://admissions.duke.edu/checklist/",
-    "sourceEvidence": "The checklist identifies the 2026-2027 admission cycle, Nov 2/Jan 4 admissions and Feb 1 RD aid.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Current application checklist; RD 2027-02-01.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Use the cycle-labelled admissions checklist instead of the aid page containing older cost-of-attendance text.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2026–27 admission",
       "evidence": [
         {
           "url": "https://admissions.duke.edu/checklist/",
-          "checkedAt": "2026-11-03",
-          "finding": "The checklist identifies the 2026-2027 admission cycle, Nov 2/Jan 4 admissions and Feb 1 RD aid."
+          "checkedAt": "2026-11-15",
+          "finding": "Current application checklist",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2026–27 admission"
         }
       ]
     }
@@ -3789,22 +3809,26 @@
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://college.harvard.edu/financial-aid/apply-financial-aid/prospective-students",
-    "sourceEvidence": "Harvard explicitly labels the aid instructions 2027-2028 and gives Nov 1 REA and Feb 1 RD CSS/IDOC dates.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Aid instructions; REA 2026-11-01.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "CSS/IDOC aid timetable; citizenship-specific FAFSA requirements are separate.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 aid",
       "evidence": [
         {
           "url": "https://college.harvard.edu/financial-aid/apply-financial-aid/prospective-students",
-          "checkedAt": "2026-11-03",
-          "finding": "Harvard explicitly labels the aid instructions 2027-2028 and gives Nov 1 REA and Feb 1 RD CSS/IDOC dates."
+          "checkedAt": "2026-11-15",
+          "finding": "Aid instructions",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 aid"
         }
       ]
     }
@@ -3858,26 +3882,30 @@
     "date": "2027-02-01",
     "time": null,
     "timezone": null,
-    "windowText": "Not specified in summary of official page; verify current date.",
+    "windowText": null,
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://college.harvard.edu/financial-aid/apply-financial-aid/prospective-students",
-    "sourceEvidence": "Harvard explicitly labels the aid instructions 2027-2028 and gives Nov 1 REA and Feb 1 RD CSS/IDOC dates.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Aid instructions; RD 2027-02-01.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "CSS/IDOC aid timetable; citizenship-specific FAFSA requirements are separate.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Explicit target-cycle aid date; cutoff unspecified.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 aid",
       "evidence": [
         {
           "url": "https://college.harvard.edu/financial-aid/apply-financial-aid/prospective-students",
-          "checkedAt": "2026-11-03",
-          "finding": "Harvard explicitly labels the aid instructions 2027-2028 and gives Nov 1 REA and Feb 1 RD CSS/IDOC dates."
+          "checkedAt": "2026-11-15",
+          "finding": "Aid instructions",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 aid"
         }
       ]
     }
@@ -4260,8 +4288,8 @@
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-    "sourceEvidence": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-11-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -4271,14 +4299,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Keep as official recurring rules awaiting explicit target-cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General recurring first-year timetable; target-cycle year unconfirmed.",
       "evidence": [
         {
           "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-          "checkedAt": "2026-11-03",
-          "finding": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year."
+          "checkedAt": "2026-11-15",
+          "finding": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
         }
       ]
     }
@@ -4300,8 +4332,8 @@
       "route-49-united-states-princeton-university--event-001"
     ],
     "sourceUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-    "sourceEvidence": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-11-09",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -4311,14 +4343,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Keep as official recurring rules awaiting explicit target-cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General recurring first-year timetable; target-cycle year unconfirmed.",
       "evidence": [
         {
           "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-          "checkedAt": "2026-11-03",
-          "finding": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year."
+          "checkedAt": "2026-11-15",
+          "finding": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
         }
       ]
     }
@@ -4338,8 +4374,8 @@
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-    "sourceEvidence": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-01-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -4349,14 +4385,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Keep as official recurring rules awaiting explicit target-cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General recurring first-year timetable; target-cycle year unconfirmed.",
       "evidence": [
         {
           "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-          "checkedAt": "2026-11-03",
-          "finding": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year."
+          "checkedAt": "2026-11-15",
+          "finding": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
         }
       ]
     }
@@ -4378,8 +4418,8 @@
       "route-49-united-states-princeton-university--event-003"
     ],
     "sourceUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-    "sourceEvidence": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-02-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -4389,14 +4429,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Keep as official recurring rules awaiting explicit target-cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General recurring first-year timetable; target-cycle year unconfirmed.",
       "evidence": [
         {
           "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-          "checkedAt": "2026-11-03",
-          "finding": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year."
+          "checkedAt": "2026-11-15",
+          "finding": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
         }
       ]
     }
@@ -4416,8 +4460,8 @@
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-    "sourceEvidence": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-05-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -4427,14 +4471,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Keep as official recurring rules awaiting explicit target-cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General recurring first-year timetable; target-cycle year unconfirmed.",
       "evidence": [
         {
           "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
-          "checkedAt": "2026-11-03",
-          "finding": "Princeton publishes Nov 1/Jan 1 admission, Nov 9/Feb 1 aid and May 1 reply rules without explicit target year."
+          "checkedAt": "2026-11-15",
+          "finding": "Admission Nov 1 SCEA/Jan 1 RD; PFAA Nov 9/Feb 1; reply May 1. The timetable does not explicitly assign an entry year. Common App, Princeton questions, graded paper and school recommendations are listed.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
         }
       ]
     }
@@ -4454,27 +4502,26 @@
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.rice.edu/apply/first-year-international-applicants",
-    "sourceEvidence": "Rice lists Nov 1 EDI and Jan 4 EDII/RD. The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Current-cycle application dates supported; CSS deadline remains unresolved.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established.",
       "evidence": [
         {
           "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "Rice lists Nov 1 EDI and Jan 4 EDII/RD."
-        },
-        {
-          "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates."
+          "checkedAt": "2026-11-15",
+          "finding": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established."
         }
       ]
     }
@@ -4494,27 +4541,26 @@
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.rice.edu/apply/first-year-international-applicants",
-    "sourceEvidence": "Rice lists Nov 1 EDI and Jan 4 EDII/RD. The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Current-cycle application dates supported; CSS deadline remains unresolved.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established.",
       "evidence": [
         {
           "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "Rice lists Nov 1 EDI and Jan 4 EDII/RD."
-        },
-        {
-          "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates."
+          "checkedAt": "2026-11-15",
+          "finding": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established."
         }
       ]
     }
@@ -4534,27 +4580,26 @@
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://admission.rice.edu/apply/first-year-international-applicants",
-    "sourceEvidence": "Rice lists Nov 1 EDI and Jan 4 EDII/RD. The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Current-cycle application dates supported; CSS deadline remains unresolved.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established.",
       "evidence": [
         {
           "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "Rice lists Nov 1 EDI and Jan 4 EDII/RD."
-        },
-        {
-          "url": "https://admission.rice.edu/apply/first-year-international-applicants",
-          "checkedAt": "2026-11-03",
-          "finding": "The same international-applicant page identifies its 2026-2027 application cycle and the Jan 4/Nov 1 round dates."
+          "checkedAt": "2026-11-15",
+          "finding": "The 2026–27 applicant page lists Nov 1 EDI and Jan 4 EDII/RD; recommends but does not require SAT/ACT; requires English proficiency or two years in an English curriculum; financial statement and aid request are required.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established."
         }
       ]
     }
@@ -4566,7 +4611,7 @@
     "program": "Undergraduate engineering; eligible programmes to confirm",
     "round": null,
     "eventType": "FINANCIAL_AID_DEADLINE",
-    "title": "Rice 2027 international aid CSS deadline",
+    "title": "Rice earlier generic aid-date placeholder (superseded)",
     "date": null,
     "time": null,
     "timezone": null,
@@ -4582,7 +4627,7 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "UNRESOLVED",
-      "note": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable.",
+      "note": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable. Superseded for display by separately sourced EDI, EDII and RD financial-aid records from the 2027–28 review; retained as an unresolved historical placeholder.",
       "reviewedAt": "2026-11-03",
       "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
       "evidence": []
@@ -4712,34 +4757,38 @@
     "round": "RD",
     "eventType": "FINANCIAL_AID_DEADLINE",
     "title": "Stanford RD international aid priority",
-    "date": null,
+    "date": "2027-02-15",
     "time": null,
     "timezone": null,
-    "windowText": null,
-    "dateStatus": "UNKNOWN",
+    "windowText": "Priority filing date for 2027–28 international Regular Decision aid.",
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [
       "route-51-united-states-stanford-university--event-003"
     ],
-    "sourceUrl": "https://financialaid.stanford.edu/undergrad/apply/index.html",
-    "sourceEvidence": "Stanford aid lists Nov 15 and Feb 15 without an explicit target-cycle year.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
+    "sourceEvidence": "The 2027–28 international RD aid page gives Feb 15 priority filing; applicants declare aid interest on admission and submit CSS Profile plus International Student Supplement. Fee/payment hardship alternative is conditional.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-02-15",
     "candidateTime": null,
     "candidateTimezone": null,
-    "calendarDateSupported": false,
+    "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
-      "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Recurring aid priority dates need cycle confirmation.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 Regular Decision international aid requirements only.",
       "evidence": [
         {
-          "url": "https://financialaid.stanford.edu/undergrad/apply/index.html",
-          "checkedAt": "2026-11-03",
-          "finding": "Stanford aid lists Nov 15 and Feb 15 without an explicit target-cycle year."
+          "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
+          "checkedAt": "2026-11-15",
+          "finding": "The 2027–28 international RD aid page gives Feb 15 priority filing; applicants declare aid interest on admission and submit CSS Profile plus International Student Supplement. Fee/payment hardship alternative is conditional.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 Regular Decision international aid requirements only."
         }
       ]
     }
@@ -4936,31 +4985,30 @@
     "date": "2026-11-01",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Admission due date or CSS priority date as specified in the source.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://admissions.nd.edu/apply/how-to-apply/",
-    "sourceEvidence": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid. International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://financialaid.nd.edu/apply-or-renew/international-students/",
+    "sourceEvidence": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "RD admission itself is separately flagged for the Jan 1 versus Jan 4 official-source conflict.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 international first-year financial-aid timetable.",
       "evidence": [
         {
-          "url": "https://admissions.nd.edu/apply/how-to-apply/",
-          "checkedAt": "2026-11-03",
-          "finding": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid."
-        },
-        {
           "url": "https://financialaid.nd.edu/apply-or-renew/international-students/",
-          "checkedAt": "2026-11-03",
-          "finding": "International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions."
+          "checkedAt": "2026-11-15",
+          "finding": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 international first-year financial-aid timetable."
         }
       ]
     }
@@ -5018,33 +5066,32 @@
     "date": "2026-11-15",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Admission due date or CSS priority date as specified in the source.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [
       "route-53-united-states-university-of-notre-dame--event-001"
     ],
-    "sourceUrl": "https://admissions.nd.edu/apply/how-to-apply/",
-    "sourceEvidence": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid. International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://financialaid.nd.edu/apply-or-renew/international-students/",
+    "sourceEvidence": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "RD admission itself is separately flagged for the Jan 1 versus Jan 4 official-source conflict.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 international first-year financial-aid timetable.",
       "evidence": [
         {
-          "url": "https://admissions.nd.edu/apply/how-to-apply/",
-          "checkedAt": "2026-11-03",
-          "finding": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid."
-        },
-        {
           "url": "https://financialaid.nd.edu/apply-or-renew/international-students/",
-          "checkedAt": "2026-11-03",
-          "finding": "International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions."
+          "checkedAt": "2026-11-15",
+          "finding": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 international first-year financial-aid timetable."
         }
       ]
     }
@@ -5057,37 +5104,36 @@
     "round": "RD",
     "eventType": "ADMISSION_DEADLINE",
     "title": "Notre Dame RD admission",
-    "date": null,
+    "date": "2027-01-01",
     "time": null,
     "timezone": null,
-    "windowText": null,
-    "dateStatus": "CONFLICTING",
+    "windowText": "Admission due date or CSS priority date as specified in the source.",
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://admissions.nd.edu/apply/how-to-apply/",
-    "sourceEvidence": "Admissions states Jan 4 for RD admission. International aid states Jan 1, 2027 for RD admission.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://financialaid.nd.edu/apply-or-renew/international-students/",
+    "sourceEvidence": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-01-04",
     "candidateTime": null,
     "candidateTimezone": null,
-    "calendarDateSupported": false,
+    "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
-      "status": "CONFLICTING_OFFICIAL_SOURCES",
-      "note": "Do not silently resolve two official sources; retain both published values and withhold a confirmed date.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 international first-year financial-aid timetable.",
       "evidence": [
         {
-          "url": "https://admissions.nd.edu/apply/how-to-apply/",
-          "checkedAt": "2026-11-03",
-          "finding": "Admissions states Jan 4 for RD admission."
-        },
-        {
           "url": "https://financialaid.nd.edu/apply-or-renew/international-students/",
-          "checkedAt": "2026-11-03",
-          "finding": "International aid states Jan 1, 2027 for RD admission."
+          "checkedAt": "2026-11-15",
+          "finding": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 international first-year financial-aid timetable."
         }
       ]
     }
@@ -5145,33 +5191,32 @@
     "date": "2027-01-15",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Admission due date or CSS priority date as specified in the source.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [
       "route-53-united-states-university-of-notre-dame--event-004"
     ],
-    "sourceUrl": "https://admissions.nd.edu/apply/how-to-apply/",
-    "sourceEvidence": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid. International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://financialaid.nd.edu/apply-or-renew/international-students/",
+    "sourceEvidence": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "RD admission itself is separately flagged for the Jan 1 versus Jan 4 official-source conflict.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 international first-year financial-aid timetable.",
       "evidence": [
         {
-          "url": "https://admissions.nd.edu/apply/how-to-apply/",
-          "checkedAt": "2026-11-03",
-          "finding": "Admissions gives Nov 1 REA, Nov 15 REA supporting/aid, and Jan 15 RD supporting/aid."
-        },
-        {
           "url": "https://financialaid.nd.edu/apply-or-renew/international-students/",
-          "checkedAt": "2026-11-03",
-          "finding": "International aid explicitly dates Nov 1/15 in 2026 and Jan 15 in 2027 using 2027-28 CSS instructions."
+          "checkedAt": "2026-11-15",
+          "finding": "International admissions are need-blind. 2027–28 CSS/IDOC process: REA admission Nov 1 2026 and CSS Nov 15; RD admission Jan 1 2027 and CSS Jan 15. IDOC requests supporting income records.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 international first-year financial-aid timetable."
         }
       ]
     }
@@ -5429,35 +5474,34 @@
     "program": "Undergraduate engineering; eligible programmes to confirm",
     "round": null,
     "eventType": "SCHOLARSHIP_DEADLINE",
-    "title": "Vanderbilt signature merit scholarship applications",
+    "title": "Vanderbilt Ingram and Cornelius Vanderbilt scholarship applications",
     "date": "2026-12-01",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Separate applications for the named merit programmes; do not infer a shared funding package.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://admissions.vanderbilt.edu/apply/",
-    "sourceEvidence": "Vanderbilt dates the 2026-2027 admission rounds and Dec 1, 2026 merit applications. International aid explicitly gives Nov 1, 2026; Jan 1, 2027; Feb 1, 2027 by round.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.vanderbilt.edu/scholarships/",
+    "sourceEvidence": "The merit overview lists Dec 1 2026 for Ingram and Cornelius Vanderbilt applications and describes four-year renewability subject to academic performance.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Admission, merit and need-aid events remain separate; international aid uses CSS/ISFAA conditions.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 merit application deadlines; Ingram coverage not reviewed on this page.",
       "evidence": [
         {
-          "url": "https://admissions.vanderbilt.edu/apply/",
-          "checkedAt": "2026-11-03",
-          "finding": "Vanderbilt dates the 2026-2027 admission rounds and Dec 1, 2026 merit applications."
-        },
-        {
-          "url": "https://admissions.vanderbilt.edu/affordability/international-costs-and-finances/",
-          "checkedAt": "2026-11-03",
-          "finding": "International aid explicitly gives Nov 1, 2026; Jan 1, 2027; Feb 1, 2027 by round."
+          "url": "https://www.vanderbilt.edu/scholarships/",
+          "checkedAt": "2026-11-15",
+          "finding": "The merit overview lists Dec 1 2026 for Ingram and Cornelius Vanderbilt applications and describes four-year renewability subject to academic performance.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027 merit application deadlines; Ingram coverage not reviewed on this page."
         }
       ]
     }
@@ -5473,28 +5517,32 @@
     "date": "2027-01-15",
     "time": "23:59",
     "timezone": "EST",
-    "windowText": null,
+    "windowText": "Complete admission application for Presidential screening; 2027 interview schedule identifies current selection cycle.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-    "sourceEvidence": "The current 2027 Presidential process gives Jan 15 at 11:59 p.m. EST for complete admission applications.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
-    "timezoneIana": "America/New_York",
+    "timezoneIana": null,
     "timezoneOffset": "-05:00",
     "timezoneInterpretation": "Fixed UTC offset explicitly denoted by the published timezone abbreviation; not inferred from campus location.",
-    "deadlineAtWib": "2027-01-16T11:59:00+07:00",
+    "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "This is initial screening, not the invitation-specific essay deadline.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Published time retained; no conversion invented.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown.",
       "evidence": [
         {
           "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-          "checkedAt": "2026-11-03",
-          "finding": "The current 2027 Presidential process gives Jan 15 at 11:59 p.m. EST for complete admission applications."
+          "checkedAt": "2026-11-15",
+          "finding": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown."
         }
       ]
     }
@@ -5510,22 +5558,32 @@
     "date": null,
     "time": null,
     "timezone": null,
-    "windowText": "Invitation-specific deadline provided in candidate portal; never universal.",
+    "windowText": "Invited Presidential essays: exact deadline is stated only in the individual invitation.",
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-    "sourceEvidence": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": false,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "UNRESOLVED",
-      "note": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
-      "evidence": []
+      "note": "Exact calendar date is invitation-specific or only a month is published; no day or time inferred.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown.",
+      "evidence": [
+        {
+          "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown."
+        }
+      ]
     }
   },
   {
@@ -5539,12 +5597,12 @@
     "date": "2027-03-21",
     "time": null,
     "timezone": null,
-    "windowText": "March 21-23, 2027; selected finalists only.",
+    "windowText": "Required on-campus Interview Program for finalists; times not established.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-    "sourceEvidence": "The official 2027 interview program is March 21-23 and applies to selected finalists.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
@@ -5555,14 +5613,18 @@
     ],
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Restored the published multi-day event without inventing a cutoff clock.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown.",
       "evidence": [
         {
           "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-          "checkedAt": "2026-11-03",
-          "finding": "The official 2027 interview program is March 21-23 and applies to selected finalists."
+          "checkedAt": "2026-11-15",
+          "finding": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown."
         }
       ]
     }
@@ -5578,22 +5640,32 @@
     "date": null,
     "time": null,
     "timezone": null,
-    "windowText": "April; exact date stated in award offer.",
+    "windowText": "Recipient acceptance is in April; exact 2027 date and time not published in inspected text.",
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
     "sourceUrl": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
-    "sourceEvidence": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": false,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "UNRESOLVED",
-      "note": "No exact target-cycle date established from the bounded reviewed source; absence of a date is not proof the scheme is unavailable.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
-      "evidence": []
+      "note": "Exact calendar date is invitation-specific or only a month is published; no day or time inferred.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown.",
+      "evidence": [
+        {
+          "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Nominations ended; complete admission application by Jan 15 11:59 PM EST; selected applicants receive invitation-only essays. The page explicitly schedules the 2027 interviews March 21–23; acceptance is in April.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown."
+        }
+      ]
     }
   },
   {
@@ -5610,9 +5682,9 @@
     "windowText": null,
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-    "sourceEvidence": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+    "sourceEvidence": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-11-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -5622,14 +5694,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Published recurring dates only. The supplied Dec 15 supplement date is not established by this page.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit.",
       "evidence": [
         {
-          "url": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-          "checkedAt": "2026-11-03",
-          "finding": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year."
+          "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+          "checkedAt": "2026-11-15",
+          "finding": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
         }
       ]
     }
@@ -5648,9 +5724,9 @@
     "windowText": null,
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-    "sourceEvidence": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+    "sourceEvidence": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-12-01",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -5660,14 +5736,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Published recurring dates only. The supplied Dec 15 supplement date is not established by this page.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit.",
       "evidence": [
         {
-          "url": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-          "checkedAt": "2026-11-03",
-          "finding": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year."
+          "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+          "checkedAt": "2026-11-15",
+          "finding": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
         }
       ]
     }
@@ -5686,9 +5766,9 @@
     "windowText": null,
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-    "sourceEvidence": "The reviewed Johnson application passage does not establish the supplied Dec 15 supplement deadline.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+    "sourceEvidence": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2026-12-15",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -5697,15 +5777,19 @@
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
-      "status": "UNRESOLVED",
-      "note": "Retain the original reported date only as an unconfirmed claim.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit.",
       "evidence": [
         {
-          "url": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-          "checkedAt": "2026-11-03",
-          "finding": "The reviewed Johnson application passage does not establish the supplied Dec 15 supplement deadline."
+          "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+          "checkedAt": "2026-11-15",
+          "finding": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
         }
       ]
     }
@@ -5724,9 +5808,9 @@
     "windowText": null,
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-    "sourceEvidence": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+    "sourceEvidence": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-01-05",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -5736,14 +5820,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Published recurring dates only. The supplied Dec 15 supplement date is not established by this page.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit.",
       "evidence": [
         {
-          "url": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-          "checkedAt": "2026-11-03",
-          "finding": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year."
+          "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+          "checkedAt": "2026-11-15",
+          "finding": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
         }
       ]
     }
@@ -5762,9 +5850,9 @@
     "windowText": null,
     "dateStatus": "UNKNOWN",
     "prerequisiteEventIds": [],
-    "sourceUrl": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-    "sourceEvidence": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year.",
-    "checkedAt": "2026-11-03",
+    "sourceUrl": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+    "sourceEvidence": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+    "checkedAt": "2026-11-15",
     "candidateDate": "2027-01-05",
     "candidateTime": null,
     "candidateTimezone": null,
@@ -5774,14 +5862,18 @@
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "OFFICIAL_RECURRING_RULE_YEAR_UNCONFIRMED",
-      "note": "Published recurring dates only. The supplied Dec 15 supplement date is not established by this page.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Month/day or class-label evidence only; no exact target-entry-year assignment.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit.",
       "evidence": [
         {
-          "url": "https://www.wlu.edu/admissions/the-johnson-scholarship",
-          "checkedAt": "2026-11-03",
-          "finding": "W&L lists Dec 1 Johnson, Nov 1 EDI and Jan 5 EDII/RD, without an explicit target-cycle year."
+          "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+          "checkedAt": "2026-11-15",
+          "finding": "International applicants may seek merit and need aid; SAT/ACT optional for Class of 2031. Timetable lists EDI Nov 1, Johnson Dec 1/support Dec 15, EDII/RD Jan 5, aid by admission plan.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
         }
       ]
     }
@@ -5864,28 +5956,32 @@
     "date": "2026-12-01",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Financial-aid priority date; Yale says incomplete/late applications remain eligible.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [
       "route-57-united-states-yale-university--event-001"
     ],
     "sourceUrl": "https://finaid.yale.edu/apply/prospective",
-    "sourceEvidence": "The 2027-28 aid page explicitly gives Dec 1, 2026 for international EA and Feb 15, 2027 for RD.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "2027–28 aid uses 2025 income documents; international EA priority Dec 1 2026 and RD Feb 15 2027. Declare aid interest on admission and follow the individualized portal checklist; ISFAA is not accepted instead.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Priority aid dates, not automatic loss-of-eligibility cutoffs; page permits later complete aid applications.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 prospective international aid instructions; priority dates are not absolute eligibility cutoffs.",
       "evidence": [
         {
           "url": "https://finaid.yale.edu/apply/prospective",
-          "checkedAt": "2026-11-03",
-          "finding": "The 2027-28 aid page explicitly gives Dec 1, 2026 for international EA and Feb 15, 2027 for RD."
+          "checkedAt": "2026-11-15",
+          "finding": "2027–28 aid uses 2025 income documents; international EA priority Dec 1 2026 and RD Feb 15 2027. Declare aid interest on admission and follow the individualized portal checklist; ISFAA is not accepted instead.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 prospective international aid instructions; priority dates are not absolute eligibility cutoffs."
         }
       ]
     }
@@ -5939,28 +6035,32 @@
     "date": "2027-02-15",
     "time": null,
     "timezone": null,
-    "windowText": null,
+    "windowText": "Financial-aid priority date; Yale says incomplete/late applications remain eligible.",
     "dateStatus": "OFFICIAL_CURRENT_CYCLE",
     "prerequisiteEventIds": [
       "route-57-united-states-yale-university--event-003"
     ],
     "sourceUrl": "https://finaid.yale.edu/apply/prospective",
-    "sourceEvidence": "The 2027-28 aid page explicitly gives Dec 1, 2026 for international EA and Feb 15, 2027 for RD.",
-    "checkedAt": "2026-11-03",
+    "sourceEvidence": "2027–28 aid uses 2025 income documents; international EA priority Dec 1 2026 and RD Feb 15 2027. Declare aid interest on admission and follow the individualized portal checklist; ISFAA is not accepted instead.",
+    "checkedAt": "2026-11-15",
     "calendarDateSupported": true,
     "humanVerified": false,
     "timezoneIana": null,
     "deadlineAtWib": null,
     "sourceReview": {
       "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
-      "note": "Priority aid dates, not automatic loss-of-eligibility cutoffs; page permits later complete aid applications.",
-      "reviewedAt": "2026-11-03",
-      "scope": "Calendar date/source audit; not applicant eligibility or a human-verified rule.",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Explicit 2027–28 prospective international aid instructions; priority dates are not absolute eligibility cutoffs.",
       "evidence": [
         {
           "url": "https://finaid.yale.edu/apply/prospective",
-          "checkedAt": "2026-11-03",
-          "finding": "The 2027-28 aid page explicitly gives Dec 1, 2026 for international EA and Feb 15, 2027 for RD."
+          "checkedAt": "2026-11-15",
+          "finding": "2027–28 aid uses 2025 income documents; international EA priority Dec 1 2026 and RD Feb 15 2027. Declare aid interest on admission and follow the individualized portal checklist; ISFAA is not accepted instead.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "Explicit 2027–28 prospective international aid instructions; priority dates are not absolute eligibility cutoffs."
         }
       ]
     }
@@ -6209,6 +6309,999 @@
           "url": "https://satsuite.collegeboard.org/sat/dates-deadlines",
           "checkedAt": "2026-11-03",
           "finding": "The 2026-27 SAT table dates Dec 5 testing, Nov 20 registration, and a general 11:59 p.m. U.S. ET deadline."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-50-united-states-rice-university--event-research-2027-aid-edi",
+    "routeId": "route-50-united-states-rice-university",
+    "cycle": "2027",
+    "program": "Undergraduate engineering and computer science; exact programmes to confirm",
+    "round": "EDI",
+    "eventType": "FINANCIAL_AID_DEADLINE",
+    "title": "Rice EDI international CSS Profile and aid documents",
+    "prerequisiteEventIds": [],
+    "date": "2026-11-15",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
+    "sourceUrl": "https://financialaid.rice.edu/apply-aid/international-students",
+    "sourceEvidence": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 international need-aid application timetable and general coverage policy.",
+      "evidence": [
+        {
+          "url": "https://financialaid.rice.edu/apply-aid/international-students",
+          "checkedAt": "2026-11-15",
+          "finding": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 international need-aid application timetable and general coverage policy."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-50-united-states-rice-university--event-research-2027-aid-edii",
+    "routeId": "route-50-united-states-rice-university",
+    "cycle": "2027",
+    "program": "Undergraduate engineering and computer science; exact programmes to confirm",
+    "round": "EDII",
+    "eventType": "FINANCIAL_AID_DEADLINE",
+    "title": "Rice EDII international CSS Profile and aid documents",
+    "prerequisiteEventIds": [],
+    "date": "2027-01-04",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
+    "sourceUrl": "https://financialaid.rice.edu/apply-aid/international-students",
+    "sourceEvidence": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 international need-aid application timetable and general coverage policy.",
+      "evidence": [
+        {
+          "url": "https://financialaid.rice.edu/apply-aid/international-students",
+          "checkedAt": "2026-11-15",
+          "finding": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 international need-aid application timetable and general coverage policy."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-50-united-states-rice-university--event-research-2027-aid-rd",
+    "routeId": "route-50-united-states-rice-university",
+    "cycle": "2027",
+    "program": "Undergraduate engineering and computer science; exact programmes to confirm",
+    "round": "RD",
+    "eventType": "FINANCIAL_AID_DEADLINE",
+    "title": "Rice RD international CSS Profile and aid documents",
+    "prerequisiteEventIds": [],
+    "date": "2027-02-01",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "OFFICIAL_CURRENT_CYCLE",
+    "sourceUrl": "https://financialaid.rice.edu/apply-aid/international-students",
+    "sourceEvidence": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Date-only; cutoff clock/timezone not published in inspected passage.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027–28 international need-aid application timetable and general coverage policy.",
+      "evidence": [
+        {
+          "url": "https://financialaid.rice.edu/apply-aid/international-students",
+          "checkedAt": "2026-11-15",
+          "finding": "Limited international first-year need aid meets 100% of assessed need with institutional grants for recipients, excluding Rice Investment. The 2027–28 CSS timetable gives Nov 15 EDI, Jan 4 EDII, Feb 1 RD; documents go to applicant portal.",
+          "supportedFields": [
+            "calendar_events"
+          ],
+          "scope": "2027–28 international need-aid application timetable and general coverage policy."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-63-australia-monash-leadership--selection-unknown",
+    "routeId": "route-63-australia-monash-leadership",
+    "cycle": "2027 entry",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Monash Leadership 2027 selection cutoff",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Automatic consideration after an eligible course offer; exact 2027 selection timing UNKNOWN.",
+    "dateStatus": "UNKNOWN",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/monash-international-leadership-scholarship-5571Z",
+    "sourceEvidence": "No exact 2027 scholarship cutoff established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "UNRESOLVED",
+      "note": "No exact 2027 scholarship cutoff established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/monash-international-leadership-scholarship-5571Z",
+          "checkedAt": "2026-11-15",
+          "finding": "No exact 2027 scholarship cutoff established.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Intake status or general terms only; no exact 2027 date."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-64-australia-monash-it-merit--selection-unknown",
+    "routeId": "route-64-australia-monash-it-merit",
+    "cycle": "2027 entry",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Monash Faculty of IT merit 2027 selection cutoff",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Automatic assessment; 2027 selection timing UNKNOWN.",
+    "dateStatus": "UNKNOWN",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/faculty-of-it-international-merit-scholarship-6232",
+    "sourceEvidence": "No exact 2027 scholarship date established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "UNRESOLVED",
+      "note": "No exact 2027 scholarship date established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/faculty-of-it-international-merit-scholarship-6232",
+          "checkedAt": "2026-11-15",
+          "finding": "No exact 2027 scholarship date established.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Intake status or general terms only; no exact 2027 date."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-65-australia-unsw-scientia--t1-2027-deadline",
+    "routeId": "route-65-australia-unsw-scientia",
+    "cycle": "Term 1 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "T1 2027",
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "UNSW Scientia scholarship application deadline — closed",
+    "date": "2026-10-30",
+    "time": "23:59",
+    "timezone": "AEST",
+    "windowText": null,
+    "dateStatus": "CLOSED_SOURCE_SUPPORTED_DATE_AND_PUBLISHED_CUTOFF",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.scholarships.unsw.edu.au/scholarships/id/1988",
+    "sourceEvidence": "T1 2027 PUCA1029 applications closed 30 October 2026 at published AEST 11:59 p.m.; later-intake dates not established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "T1 2027 PUCA1029 applications closed 30 October 2026 at published AEST 11:59 p.m.; later-intake dates not established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.scholarships.unsw.edu.au/scholarships/id/1988",
+          "checkedAt": "2026-11-15",
+          "finding": "T1 2027 PUCA1029 applications closed 30 October 2026 at published AEST 11:59 p.m.; later-intake dates not established.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    },
+    "cutoffTimeText": "11:59PM AEST, as published; no inferred Sydney daylight-saving timezone or WIB conversion."
+  },
+  {
+    "id": "route-66-australia-sydney-academic-excellence--s1-cutoff-unknown",
+    "routeId": "route-66-australia-sydney-academic-excellence",
+    "cycle": "Semester 1 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Sydney Academic Excellence S1 2027 — closed; exact cutoff unknown",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Semester 1 2027 closed.",
+    "dateStatus": "CLOSED_DATE_UNKNOWN",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html",
+    "sourceEvidence": "Page explicitly states Semester 1 2027 applications are closed; no exact date established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "UNRESOLVED",
+      "note": "Page explicitly states Semester 1 2027 applications are closed; no exact date established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Page explicitly states Semester 1 2027 applications are closed; no exact date established.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Intake status or general terms only; no exact 2027 date."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-66-australia-sydney-academic-excellence--s2-cutoff-unknown",
+    "routeId": "route-66-australia-sydney-academic-excellence",
+    "cycle": "Semester 2 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Sydney Academic Excellence S2 2027 cutoff unknown",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Semester 2 2027 applications welcome; closing date UNKNOWN.",
+    "dateStatus": "OPEN_DATE_UNKNOWN",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html",
+    "sourceEvidence": "Applications welcome for Semester 2 2027; no exact cutoff established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "UNRESOLVED",
+      "note": "Applications welcome for Semester 2 2027; no exact cutoff established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Applications welcome for Semester 2 2027; no exact cutoff established.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Intake status or general terms only; no exact 2027 date."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s1-2027-round-1",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 1 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 1",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S1 2027 round 1: unconditional-offer cutoff",
+    "date": "2026-08-17",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 1 2027 round 1 cutoff for holding an unconditional offer: 2026-08-17. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 1 2027 round 1 cutoff for holding an unconditional offer: 2026-08-17. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 1 2027 round 1 cutoff for holding an unconditional offer: 2026-08-17. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s1-2027-round-2",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 1 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 2",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S1 2027 round 2: unconditional-offer cutoff",
+    "date": "2026-10-05",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 1 2027 round 2 cutoff for holding an unconditional offer: 2026-10-05. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 1 2027 round 2 cutoff for holding an unconditional offer: 2026-10-05. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 1 2027 round 2 cutoff for holding an unconditional offer: 2026-10-05. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s1-2027-round-3",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 1 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 3",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S1 2027 round 3: unconditional-offer cutoff",
+    "date": "2026-11-16",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 1 2027 round 3 cutoff for holding an unconditional offer: 2026-11-16. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 1 2027 round 3 cutoff for holding an unconditional offer: 2026-11-16. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 1 2027 round 3 cutoff for holding an unconditional offer: 2026-11-16. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s2-2027-round-1",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 2 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 1",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S2 2027 round 1: unconditional-offer cutoff",
+    "date": "2027-02-15",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 2 2027 round 1 cutoff for holding an unconditional offer: 2027-02-15. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 2 2027 round 1 cutoff for holding an unconditional offer: 2027-02-15. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 2 2027 round 1 cutoff for holding an unconditional offer: 2027-02-15. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s2-2027-round-2",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 2 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 2",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S2 2027 round 2: unconditional-offer cutoff",
+    "date": "2027-03-22",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 2 2027 round 2 cutoff for holding an unconditional offer: 2027-03-22. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 2 2027 round 2 cutoff for holding an unconditional offer: 2027-03-22. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 2 2027 round 2 cutoff for holding an unconditional offer: 2027-03-22. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-67-australia-sydney-vcis--s2-2027-round-3",
+    "routeId": "route-67-australia-sydney-vcis",
+    "cycle": "Semester 2 2027",
+    "program": "Undergraduate engineering or computer science; exact course eligibility to confirm",
+    "round": "Round 3",
+    "eventType": "SCHOLARSHIP_CONSIDERATION_CUTOFF",
+    "title": "Sydney VCIS S2 2027 round 3: unconditional-offer cutoff",
+    "date": "2027-05-03",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+    "sourceEvidence": "Published Semester 2 2027 round 3 cutoff for holding an unconditional offer: 2027-05-03. Time and timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Published Semester 2 2027 round 3 cutoff for holding an unconditional offer: 2027-05-03. Time and timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Published Semester 2 2027 round 3 cutoff for holding an unconditional offer: 2027-05-03. Time and timezone not published.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-68-sweden-jonkoping-scholarship--autumn-2027-award",
+    "routeId": "route-68-sweden-jonkoping-scholarship",
+    "cycle": "Autumn 2027",
+    "program": "Fee-paying on-site bachelor programmes; Mechanical Engineering BSc inspected",
+    "round": "Autumn 2027",
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Jönköping University scholarship application deadline",
+    "date": "2027-05-02",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://ju.se/en/study-at-ju/application-and-admission/scholarships-and-funding/scholarships-from-jonkoping-university.html",
+    "sourceEvidence": "Official Autumn 2027 scholarship window is 16 October 2026 to 2 May 2027; no cutoff time/timezone stated.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Official Autumn 2027 scholarship window is 16 October 2026 to 2 May 2027; no cutoff time/timezone stated.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://ju.se/en/study-at-ju/application-and-admission/scholarships-and-funding/scholarships-from-jonkoping-university.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Official Autumn 2027 scholarship window is 16 October 2026 to 2 May 2027; no cutoff time/timezone stated.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-68-sweden-jonkoping-scholarship--autumn-2027-direct",
+    "routeId": "route-68-sweden-jonkoping-scholarship",
+    "cycle": "Autumn 2027",
+    "program": "Mechanical Engineering BSc HJ-KU104",
+    "round": "JU Direct Application",
+    "eventType": "ADMISSION_DEADLINE",
+    "title": "JU Mechanical Engineering Direct Application deadline",
+    "date": "2027-05-02",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://ju.se/en/study-at-ju/our-programmes/bachelor-programmes/mechanical-engineering-bsc-autumn-2027-ku104.html",
+    "sourceEvidence": "Mechanical Engineering Autumn 2027 JU Direct Application period: 16 October 2026–2 May 2027.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Mechanical Engineering Autumn 2027 JU Direct Application period: 16 October 2026–2 May 2027.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://ju.se/en/study-at-ju/our-programmes/bachelor-programmes/mechanical-engineering-bsc-autumn-2027-ku104.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Mechanical Engineering Autumn 2027 JU Direct Application period: 16 October 2026–2 May 2027.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-68-sweden-jonkoping-scholarship--autumn-2027-central",
+    "routeId": "route-68-sweden-jonkoping-scholarship",
+    "cycle": "Autumn 2027",
+    "program": "Mechanical Engineering BSc HJ-KU104",
+    "round": "Universityadmissions.se",
+    "eventType": "ADMISSION_DEADLINE",
+    "title": "JU Mechanical Engineering Universityadmissions deadline",
+    "date": "2027-01-15",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_DATE_ONLY",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://ju.se/en/study-at-ju/our-programmes/bachelor-programmes/mechanical-engineering-bsc-autumn-2027-ku104.html",
+    "sourceEvidence": "Mechanical Engineering Autumn 2027 central application period: 16 October 2026–15 January 2027.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Mechanical Engineering Autumn 2027 central application period: 16 October 2026–15 January 2027.",
+      "reviewedAt": "2026-11-15",
+      "scope": "Published 2027-cycle scheduling only; not applicant eligibility. A date-only event has no inferred cutoff or timezone.",
+      "evidence": [
+        {
+          "url": "https://ju.se/en/study-at-ju/our-programmes/bachelor-programmes/mechanical-engineering-bsc-autumn-2027-ku104.html",
+          "checkedAt": "2026-11-15",
+          "finding": "Mechanical Engineering Autumn 2027 central application period: 16 October 2026–15 January 2027.",
+          "supportedFields": [
+            "calendarDate"
+          ],
+          "scope": "Explicit 2027 target-cycle scheduling."
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-58-united-states-rochester-handler--handler-nomination",
+    "routeId": "route-58-united-states-rochester-handler",
+    "cycle": "2027 entry",
+    "program": "Alan and Jane Handler Endowed Scholarship",
+    "round": null,
+    "eventType": "NOMINATION_DEADLINE",
+    "title": "Handler nomination deadline to confirm",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Annual nomination window September 15–November 30; cycle confirmation required",
+    "dateStatus": "ANNUAL_RULE_UNCONFIRMED",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://admissions.rochester.edu/handler-scholarship/",
+    "sourceEvidence": "Annual page gives November 30; a named 2027-entry call was not established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "ANNUAL_RULE_UNCONFIRMED",
+      "note": "Annual page gives November 30; a named 2027-entry call was not established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed",
+      "evidence": [
+        {
+          "url": "https://admissions.rochester.edu/handler-scholarship/",
+          "checkedAt": "2026-11-15",
+          "finding": "Annual page gives November 30; a named 2027-entry call was not established.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-58-united-states-rochester-handler--handler-application",
+    "routeId": "route-58-united-states-rochester-handler",
+    "cycle": "2027 entry",
+    "program": "Alan and Jane Handler Endowed Scholarship",
+    "round": null,
+    "eventType": "ADMISSION_DEADLINE",
+    "title": "Handler recommended application date to confirm",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "Recommended December 1; confirm exact cycle and deadline",
+    "dateStatus": "ANNUAL_RULE_UNCONFIRMED",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://admissions.rochester.edu/handler-scholarship/",
+    "sourceEvidence": "Annual page recommends submission by December 1; not a confirmed target-cycle hard cutoff.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "ANNUAL_RULE_UNCONFIRMED",
+      "note": "Annual page recommends submission by December 1; not a confirmed target-cycle hard cutoff.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed",
+      "evidence": [
+        {
+          "url": "https://admissions.rochester.edu/handler-scholarship/",
+          "checkedAt": "2026-11-15",
+          "finding": "Annual page recommends submission by December 1; not a confirmed target-cycle hard cutoff.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-59-united-states-tulane-stamps--stamps-semifinalist",
+    "routeId": "route-59-united-states-tulane-stamps",
+    "cycle": "2027 entry",
+    "program": "Stamps Scholarship",
+    "round": "Invited semifinalists",
+    "eventType": "DOCUMENT_DEADLINE",
+    "title": "Stamps invited-semifinalist supplement date to confirm",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "January 5 annual rule; target cycle unconfirmed",
+    "dateStatus": "ANNUAL_RULE_UNCONFIRMED",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://admission.tulane.edu/tuition-aid/merit-scholarships",
+    "sourceEvidence": "January 5 is published without a year and only applies to invited semifinalists.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "ANNUAL_RULE_UNCONFIRMED",
+      "note": "January 5 is published without a year and only applies to invited semifinalists.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed",
+      "evidence": [
+        {
+          "url": "https://admission.tulane.edu/tuition-aid/merit-scholarships",
+          "checkedAt": "2026-11-15",
+          "finding": "January 5 is published without a year and only applies to invited semifinalists.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-60-united-states-usc-merit--merit-consideration",
+    "routeId": "route-60-united-states-usc-merit",
+    "cycle": "2027 entry",
+    "program": "USC undergraduate merit scholarships",
+    "round": "EA/ED",
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "USC Viterbi fall-2027 merit consideration",
+    "date": "2026-11-01",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://viterbiadmission.usc.edu/apply/",
+    "sourceEvidence": "Fall 2027 Viterbi EA/ED applicants enter merit consideration by November 1; RD applicants do not.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Fall 2027 Viterbi EA/ED applicants enter merit consideration by November 1; RD applicants do not.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 entry; official named-cycle schedule",
+      "evidence": [
+        {
+          "url": "https://viterbiadmission.usc.edu/apply/",
+          "checkedAt": "2026-11-15",
+          "finding": "Fall 2027 Viterbi EA/ED applicants enter merit consideration by November 1; RD applicants do not.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "2027 entry; official named-cycle schedule"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-60-united-states-usc-merit--viterbi-rd",
+    "routeId": "route-60-united-states-usc-merit",
+    "cycle": "2027 entry",
+    "program": "USC undergraduate merit scholarships",
+    "round": "RD",
+    "eventType": "ADMISSION_DEADLINE",
+    "title": "USC Viterbi Regular Decision admission",
+    "date": "2027-01-10",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://viterbiadmission.usc.edu/apply/",
+    "sourceEvidence": "Fall 2027 Viterbi RD admission closes January 10; this is not a merit deadline.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Fall 2027 Viterbi RD admission closes January 10; this is not a merit deadline.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 entry; official named-cycle schedule",
+      "evidence": [
+        {
+          "url": "https://viterbiadmission.usc.edu/apply/",
+          "checkedAt": "2026-11-15",
+          "finding": "Fall 2027 Viterbi RD admission closes January 10; this is not a merit deadline.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "2027 entry; official named-cycle schedule"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-61-united-states-bu-presidential--presidential-consideration",
+    "routeId": "route-61-united-states-bu-presidential",
+    "cycle": "2027 entry",
+    "program": "Presidential Scholarship",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "BU Presidential merit date to confirm",
+    "date": null,
+    "time": null,
+    "timezone": null,
+    "windowText": "December 1 annual rule; exact 2027 cutoff unconfirmed",
+    "dateStatus": "ANNUAL_RULE_UNCONFIRMED",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://www.bu.edu/admissions/tuition-aid/scholarships-financial-aid/first-year-merit/",
+    "sourceEvidence": "December 1 is an annual published date; no exact named 2027 deadline was established.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": false,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "ANNUAL_RULE_UNCONFIRMED",
+      "note": "December 1 is an annual published date; no exact named 2027 deadline was established.",
+      "reviewedAt": "2026-11-15",
+      "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed",
+      "evidence": [
+        {
+          "url": "https://www.bu.edu/admissions/tuition-aid/scholarships-financial-aid/first-year-merit/",
+          "checkedAt": "2026-11-15",
+          "finding": "December 1 is an annual published date; no exact named 2027 deadline was established.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "General annual rule; exact 2027 cycle applicability remains unconfirmed"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-69-indonesia-beasiswa-garuda--application-deadline",
+    "routeId": "route-69-indonesia-beasiswa-garuda",
+    "cycle": "2027 entry",
+    "program": "Beasiswa Garuda 2027",
+    "round": null,
+    "eventType": "SCHOLARSHIP_DEADLINE",
+    "title": "Beasiswa Garuda 2027 sponsor application",
+    "date": "2027-01-04",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+    "sourceEvidence": "Official2027 guide schedule: application November 12, 2026–January 4, 2027. Time/timezone not published.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Official2027 guide schedule: application November 12, 2026–January 4, 2027. Time/timezone not published.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 entry; official named-cycle schedule",
+      "evidence": [
+        {
+          "url": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+          "checkedAt": "2026-11-15",
+          "finding": "Official2027 guide schedule: application November 12, 2026–January 4, 2027. Time/timezone not published.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "2027 entry; official named-cycle schedule"
+        }
+      ]
+    }
+  },
+  {
+    "id": "route-69-indonesia-beasiswa-garuda--tbs-window",
+    "routeId": "route-69-indonesia-beasiswa-garuda",
+    "cycle": "2027 entry",
+    "program": "Beasiswa Garuda 2027",
+    "round": null,
+    "eventType": "TEST_WINDOW",
+    "title": "Beasiswa Garuda TBS window",
+    "date": "2027-01-18",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+    "sourceEvidence": "Official2027 guide schedules TBS January 18–22, 2027.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Official2027 guide schedules TBS January 18–22, 2027.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 entry; official named-cycle schedule",
+      "evidence": [
+        {
+          "url": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+          "checkedAt": "2026-11-15",
+          "finding": "Official2027 guide schedules TBS January 18–22, 2027.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "2027 entry; official named-cycle schedule"
+        }
+      ]
+    },
+    "endDate": "2027-01-22",
+    "conditions": [
+      "Required when the applicant has no SAT certificate or the SAT score is below the sponsor minimum of 1200; check the sponsor invitation."
+    ]
+  },
+  {
+    "id": "route-69-indonesia-beasiswa-garuda--administrative-results",
+    "routeId": "route-69-indonesia-beasiswa-garuda",
+    "cycle": "2027 entry",
+    "program": "Beasiswa Garuda 2027",
+    "round": null,
+    "eventType": "RESULTS_DATE",
+    "title": "Beasiswa Garuda administrative results",
+    "date": "2027-02-05",
+    "time": null,
+    "timezone": null,
+    "windowText": null,
+    "dateStatus": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+    "prerequisiteEventIds": [],
+    "sourceUrl": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+    "sourceEvidence": "Official2027 guide schedules administrative-selection results February 5, 2027.",
+    "checkedAt": "2026-11-15",
+    "calendarDateSupported": true,
+    "humanVerified": false,
+    "deadlineAtWib": null,
+    "sourceReview": {
+      "status": "SOURCE_SUPPORTED_FOR_TARGET_CYCLE",
+      "note": "Official2027 guide schedules administrative-selection results February 5, 2027.",
+      "reviewedAt": "2026-11-15",
+      "scope": "2027 entry; official named-cycle schedule",
+      "evidence": [
+        {
+          "url": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+          "checkedAt": "2026-11-15",
+          "finding": "Official2027 guide schedules administrative-selection results February 5, 2027.",
+          "supportedFields": [
+            "deadlineWindow2027"
+          ],
+          "scope": "2027 entry; official named-cycle schedule"
         }
       ]
     }

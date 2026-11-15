@@ -13,7 +13,7 @@ test("outlook filtering excludes only the requested group and preserves unknowns
   const all = routes.filter(route => matchesOutlook(route, "ALL"));
   const withoutLottery = routes.filter(route => matchesOutlook(route, "ALL", true));
   const lottery = routes.filter(route => matchesOutlook(route, "LOTTERY"));
-  assert.equal(all.length, 57);
+  assert.equal(all.length, catalogue.length);
   assert.ok(lottery.length > 0);
   assert.equal(withoutLottery.length + lottery.length, all.length);
   assert.ok(withoutLottery.some(route => outlookCategory(route) === "UNKNOWN"));

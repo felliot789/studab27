@@ -272,7 +272,7 @@
     "personalRiskNote": "Confirm the current official rules before making a decision."
   },
   {
-    "routeId": "route-35-t\u00fcrkiye-t\u00fcrkiye-scholarships",
+    "routeId": "route-35-türkiye-türkiye-scholarships",
     "personalStrategyTier": "RESEARCH",
     "applicationStatus": "NOT_STARTED",
     "estimatedFamilyGapIdrMPerMonth": "Unknown",
@@ -449,6 +449,94 @@
   },
   {
     "routeId": "route-57-united-states-yale-university",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-63-australia-monash-leadership",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-64-australia-monash-it-merit",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-65-australia-unsw-scientia",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-66-australia-sydney-academic-excellence",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-67-australia-sydney-vcis",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-68-sweden-jonkoping-scholarship",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-58-united-states-rochester-handler",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-59-united-states-tulane-stamps",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-60-united-states-usc-merit",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-61-united-states-bu-presidential",
+    "personalStrategyTier": "RESEARCH",
+    "applicationStatus": "NOT_STARTED",
+    "estimatedFamilyGapIdrMPerMonth": "Unknown",
+    "personalSatTargetNote": "Fictional demo: research not recorded",
+    "personalRiskNote": "Confirm the current official rules before making a decision."
+  },
+  {
+    "routeId": "route-69-indonesia-beasiswa-garuda",
     "personalStrategyTier": "RESEARCH",
     "applicationStatus": "NOT_STARTED",
     "estimatedFamilyGapIdrMPerMonth": "Unknown",

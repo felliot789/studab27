@@ -5,6 +5,8 @@ Start with [AGENTS.md](../AGENTS.md), [PRODUCT.md](../PRODUCT.md), and [README.m
 The application is Next.js App Router + TypeScript + Tailwind, with Python standard-library modules for planning and monitoring, an app-only pinned SQLite library, and an optional pinned LangGraph research environment. [DATABASE.md](DATABASE.md) owns schema details and the maintenance/recovery runbook.
 Dependency versions and commands live in [package.json](../package.json); the installed Next.js guides under `node_modules/next/dist/docs/` take precedence over remembered framework conventions.
 
+Public research definitions remain in `data/public`; the [15 November research checkpoint](RESEARCH-2026-11-15.md) records the current source scope. Catalogue validation and HTTP checks derive inventory from the definitions. Existing IDs stay stable, and new route overlays use the existing unset request-time defaults; no owner selection or private checklist state is imported from research.
+
 ## Request and data flow
 
 ```mermaid

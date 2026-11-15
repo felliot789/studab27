@@ -58,7 +58,8 @@ class AssistantChecks(unittest.TestCase):
 
     def test_route_tool_exposes_reviewed_calendar_without_verifying_eligibility(self):
         data = a.context(self.root, False)
-        self.assertEqual(len(data["calendarEvents"]), 174)
+        expected = json.loads((self.root / "data/public/calendar_events.json").read_text())
+        self.assertEqual({e["id"] for e in data["calendarEvents"]}, {e["id"] for e in expected})
         route = data["routes"][0]
         with closing(a.db(self.root)) as conn:
             result = a.run_tool(self.root, conn, self.config, data, "inspect_route", {"routeId": route["id"]})

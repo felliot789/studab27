@@ -6,7 +6,7 @@ product
 
 ## Users
 
- Indonesian secondary-school students preparing undergraduate engineering applications. They use the app between schoolwork and test preparation, often in the evening, and need a small next step rather than another long list.
+ Indonesian secondary-school students preparing undergraduate engineering and computer-science applications. They use the app between schoolwork and test preparation, often in the evening, and need a small next step rather than another long list.
 
 The primary device is a phone, often used one-handed in a quiet room at night. Keep navigation at the bottom, forms readable, and conversation drafts safe when a tab is interrupted. Desktop is a comfortable extension of the same workspace.
 

@@ -1,6 +1,6 @@
 # StudAb27
 
-A local scholarship tracker for undergraduate engineering applications. **Tracker**, **Documents**, and **Calendar** keep progress on a chosen set of scholarships together. There is no tracking cap. Schola is available from every page; the catalogue, source updates, scenarios, and settings are secondary tools.
+A local scholarship tracker for undergraduate engineering and computer-science applications. **Tracker**, **Documents**, and **Calendar** keep progress on a chosen set of scholarships together. There is no tracking cap. Schola is available from every page; the catalogue, source updates, scenarios, and settings are secondary tools.
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
@@ -39,7 +39,7 @@ Always use the npm launch scripts or the installed service: they supply the runt
 | Place | What lives here |
 | --- | --- |
 | Tracker `/` or `/scholarships` | Explicitly tracked scholarships, pursuit priorities, application progress, and the next checklist step |
-| Explore `/scholarships?browse=1` | All 57 public routes, outlook filters, and an action to add any route to the tracker |
+| Explore `/scholarships?browse=1` | All public routes, outlook filters, and an action to add any route to the tracker |
 | Scholarship `/scholarships/[id]` | One permanent page with Checklist, Description, Dates, Plan, Sources, and a scholarship-specific Schola popup; `?tab=overview` opens Description |
 | Documents `/documents` | Per-scholarship document steps and a separate reusable-pack view; actual files remain in your own folders |
 | Calendar `/calendar` | Tracked, saved, and active routes by default, plus an All routes switch and month/agenda views |
@@ -58,11 +58,11 @@ Published award percentages require recipient and applicant counts for the same 
 
 ## Reviewed catalogue and calendar
 
-The public catalogue includes all 57 refreshed route IDs and 174 calendar records from the 3 November 2026 review. Eighty records have target-cycle date evidence. The remaining 94 include annual rules awaiting cycle confirmation, unresolved dates, and conflicting official sources. They stay in **Dates to confirm**, off calendar days. Funding, language, curriculum, graduation, and other claims retain their own field-level evidence status; a reviewed date does not verify eligibility.
+The 15 November 2026 catalogue review contains 68 routes and 200 calendar records, with all 57 original IDs preserved. There are 102 target-cycle-supported events and 98 unscheduled records awaiting confirmation; annual rules and conflicting dates stay off calendar days. The update rechecks the 18 original US routes and adds US, Australian, Swedish and external Indonesian-sponsor opportunities. Funding, language, curriculum, graduation and other claims retain their own field-level evidence status. See the [research checkpoint](docs/RESEARCH-2026-11-15.md) for source scope and remaining work.
 
 Published times with known zones convert to WIB. Date-only records stay on the publisher's calendar day and never acquire an invented end-of-day cutoff. Multi-day events retain their range. Imported private milestones are labeled personal targets, with published scholarship records shown separately. This calendar does not connect cloud services, submit applications, or send notifications.
 
-`scripts/prepare-catalogue.py REVIEW_DIRECTORY` creates the public projection from reviewed research. It allowlists public facts and source URLs, excluding raw imports, local source filenames, snapshots, hashes, and private review metadata. `scripts/validate-data.py` checks all route/event relationships and date-evidence boundaries. Schola can inspect the same reviewed events without converting candidate dates into verified rules.
+`scripts/prepare-catalogue.py REVIEW_DIRECTORY` creates the public projection from reviewed research with explicit per-record review dates and unique route/event IDs. Catalogue size is data-driven; new routes also need aligned fictional overlays. It allowlists public facts and source URLs, excluding raw imports, local source filenames, snapshots, hashes, and private review metadata. `scripts/validate-data.py` checks all route/event relationships and date-evidence boundaries. Schola can inspect the same reviewed events without converting candidate dates into verified rules.
 
 ## Schola model and conversation
 

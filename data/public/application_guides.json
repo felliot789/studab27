@@ -907,5 +907,1820 @@
         ]
       }
     ]
+  },
+  "route-40-united-states-brown-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Aid preparation; admission and curriculum checks remain separate.",
+    "sources": [
+      {
+        "id": "brown-aid",
+        "title": "International aid instructions",
+        "url": "https://finaid.brown.edu/apply/first-year-international",
+        "scope": "2027–28 aid"
+      },
+      {
+        "id": "brown-check",
+        "title": "Required tests/checklist",
+        "url": "https://admission.brown.edu/first-year/application-checklist",
+        "scope": "General policy"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "brown-css",
+            "title": "Prepare CSS Profile",
+            "detail": "Use Brown code 3189; submit by the selected round’s aid deadline.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "brown-aid"
+            ]
+          },
+          {
+            "id": "brown-documents",
+            "title": "Prepare requested income evidence",
+            "detail": "IDOC submissions only if requested.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "brown-aid"
+            ]
+          },
+          {
+            "id": "brown-school",
+            "title": "Request school materials",
+            "detail": "School submits transcript/report, counselor and two teacher recommendations; BS applicants need a math/science recommendation.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "brown-check"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-42-united-states-cornell-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "International aid requires a request during admission.",
+    "sources": [
+      {
+        "id": "cornell-aid",
+        "title": "International aid requirements",
+        "url": "https://www.finaid.cornell.edu/first-year-and-transfer-students-international",
+        "scope": "Fall 2027"
+      },
+      {
+        "id": "cornell-test",
+        "title": "Testing requirements",
+        "url": "https://admissions.cornell.edu/policies/standardized-testing-policy",
+        "scope": "General policy"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "cornell-css",
+            "title": "Prepare 2027–28 CSS Profile",
+            "detail": "Use Cornell code 2098.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "cornell-aid"
+            ]
+          },
+          {
+            "id": "cornell-idoc",
+            "title": "Prepare requested IDOC records",
+            "detail": "Submit requested signed documents only.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "cornell-aid"
+            ]
+          },
+          {
+            "id": "cornell-testing",
+            "title": "Prepare required tests",
+            "detail": "SAT/ACT required; check English-test or exemption conditions.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "cornell-test"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-44-united-states-duke-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Karsh consideration follows Duke admission and aid application.",
+    "sources": [
+      {
+        "id": "duke-karsh",
+        "title": "Karsh terms/process",
+        "url": "https://ousf.duke.edu/merit-scholarships/karsh-international-scholars-program/",
+        "scope": "General policy"
+      },
+      {
+        "id": "duke-check",
+        "title": "Current application checklist",
+        "url": "https://admissions.duke.edu/checklist/",
+        "scope": "2026–27 admission"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "karsh-aid",
+            "title": "Request financial aid with Duke application",
+            "detail": "No separate Karsh application or nomination.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "duke-karsh"
+            ]
+          },
+          {
+            "id": "duke-commonapp",
+            "title": "Prepare Common Application",
+            "detail": "Include transcript, school report/counselor recommendation and two teacher recommendations.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "duke-check"
+            ]
+          },
+          {
+            "id": "duke-aid-round",
+            "title": "Check chosen-round aid instructions",
+            "detail": "RD financial-aid forms due February 1; ED aid discrepancy remains unresolved.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "duke-check"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-45-united-states-harvard-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "2027–28 financial-aid preparation for international applicants.",
+    "sources": [
+      {
+        "id": "harvard-aid",
+        "title": "Aid instructions",
+        "url": "https://college.harvard.edu/financial-aid/apply-financial-aid/prospective-students",
+        "scope": "2027–28 aid"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "harvard-css",
+            "title": "Prepare 2027–28 CSS Profile",
+            "detail": "Use Harvard code 3434; both parents file separately when required.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "harvard-aid"
+            ]
+          },
+          {
+            "id": "harvard-idoc",
+            "title": "Prepare IDOC income records",
+            "detail": "Upload actual 2025 income/tax or non-filer documents and English translations; include applicable business documents.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "harvard-aid"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-46-united-states-lafayette-college": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Need-based aid and admission preparation; exact aid date unresolved.",
+    "sources": [
+      {
+        "id": "lafayette-faq",
+        "title": "International aid/eligibility",
+        "url": "https://admissions.lafayette.edu/apply/international-students/international-student-faq/",
+        "scope": "General policy; fall2027 tests"
+      },
+      {
+        "id": "lafayette-apply",
+        "title": "Application/need policies",
+        "url": "https://admissions.lafayette.edu/apply/international-students/",
+        "scope": "General policy; fall2027 tests"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "lafayette-css",
+            "title": "Prepare CSS Profile",
+            "detail": "Hardship alternative may be requested under the published conditions; no IDOC for internationals.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "lafayette-faq"
+            ]
+          },
+          {
+            "id": "lafayette-school",
+            "title": "Request school documents",
+            "detail": "Prepare school transcript/report, counselor and teacher recommendations and available midyear grades.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "lafayette-apply"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-47-united-states-lehigh-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Limited international-aid preparation; reconfirm current dated deadlines.",
+    "sources": [
+      {
+        "id": "lehigh-int",
+        "title": "International aid/entry rules",
+        "url": "https://www2.lehigh.edu/admissions/international-students",
+        "scope": "General policy"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "lehigh-css",
+            "title": "Prepare CSS Profile",
+            "detail": "Aid must be requested if it will be needed; check hardship-alternative limits.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "lehigh-int"
+            ]
+          },
+          {
+            "id": "lehigh-deadline",
+            "title": "Confirm dated admission and aid cutoffs",
+            "detail": "Inspected page gives November 1 and January 15 without explicit deadline years.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "lehigh-int"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-48-united-states-mit": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "International financial-aid preparation; target-year dates unresolved.",
+    "sources": [
+      {
+        "id": "mit-aid",
+        "title": "International aid process",
+        "url": "https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/",
+        "scope": "General policy"
+      },
+      {
+        "id": "mit-test",
+        "title": "Tests/scores policy",
+        "url": "https://mitadmissions.org/apply/firstyear/tests-scores/",
+        "scope": "General policy"
+      },
+      {
+        "id": "mit-entry",
+        "title": "First-year eligibility",
+        "url": "https://mitadmissions.org/apply/firstyear/first-year-eligibility/",
+        "scope": "General policy"
+      },
+      {
+        "id": "mit-dates",
+        "title": "Round-specific aid dates",
+        "url": "https://sfs.mit.edu/undergraduate-students/apply-for-aid/deadlines-process/",
+        "scope": "Annual policy only"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application-preparation",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "mit-css",
+            "title": "Prepare CSS Profile",
+            "detail": "Use MIT code 3514; separated/divorced parents may each need to file.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "mit-aid"
+            ]
+          },
+          {
+            "id": "mit-income",
+            "title": "Prepare parental income documents",
+            "detail": "Use IDOC with English translation as applicable.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "mit-aid"
+            ]
+          },
+          {
+            "id": "mit-testing",
+            "title": "Prepare SAT/ACT",
+            "detail": "Report actual full sittings; no official score reports required during application.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "mit-test"
+            ]
+          },
+          {
+            "id": "mit-aid-cutoff",
+            "title": "Confirm target-year aid dates",
+            "detail": "Annual policy: EA November 30; RA February 15. Recheck before scheduling.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "mit-dates"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-49-united-states-princeton-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Admission and PFAA are separate. Testing is optional for fall 2027; timetable years still require confirmation.",
+    "sources": [
+      {
+        "id": "p-dates",
+        "title": "First-year application materials",
+        "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
+        "scope": "General recurring first-year timetable; target-cycle year unconfirmed."
+      },
+      {
+        "id": "p-aid",
+        "title": "International need-aid process",
+        "url": "https://admission.princeton.edu/cost-aid",
+        "scope": "International undergraduate assessed-need aid; income-table examples explicitly concern US-resident families."
+      },
+      {
+        "id": "p-test",
+        "title": "2027 testing policy",
+        "url": "https://admission.princeton.edu/apply/standardized-testing",
+        "scope": "2026–27 admission cycle for fall 2027 testing; English requirement is general policy."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "common-app",
+            "title": "Prepare Common Application",
+            "detail": "Include Princeton-specific questions.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "p-dates"
+            ]
+          },
+          {
+            "id": "graded-paper",
+            "title": "Prepare graded written paper",
+            "detail": "Use the university’s graded-paper instructions before selecting the submission.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "p-dates"
+            ]
+          },
+          {
+            "id": "school-records",
+            "title": "Arrange school report and recommendations",
+            "detail": "Obtain school report, transcript, counselor letter and two teacher evaluations.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "p-dates"
+            ]
+          },
+          {
+            "id": "pfaa",
+            "title": "Complete Princeton aid application",
+            "detail": "After admission application, use the free PFAA; keep target-cycle cutoff verification separate.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "p-aid"
+            ]
+          },
+          {
+            "id": "english-evidence",
+            "title": "Check English-test condition",
+            "detail": "If English is neither native language nor school language, arrange an accepted official test.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "p-test"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-50-united-states-rice-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Limited international assessed-need aid; follow separate admission, financial-statement and CSS processes.",
+    "sources": [
+      {
+        "id": "r-admit",
+        "title": "International first-year application",
+        "url": "https://admission.rice.edu/apply/first-year-international-applicants",
+        "scope": "Current international first-year applicant page; individual SMA/MA/SMK equivalence not established."
+      },
+      {
+        "id": "r-aid",
+        "title": "2027–28 international aid requirements",
+        "url": "https://financialaid.rice.edu/apply-aid/international-students",
+        "scope": "2027–28 international need-aid application timetable and general coverage policy."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "admission",
+            "title": "Prepare admission application",
+            "detail": "Complete Common App and Rice supplement for the selected round.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "r-admit"
+            ]
+          },
+          {
+            "id": "school-record",
+            "title": "Arrange official school records",
+            "detail": "Provide transcript and required exam results with English translations; exact Indonesian equivalence remains UNKNOWN.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "r-admit"
+            ]
+          },
+          {
+            "id": "recommendations",
+            "title": "Arrange recommendations",
+            "detail": "Obtain one counselor and two teacher recommendations.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "r-admit"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Document English proficiency",
+            "detail": "Use the published English-curriculum condition or an accepted official test.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "r-admit"
+            ]
+          },
+          {
+            "id": "financial-statement",
+            "title": "Complete international financial statement",
+            "detail": "Declare whether aid is requested and supply the required supporting funds information.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "r-admit"
+            ]
+          },
+          {
+            "id": "css",
+            "title": "Submit 2027–28 CSS Profile",
+            "detail": "Use code 6609 and the separate priority date for EDI, EDII or RD.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "r-aid"
+            ]
+          },
+          {
+            "id": "income-records",
+            "title": "Upload requested income documents",
+            "detail": "Use the applicant portal for international supporting tax/income documents and translations.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "r-aid"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-51-united-states-stanford-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "International need aid must be requested with admission; this guide verifies testing and 2027–28 RD aid only.",
+    "sources": [
+      {
+        "id": "s-intl",
+        "title": "International aid policy",
+        "url": "https://admission.stanford.edu/apply/international/",
+        "scope": "General international first-year policy; later refetch returned 403 after successful initial page read."
+      },
+      {
+        "id": "s-test",
+        "title": "Required standardized testing",
+        "url": "https://admission.stanford.edu/apply/first-year/testing.html",
+        "scope": "General current first-year testing policy."
+      },
+      {
+        "id": "s-aid",
+        "title": "2027–28 international RD aid",
+        "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
+        "scope": "2027–28 Regular Decision international aid requirements only."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "declare-aid",
+            "title": "Declare aid interest with admission",
+            "detail": "International applicants should state the aid request on the admission application.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "s-intl"
+            ]
+          },
+          {
+            "id": "testing",
+            "title": "Report ACT or SAT",
+            "detail": "Self-report required scores; official matching reports are required if enrolling.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "s-test"
+            ]
+          },
+          {
+            "id": "css",
+            "title": "Complete 2027–28 CSS Profile",
+            "detail": "For international RD, use code 4704 and Feb 15 priority filing.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "s-aid"
+            ]
+          },
+          {
+            "id": "supplement",
+            "title": "Submit International Student Supplement",
+            "detail": "Send completed signed supplement through Stanford’s secure upload process.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "s-aid"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-53-united-states-university-of-notre-dame": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Notre Dame meets assessed need; CSS and supporting documents have explicit 2027–28 international deadlines.",
+    "sources": [
+      {
+        "id": "n-aid",
+        "title": "2027–28 international financial aid",
+        "url": "https://financialaid.nd.edu/apply-or-renew/international-students/",
+        "scope": "Explicit 2027–28 international first-year financial-aid timetable."
+      },
+      {
+        "id": "n-test",
+        "title": "Testing policy",
+        "url": "https://admissions.nd.edu/apply/application-considerations/",
+        "scope": "Testing explicitly separates fall 2027 and fall 2028 entry."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "css",
+            "title": "Submit 2027–28 CSS Profile",
+            "detail": "Use code 1841; priority dates differ for REA and RD.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "n-aid"
+            ]
+          },
+          {
+            "id": "idoc",
+            "title": "Check IDOC requests",
+            "detail": "Submit requested tax/non-filer and earnings documents after CSS submission.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "n-aid"
+            ]
+          },
+          {
+            "id": "testing-choice",
+            "title": "Review fall-2027 testing option",
+            "detail": "SAT/ACT optional for the 2026–27 application year; decide explicitly whether to submit.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "n-test"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-54-united-states-vanderbilt-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Keep need-aid and named merit processes distinct. Cornelius Vanderbilt is full tuition plus a one-time summer stipend.",
+    "sources": [
+      {
+        "id": "v-intl",
+        "title": "International funding eligibility",
+        "url": "https://www.vanderbilt.edu/financialaid/undergraduate/international/",
+        "scope": "General international first-year need and merit eligibility policy."
+      },
+      {
+        "id": "v-cv",
+        "title": "Cornelius Vanderbilt application",
+        "url": "https://www.vanderbilt.edu/scholarships/signature/",
+        "scope": "2027 selection timeline; merit mechanism distinct from international need aid."
+      },
+      {
+        "id": "v-merit",
+        "title": "Current named-merit deadlines",
+        "url": "https://www.vanderbilt.edu/scholarships/",
+        "scope": "2027 merit application deadlines; Ingram coverage not reviewed on this page."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "need-css",
+            "title": "Complete CSS Profile if requesting need aid",
+            "detail": "International need aid is limited and need-aware; additional verification may be requested.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "v-intl"
+            ]
+          },
+          {
+            "id": "admission-first",
+            "title": "Submit Vanderbilt admission application",
+            "detail": "MyAppVU merit application access follows admission submission.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "v-cv"
+            ]
+          },
+          {
+            "id": "cv-app",
+            "title": "Complete Cornelius Vanderbilt application",
+            "detail": "Apply through MyAppVU by Dec 1 2026; this is separate from need-aid forms.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "v-cv"
+            ]
+          },
+          {
+            "id": "other-merit",
+            "title": "Review Ingram’s dedicated current terms",
+            "detail": "The overview gives Dec 1 2026 but this review did not establish Ingram benefits or service obligations.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "v-merit"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-55-united-states-villanova-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Presidential screening is nomination-free and invitation-based; preserve the distinct merit award identity.",
+    "sources": [
+      {
+        "id": "vi-apply",
+        "title": "2027 Presidential selection",
+        "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/apply.html",
+        "scope": "2027 Presidential selection process; invitation-specific essay deadlines remain unknown."
+      },
+      {
+        "id": "vi-faq",
+        "title": "International eligibility and tests",
+        "url": "https://www.villanova.edu/university/research-scholarship/crf/presidential-scholars/faq.html",
+        "scope": "2026–27 Presidential eligibility and testing; no personal eligibility inference."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "complete-admission",
+            "title": "Complete admission application",
+            "detail": "Complete admission for scholarship screening by Jan 15 2027, 11:59 PM EST.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "vi-apply"
+            ]
+          },
+          {
+            "id": "watch-invitation",
+            "title": "Check applicant portal for invitation",
+            "detail": "Selected applicants receive the scholarship essay application; its deadline is individualized.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "vi-apply"
+            ]
+          },
+          {
+            "id": "essays",
+            "title": "Complete invited short-answer essays",
+            "detail": "Only after invitation; use the deadline in the invitation.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "vi-apply"
+            ]
+          },
+          {
+            "id": "interview",
+            "title": "Attend finalist interview if invited",
+            "detail": "Required 2027 campus interview programme runs March 21–23; travel funding UNKNOWN.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "vi-apply"
+            ]
+          },
+          {
+            "id": "tests",
+            "title": "Review optional SAT/ACT submission",
+            "detail": "SAT/ACT not required for Presidential consideration in 2026–27/Class of 2031.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "vi-faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-56-united-states-washington-and-lee-unive": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Johnson merit and general need aid are distinct. Current class-labelled dates still require explicit entry-year confirmation.",
+    "sources": [
+      {
+        "id": "w-apply",
+        "title": "Johnson application instructions",
+        "url": "https://www.wlu.edu/admissions/the-johnson-scholarship/application-instructions",
+        "scope": "General/current-class Johnson application instructions; cutoff clock and explicit entry year unconfirmed."
+      },
+      {
+        "id": "w-intl",
+        "title": "International checklist and timetable",
+        "url": "https://www.wlu.edu/admissions/apply/for-international-applicants",
+        "scope": "Class-of-2031-labelled general first-year page; entry-year mapping not independently explicit."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "johnson-essay",
+            "title": "Prepare Johnson essay",
+            "detail": "Include it with the completed Common/Coalition application; source lists Dec 1 without explicit entry year.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "w-apply"
+            ]
+          },
+          {
+            "id": "school-records",
+            "title": "Arrange school records",
+            "detail": "Provide secondary transcript and applicable exam results with English translations.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "w-intl"
+            ]
+          },
+          {
+            "id": "recommendations",
+            "title": "Arrange school recommendations",
+            "detail": "Obtain two teacher recommendations and counselor/school-official recommendation and report.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "w-apply"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Check full English-proficiency policy",
+            "detail": "International checklist requires demonstration; accepted tests/waivers need separate review.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "w-intl"
+            ]
+          },
+          {
+            "id": "need-aid",
+            "title": "Review separate need-aid instructions",
+            "detail": "Do not treat the Johnson essay as the need-aid application.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "w-intl"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-57-united-states-yale-university": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Yale requires ACT/SAT and uses a separate 2027–28 individualized aid checklist.",
+    "sources": [
+      {
+        "id": "y-test",
+        "title": "Required standardized testing",
+        "url": "https://admissions.yale.edu/standardized-testing",
+        "scope": "General current admissions testing policy; no target score inferred."
+      },
+      {
+        "id": "y-intl",
+        "title": "International applicant requirements",
+        "url": "https://admissions.yale.edu/international",
+        "scope": "General international undergraduate aid/testing policy; no zero-contribution promise."
+      },
+      {
+        "id": "y-aid",
+        "title": "2027–28 financial-aid requirements",
+        "url": "https://finaid.yale.edu/apply/prospective",
+        "scope": "Explicit 2027–28 prospective international aid instructions; priority dates are not absolute eligibility cutoffs."
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding evidence",
+        "items": [
+          {
+            "id": "act-sat",
+            "title": "Report ACT or SAT",
+            "detail": "Self-report required scores; provide matching official reports if enrolling.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "y-test"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Check English-proficiency condition",
+            "detail": "Non-native speakers without two years of English-medium secondary school need an accepted assessment.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "y-intl"
+            ]
+          },
+          {
+            "id": "translate",
+            "title": "Arrange certified English translations",
+            "detail": "Foreign-language documents need certified translations; applicant translations are not accepted.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "y-intl"
+            ]
+          },
+          {
+            "id": "aid-interest",
+            "title": "Declare aid interest on admission",
+            "detail": "Yale then supplies the individual financial-aid checklist and requested documents.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "y-aid"
+            ]
+          },
+          {
+            "id": "income",
+            "title": "Prepare requested 2025 income documents",
+            "detail": "Follow the 2027–28 portal instructions, including parent information where requested.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "y-aid"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-63-australia-monash-leadership": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Automatic award consideration follows an eligible unconditional undergraduate offer; 2027 selection timing remains unresolved.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Monash Leadership terms",
+        "url": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/monash-international-leadership-scholarship-5571Z",
+        "scope": "Current general terms; exact 2027 round UNKNOWN"
+      },
+      {
+        "id": "course",
+        "title": "C2001 international course page",
+        "url": "https://www.monash.edu/study/courses/find-a-course/computer-science-c2001?international=true",
+        "scope": "2027 course entry page; applicant equivalence not resolved"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "course-check",
+            "title": "Confirm the Australian-campus course",
+            "detail": "Check the exact course, school qualification and English requirements before applying.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "course"
+            ]
+          },
+          {
+            "id": "admission-offer",
+            "title": "Obtain the eligible course offer",
+            "detail": "The scholarship requires an unconditional offer and full-time undergraduate study in Australia; confirm current exclusions.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "automatic-selection",
+            "title": "Check automatic consideration and timing",
+            "detail": "There is no separate scholarship form; confirm the 2027 selection date with published admissions guidance.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "funding-gap",
+            "title": "Review excluded costs",
+            "detail": "Arrange a separate budget for accommodation, living costs and OSHC.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "retention",
+            "title": "Record retention conditions",
+            "detail": "Plan for the semester WAM requirement and requested promotional participation.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-64-australia-monash-it-merit": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Prepare the eligible IT course application and confirm the offshore qualification rule; award assessment is automatic.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Faculty of IT merit terms",
+        "url": "https://www.monash.edu/study/fees-scholarships/scholarships/find-a-scholarship/faculty-of-it-international-merit-scholarship-6232",
+        "scope": "Current general award terms; 2027 selection deadline UNKNOWN"
+      },
+      {
+        "id": "course",
+        "title": "C2001 international admissions",
+        "url": "https://www.monash.edu/study/courses/find-a-course/computer-science-c2001?international=true",
+        "scope": "2027 international course entry; Indonesian equivalence unresolved"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "country-qualification",
+            "title": "Confirm country and qualification treatment",
+            "detail": "Check both citizenship and present study location, final-year offshore status and treatment of the exact school qualification; do not convert SMA marks to ATAR without official evidence.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award",
+              "course"
+            ]
+          },
+          {
+            "id": "course-offer",
+            "title": "Apply for a listed IT single degree",
+            "detail": "The award lists specific course codes and requires enrolment to commence or a course offer.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "automatic-review",
+            "title": "Check automatic assessment timing",
+            "detail": "No separate scholarship application is required; confirm 2027 assessment timing before relying on an award.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "residual-costs",
+            "title": "Review the remaining funding gap",
+            "detail": "Plan for 80% tuition and all non-tuition costs; check the no-stacking rule.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "retention",
+            "title": "Record continuation requirements",
+            "detail": "Record WAM, promotional participation and no-deferral conditions.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-65-australia-unsw-scientia": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Historical T1 checklist retained for review; it must not be used to submit a late application or assume a later-cycle deadline.",
+    "sources": [
+      {
+        "id": "call",
+        "title": "UNSW international T1 2027 call",
+        "url": "https://www.scholarships.unsw.edu.au/scholarships/id/1988",
+        "scope": "Explicit T1 2027 call; closed 30 October 2026"
+      },
+      {
+        "id": "course",
+        "title": "Bachelor of Engineering (Honours)",
+        "url": "https://www.unsw.edu.au/study/undergraduate/bachelor-of-engineering-honours?studentType=international",
+        "scope": "Degree existence; exact applicant admission requirements unresolved"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "later-call",
+            "title": "Find a published later-intake call",
+            "detail": "The reviewed round has closed. Recheck whether a later 2027 or subsequent call exists before any application.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "offer-condition",
+            "title": "Review offer conditions",
+            "detail": "The closed call allowed pending Year 12 results but required an unconditional offer for successful award recipients; recheck the next call rather than carrying this rule forward.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "merit-evidence",
+            "title": "Prepare selection evidence",
+            "detail": "The T1 call assessed academic merit, leadership, extracurricular activity and reasons for choosing UNSW; retain supporting records and verify new-call requirements.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "scholarship-application",
+            "title": "Check the separate portal application",
+            "detail": "T1 used PUCA1029 to consider candidates for Scientia; late documents were not accepted. Confirm any new-cycle application reference.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "award-gap",
+            "title": "Compare award categories and uncovered costs",
+            "detail": "Distinguish full tuition from AUD 20,000 annual tuition support and cost all non-tuition expenses separately.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-66-australia-sydney-academic-excellence": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Verify an eligible single-degree intake and complete the separate scholarship form; this scholarship leaves non-tuition costs uncovered.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Sydney Academic Excellence scholarship",
+        "url": "https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html",
+        "scope": "Explicit S1/S2 2027 status and current terms"
+      },
+      {
+        "id": "course",
+        "title": "2027 Engineering Honours resolutions",
+        "url": "https://www.sydney.edu.au/handbooks/2027/engineering/undergraduate/engineering-honours/course-resolutions.html",
+        "scope": "Degree existence only; exact-course award approval unresolved"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "intake-course",
+            "title": "Confirm Semester 2 course availability",
+            "detail": "Check the exact eligible single degree, maximum four-year duration, recognized school qualification and Semester 2 admission availability.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award",
+              "course"
+            ]
+          },
+          {
+            "id": "degree-application",
+            "title": "Complete the degree application",
+            "detail": "Applicants must have applied for an eligible degree and not yet commenced it at award.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "scholarship-form",
+            "title": "Complete the separate scholarship application",
+            "detail": "Selection includes an online scholarship form; confirm the Semester 2 cutoff and preserve submission confirmation.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "secondary-proof",
+            "title": "Prepare completed secondary-school evidence",
+            "detail": "Confirm the accepted final certificate or recognised foundation proof; pre-graduation submission timing remains unresolved.",
+            "kind": "DOCUMENT",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "accept-retain",
+            "title": "Review acceptance and continuation conditions",
+            "detail": "Record both offer deadlines and the semester SAM, non-deferral and non-transfer conditions.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-67-australia-sydney-vcis": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Automatic consideration depends on an eligible unconditional offer by a published round date; award amounts and later funding are not guaranteed.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Sydney VCIS terms and 2027 rounds",
+        "url": "https://www.sydney.edu.au/scholarships/e/vice-chancellor-international-scholarships-scheme.html",
+        "scope": "Explicit 2027 selection schedule; current award terms"
+      },
+      {
+        "id": "course",
+        "title": "2027 Engineering Honours",
+        "url": "https://www.sydney.edu.au/handbooks/2027/engineering/undergraduate/engineering-honours/course-resolutions.html",
+        "scope": "Degree exists; exact CRICOS award match unresolved"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "course-match",
+            "title": "Confirm the course and intake",
+            "detail": "Verify the exact CRICOS-registered bachelor programme and entry requirements.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award",
+              "course"
+            ]
+          },
+          {
+            "id": "unconditional-offer",
+            "title": "Resolve admission conditions before the round cutoff",
+            "detail": "An unconditional offer must be secured by the relevant published close date for automatic consideration.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "automatic-consideration",
+            "title": "Check the applicable selection round",
+            "detail": "No separate scholarship application is required; use the 2027 intake table rather than the undated IB/UAC note.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "award-letter",
+            "title": "Review the actual scholarship offer",
+            "detail": "Check the amount, cohort restrictions, instalments, acceptance deadline, funding availability and stacking rules.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "later-year-gap",
+            "title": "Review the full-degree funding gap",
+            "detail": "The award is made only in the commencement year and is not renewable; secure funding for the rest of tuition and living costs.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-68-sweden-jonkoping-scholarship": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Apply to the programme and submit the separate scholarship form; partial tuition and progression conditions leave a substantial funding gap.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "JU scholarship application",
+        "url": "https://ju.se/en/study-at-ju/application-and-admission/scholarships-and-funding/scholarships-from-jonkoping-university.html",
+        "scope": "Autumn 2027 application window and form requirements"
+      },
+      {
+        "id": "terms",
+        "title": "JU scholarship terms",
+        "url": "https://ju.se/download/18.223884fe1a00973292059ed7/1789116335186/Terms%20and%20conditions%20of%20the%20JU%20Scholarship.pdf",
+        "scope": "2027/28 terms, updated 8 September 2026"
+      },
+      {
+        "id": "course",
+        "title": "Mechanical Engineering BSc Autumn 2027",
+        "url": "https://ju.se/en/study-at-ju/our-programmes/bachelor-programmes/mechanical-engineering-bsc-autumn-2027-ku104.html",
+        "scope": "Exact 2027 engineering programme and requirements"
+      }
+    ],
+    "sections": [
+      {
+        "id": "prepare",
+        "title": "Application preparation",
+        "items": [
+          {
+            "id": "programme",
+            "title": "Confirm the programme and equivalence",
+            "detail": "Check the exact programme, school qualification and subject/English equivalence; Mechanical Engineering has Physics, Chemistry and Mathematics prerequisites.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "course"
+            ]
+          },
+          {
+            "id": "programme-application",
+            "title": "Complete the programme application",
+            "detail": "Choose JU Direct or central admission and retain the study application number. Programme documentation must be complete before scholarship processing.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award",
+              "course"
+            ]
+          },
+          {
+            "id": "recommendation",
+            "title": "Prepare the English recommendation",
+            "detail": "One English letter of at most one page is requested; a maximum of two letters is allowed.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "statement",
+            "title": "Prepare the individual statement",
+            "detail": "Describe educational experience and career plans within the published 200-word limit.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "award-form",
+            "title": "Submit the separate scholarship form by 2 May 2027",
+            "detail": "Use the study application number and same email as the study application; wait for the actual offer and its acceptance deadline.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "award",
+              "terms"
+            ]
+          },
+          {
+            "id": "retention",
+            "title": "Review tuition and credit conditions",
+            "detail": "Budget for remaining tuition and living costs, payment timing and the 45-credit annual continuation condition for two/three-year programmes.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "terms"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-58-united-states-rochester-handler": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Handler combines high assessed financial need with academic/leadership selection. Annual instructions require a cycle recheck.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Handler scholarship",
+        "url": "https://admissions.rochester.edu/handler-scholarship/",
+        "scope": "General policy; annual dates require recheck"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding",
+        "items": [
+          {
+            "id": "check-need",
+            "title": "Check the Handler selection and funding conditions",
+            "detail": "Review assessed need, selection factors and the allowance limits.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "prepare-aid",
+            "title": "Prepare international financial-aid documentation",
+            "detail": "Follow the international aid instructions; do not substitute domestic FAFSA eligibility for the international process.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "application",
+            "title": "Complete admission and financial-aid materials",
+            "detail": "All first-year applicants are reviewed; recheck the recommended December 1 timing for the intended cycle.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "nomination",
+            "title": "Check whether an authorised official will nominate",
+            "detail": "The page permits school/community officials to nominate; students and parents cannot nominate. A nomination is not presented as a prerequisite for all applicants.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "finalist-interview",
+            "title": "Attend the finalist interview if invited",
+            "detail": "Invited Handler finalists must participate in the virtual interview event; follow the invitation for timing.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-59-united-states-tulane-stamps": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Tulane Stamps is a merit competition with published university-budget coverage; the initial target-cycle deadline and programme fit need confirmation.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Tulane merit awards",
+        "url": "https://admission.tulane.edu/tuition-aid/merit-scholarships",
+        "scope": "General merit instructions"
+      },
+      {
+        "id": "international",
+        "title": "International scholarship process",
+        "url": "https://admission.tulane.edu/international/aid",
+        "scope": "International applicant instructions"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding",
+        "items": [
+          {
+            "id": "admission",
+            "title": "Complete the undergraduate application",
+            "detail": "Use the Common Application and verify the appropriate current-cycle admission/merit round.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "international"
+            ]
+          },
+          {
+            "id": "financial-forms",
+            "title": "Check scholarship financial forms",
+            "detail": "Follow the CSS Profile and Declaration/Certification of Finances instructions for the relevant award and international applicant category.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "international"
+            ]
+          },
+          {
+            "id": "invited-supplement",
+            "title": "Submit an invited semifinalist supplement when requested",
+            "detail": "Only invited semifinalists use this stage; confirm the year of the published January 5 date.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-60-united-states-usc-merit": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "USC/Viterbi international merit consideration uses EA/ED; the fall2027 merit deadline has passed. Regular Decision admission has a separate deadline.",
+    "sources": [
+      {
+        "id": "international",
+        "title": "USC international admission and funding",
+        "url": "https://admission.usc.edu/prospective-students/how-to-apply/international-students/",
+        "scope": "2027–28 international applicants"
+      },
+      {
+        "id": "application",
+        "title": "Viterbi first-year application",
+        "url": "https://viterbiadmission.usc.edu/apply/",
+        "scope": "Fall 2027 first-year/merit cycle"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding",
+        "items": [
+          {
+            "id": "merit-round",
+            "title": "Check the closed merit round",
+            "detail": "EA/ED by November 1 is required for general merit consideration; January RD admission does not reopen it.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "application"
+            ]
+          },
+          {
+            "id": "first-choice",
+            "title": "Select a Viterbi major as first choice",
+            "detail": "Use the relevant engineering/CS major on the application and confirm programme prerequisites.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "application"
+            ]
+          },
+          {
+            "id": "funding-proof",
+            "title": "Prepare guaranteed financial-support evidence",
+            "detail": "Follow USC international documentation rules; anticipated competitive scholarships do not constitute guaranteed funds.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "international"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Prepare accepted English-proficiency evidence",
+            "detail": "Check the applicable test version, threshold and reporting policy.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "international"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-61-united-states-bu-presidential": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Presidential provides half tuition and automatically considers timely first-year applicants. Confirm the year of the December 1 merit date.",
+    "sources": [
+      {
+        "id": "award",
+        "title": "Presidential merit scholarship",
+        "url": "https://www.bu.edu/admissions/tuition-aid/scholarships-financial-aid/first-year-merit/",
+        "scope": "General policy; half tuition from fall 2026"
+      },
+      {
+        "id": "international",
+        "title": "BU international checklist",
+        "url": "https://www.bu.edu/admissions/apply/international/",
+        "scope": "International admission and testing"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding",
+        "items": [
+          {
+            "id": "admission",
+            "title": "Complete the admission application for merit consideration",
+            "detail": "Reconfirm the current cycle of the December 1 merit date.",
+            "kind": "TASK",
+            "basis": "RECHECK",
+            "sourceIds": [
+              "award"
+            ]
+          },
+          {
+            "id": "school-records",
+            "title": "Prepare school records and senior-year grades",
+            "detail": "Follow original-document, translation and school-submission requirements; engineering applicants must check calculus.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "international"
+            ]
+          },
+          {
+            "id": "english",
+            "title": "Prepare English-proficiency evidence",
+            "detail": "Use the accepted TOEFL, IELTS or DET route and check current thresholds.",
+            "kind": "DOCUMENT",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "international"
+            ]
+          },
+          {
+            "id": "remaining-cost",
+            "title": "Establish funding for remaining costs",
+            "detail": "Half tuition does not establish housing, meals or remaining tuition coverage.",
+            "kind": "TASK",
+            "basis": "GENERAL",
+            "sourceIds": [
+              "award"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "route-69-indonesia-beasiswa-garuda": {
+    "cycle": "2027 entry",
+    "reviewedAt": "2026-11-15",
+    "summary": "Beasiswa Garuda is external sponsorship; establish the approved host and degree separately and review the sponsor conditions.",
+    "sources": [
+      {
+        "id": "call",
+        "title": "Beasiswa Garuda2027 guide",
+        "url": "https://beasiswagaruda.kemdiktisaintek.go.id/buku-panduan-pendaftaran-beasiswa-garuda-2027.pdf",
+        "scope": "2027 sponsor application; criteria pp1–3, process/schedule pp4–5, commitment p12"
+      }
+    ],
+    "sections": [
+      {
+        "id": "application",
+        "title": "Application and funding",
+        "items": [
+          {
+            "id": "host-match",
+            "title": "Confirm the approved host and programme",
+            "detail": "Use the sponsor-approved list and placement rules before pairing with a university route.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "eligibility-documents",
+            "title": "Collect sponsor qualification and test evidence",
+            "detail": "Check the full current Grade 12, academic, IQ, SAT/TBS and language conditions in the guide.",
+            "kind": "DOCUMENT",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "sponsor-application",
+            "title": "Complete the separate sponsor application",
+            "detail": "Use the official integrated LPDP application and the January 4 deadline; exact cutoff remains unknown.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "award-terms",
+            "title": "Review the sponsor commitment and cashflow",
+            "detail": "Check return-service obligations, double-funding restrictions, allowances and upfront-payment timing.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          },
+          {
+            "id": "placement-interview",
+            "title": "Attend the sponsor placement interview",
+            "detail": "Follow the sponsor invitation after selection; the guide states that missing placement eliminates the recipient. The interview determines the approved host and programme.",
+            "kind": "TASK",
+            "basis": "CURRENT",
+            "sourceIds": [
+              "call"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

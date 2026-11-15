@@ -1,5 +1,19 @@
 # Handoff
 
+## Engineering/CS research catalogue — 2026-11-15
+
+Baseline: `6e0ad4c`. A second returned research report provided literal official URLs after the first run's separate data files could not be retrieved. The report was treated as a discovery index, and official sources were independently checked before updating public facts. The lost research JSON was not recovered.
+
+The catalogue now has 68 routes: all 57 original IDs are retained, all 18 original US routes have scoped review updates, and 11 new routes cover four US mechanisms, five Australian awards, one Swedish award and Beasiswa Garuda as a separate Indonesian sponsor. No host pairing is implied for Garuda. There are 200 calendar records (102 target-cycle-supported, 98 unscheduled) and 31 guides (26 added). See the [research checkpoint](RESEARCH-2026-11-15.md) for funding gaps, exclusions and unresolved eligibility evidence. Existing combined university pages retain their identities and saved plans; new entries start unset.
+
+Catalogue projection, validation, tests and fictional HTTP checks now derive inventory from the actual definitions instead of freezing the old 57/174 counts. Reviewed projection records require an explicit review date. The historical private seed-bootstrap script still describes its original fixed-format input; it is not a current catalogue importer.
+
+Validation in an isolated checkout passed the production build, emitted-build privacy scan (404 text files), `npm run check` (86 Python tests with six optional-runtime skips, 17 Node tests), public-data validation and 68-page fictional HTTP checks covering tracking, guides, persistence, recovery and access controls. An old calendar fixture count failed first; replacing that frozen count with the pending-date invariant passed the full check. No actual applicant eligibility or live model result was used as test evidence.
+
+The data-only update was applied after zero queued/running research jobs. The existing server reads these public definitions at request time; the served `.next` output was not rebuilt and web/worker PIDs stayed unchanged. Workspace database/configuration and message/job fingerprints matched before and after. Live unauthenticated API access remained 401. No owner plan, priority, checklist completion, source-monitor baseline or cloud connection was imported from the report. Authenticated live browser flows were not rechecked; the HTTP flow checks used an isolated fictional workspace.
+
+Remaining work: programme-level Indonesian diploma/graduation timing, ancillary cost/cashflow and renewal details where unresolved, Garuda's exact approved-host mapping, Miami Stamps access and current Trustee-specific availability. General annual dates remain unscheduled rather than receiving guessed years or cutoffs. Local recovery remains governed by [DATABASE.md](DATABASE.md); this update does not establish off-device recovery.
+
 ## Objective interface copy — 2026-11-09
 
 Baseline: `ea31373`. Deployed build: `pzP3gtWiLI7rW0DV5gBZa`. Removed the sidebar subtitle, private workspace footer, and sign-in taglines. Page titles, tabs, instructions, empty states, notifications, Schola suggestions, and future worker status/error messages now use objective wording. Checklist guides, reusable document packs, and generated task descriptions use the same tone. Practical privacy disclosures, restore consent, evidence limits, and the fictional-demo indicator remain. [PRODUCT.md](../PRODUCT.md#brand-personality) records the copy convention. No schema, source URL, requirement ID, or stored owner record changed.

@@ -4,6 +4,7 @@ Usage: python3 scripts/prepare-catalogue.py REVIEW_DIRECTORY
 The review directory stays outside the public catalogue and client bundle.
 """
 import json
+from datetime import date
 from pathlib import Path
 import sys
 
@@ -24,7 +25,8 @@ for record in json.loads((review / "refreshed_routes.reviewed.json").read_text()
     route["currentCycleEvidenceSummary"] = route["currentCycleEvidenceSummary"].replace("unless fieldReview cites a source", "unless a specific source is shown")
     route["fieldReview"] = {key: {"status": item["status"], "evidence": evidence(item.get("evidence", []))} for key, item in record.get("fieldReview", {}).items()}
     route["evidenceSources"] = evidence(record.get("evidenceSources", []))
-    route["reviewedAt"] = "2026-11-03"
+    date.fromisoformat(record["reviewedAt"])
+    route["reviewedAt"] = record["reviewedAt"]
     routes.append(route)
 
 events = []
@@ -35,7 +37,11 @@ for record in json.loads((review / "calendar_events.reviewed.json").read_text())
     event["sourceReview"]["evidence"] = evidence(source.get("evidence", []))
     events.append(event)
 
-assert len(routes) == 57 and len(events) == 174
+route_ids = {r["id"] for r in routes}
+event_ids = {e["id"] for e in events}
+assert routes and len(routes) == len(route_ids), "Reviewed route IDs must be unique"
+assert events and len(events) == len(event_ids), "Reviewed event IDs must be unique"
+assert all(e["routeId"] in route_ids and set(e["prerequisiteEventIds"]) <= event_ids for e in events)
 for filename, records in (("scholarships_2027.json", routes), ("calendar_events.json", events)):
     (root / "data/public" / filename).write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n")
-print("Prepared 57 public route records and 174 calendar records; private review artifacts excluded.")
+print(f"Prepared {len(routes)} public route records and {len(events)} calendar records; private review artifacts excluded.")

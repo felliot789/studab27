@@ -24,6 +24,8 @@ def main():
         for name in (".next", "node_modules", "schola", "public"):
             (scratch / name).symlink_to(root / name, target_is_directory=True)
         shutil.copytree(root / "data", scratch / "data")
+        expected_routes = {r["id"] for r in json.loads((scratch / "data/public/scholarships_2027.json").read_text())}
+        expected_events = {e["id"] for e in json.loads((scratch / "data/public/calendar_events.json").read_text())}
         shutil.copy(root / "package.json", scratch / "package.json")
         with socket.socket() as s:
             s.bind(("127.0.0.1", 0))
@@ -56,8 +58,9 @@ def main():
                 except (OSError, TimeoutError): time.sleep(.15)
             else: raise AssertionError("Temporary app server did not become ready")
             data = request()
-            assert data["mode"] == "DEMO" and len(data["routes"]) == 57 and len(data["briefing"]["cards"]) == 3
-            assert len(data["calendarEvents"]) == 174
+            assert data["mode"] == "DEMO" and len(data["briefing"]["cards"]) == 3
+            assert {r["id"] for r in data["routes"]} == expected_routes
+            assert {e["id"] for e in data["calendarEvents"]} == expected_events
             for route in ("/", "/scholarships", "/scholarships?browse=1", "/today", "/applications", "/calendar", "/documents", "/documents?tab=reusable", "/updates", "/settings", "/catalogue", "/bricks", "/watchtower", "/schola", "/login"): request(route)
             for route in data["routes"]:
                 request("/scholarships/" + quote(route["id"]))
@@ -121,7 +124,7 @@ def main():
             request(value={"action": "triage", "id": inbox[0]["id"], "status": "TRIAGED"})
             assert request()["inbox"][0]["status"] == "TRIAGED"
             scenario = request(value={"action": "simulate", "sat": 1560, "cap": 8})
-            assert len(scenario["evaluations"]) == 57
+            assert {e["routeId"] for e in scenario["evaluations"]} == expected_routes
             assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 5
             request(value={"action": "simulate", "sat": 900, "cap": 8}, expect=400)
             request(value={"action": "task", "id": "sat-registration", "command": "done"}, headers={"Origin": "https://example.com"}, expect=403)
@@ -199,7 +202,7 @@ def main():
             request(headers={"Host": "workspace.example:10000", "Cookie": lan_cookie}, expect=401)
             request(headers={**lan_headers, "Cookie": cookie}, expect=401)
             request(value={"action": "simulate", "sat": 1500, "cap": 6}, headers={**lan_headers, "Cookie": lan_cookie, "Origin": "http://attacker.invalid"}, expect=403)
-            print("Production HTTP: tracker, documents, 57 scholarship pages, priority changes, checklist persistence, safe removal, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
+            print(f"Production HTTP: tracker, documents, {len(expected_routes)} scholarship pages, priority changes, checklist persistence, safe removal, calendar reads, export/import recovery, signed sessions, exact origins and CSRF guards passed.")
         finally:
             server.terminate()
             try: server.wait(timeout=8)
