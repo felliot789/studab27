@@ -1,5 +1,13 @@
 # Handoff
 
+## Personal-use purpose — 2026-11-16
+
+Baseline: `9f02295`. README and PRODUCT headers now explicitly state that StudAb27 supports the owner's personal scholarship journey, with no marketing, sales, or monetization goals. The owner is the sole intended user. Development priorities follow personal usefulness, privacy, reliability, and manageable upkeep.
+
+This is a documentation-only clarification. No runtime deployment is required; the existing implementation, validation limits, and remaining work below still apply.
+
+Validation: `npm run check` passed (124 Python tests with 11 optional-runtime skips; 22 Node tests, TypeScript, public data, and documentation-link checks). The documentation diff received a read-only review.
+
 ## Schola research status clarity — 2026-11-16
 
 Implementation baseline: `db5269e`. Deployed web build: `-t6Mu4Ur6Xjl3n2AFsBFP`. A completed failed tool step previously appeared directly under Processing request, making a continuing job look stalled. Every tool exception also left the same generic stored summary, so earlier failures cannot be diagnosed retrospectively from that row alone.

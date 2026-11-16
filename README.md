@@ -1,12 +1,14 @@
 # StudAb27
 
+**Personal use only.** StudAb27 supports its owner's scholarship journey, with no marketing, sales, or monetization goals.
+
 A local scholarship tracker for undergraduate engineering and computer-science applications. **Tracker**, **Documents**, and **Calendar** keep progress on a chosen set of scholarships together. There is no tracking cap. Schola is available from every page; the catalogue, source updates, scenarios, and settings are secondary tools.
 
 Public code and scholarship references live in Git. Student profiles, financial estimates, application notes, progress, inbox captures, and document imports live in an ignored local vault. A fresh checkout opens with a fictional demo profile.
 
 ## Continuing the project
 
-Start with [AGENTS.md](AGENTS.md) for the reading order and working rules. [PRODUCT.md](PRODUCT.md) defines the product; [the repository map](docs/REPO_MAP.md) traces the implementation; [decisions](docs/DECISIONS.md) explain the choices; [the handoff](docs/HANDOFF.md) records the dated baseline, checks, and remaining work. [Database and recovery](docs/DATABASE.md) describes the authoritative stores, migrations, snapshots and rollback. These files work with any coding harness and require no graph tool.
+Start with [AGENTS.md](AGENTS.md) for the reading order and working rules. [PRODUCT.md](PRODUCT.md) defines the project's purpose and interface boundaries; [the repository map](docs/REPO_MAP.md) traces the implementation; [decisions](docs/DECISIONS.md) explain the choices; [the handoff](docs/HANDOFF.md) records the dated baseline, checks, and remaining work. [Database and recovery](docs/DATABASE.md) describes the authoritative stores, migrations, snapshots and rollback. These files work with any coding harness and require no graph tool.
 
 ## Run locally
 

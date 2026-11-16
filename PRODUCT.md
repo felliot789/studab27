@@ -1,12 +1,14 @@
 # StudAb27
 
+**Personal use only.** StudAb27 supports its owner's scholarship journey, with no marketing, sales, or monetization goals. Development priorities follow personal usefulness, privacy, reliability, and manageable upkeep.
+
 ## Register
 
 product
 
 ## Users
 
- Indonesian secondary-school students preparing undergraduate engineering and computer-science applications. They use the app between schoolwork and test preparation, often in the evening, and need a small next step rather than another long list.
+The project owner is the sole intended user. The app supports undergraduate engineering and computer-science scholarship preparation between schoolwork and test preparation, with a small next step rather than another long list.
 
 The primary device is a phone, often used one-handed in a quiet room at night. Keep navigation at the bottom, forms readable, and conversation drafts safe when a tab is interrupted. Desktop is a comfortable extension of the same workspace.
 
