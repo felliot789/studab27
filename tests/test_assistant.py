@@ -4,7 +4,10 @@ import json
 import os
 from pathlib import Path
 import shutil
+import socket
 import sqlite3
+import ssl
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -116,6 +119,57 @@ class AssistantChecks(unittest.TestCase):
         state = a.api(self.root, {})
         self.assertEqual(state["jobs"][0]["status"], "DONE")
         self.assertEqual(state["messages"][-1]["meta"]["tools"], ["get_briefing"])
+        self.assertFalse((self.root / "private/state.local.json").exists())
+        self.assertFalse((self.root / "private/overlay.local.json").exists())
+
+    def test_tool_failure_summaries_classify_only_safe_known_reasons(self):
+        secret = "https://private.example/fixture-secret?token=fixture-secret"
+        cases = [
+            (ValueError("Source returned HTTP 403"), "Source request returned HTTP 403"),
+            (TimeoutError(secret), "Source request timed out"),
+            (ValueError("Source exceeded read deadline"), "Source request timed out"),
+            (ssl.SSLError(secret), "Source secure connection failed"),
+            (socket.gaierror(-2, secret), "Source address lookup failed"),
+            (ConnectionError(secret), "Source connection failed"),
+            (ValueError("Source resolves to a nonpublic address"), "Source request rejected by the URL policy"),
+            (ValueError("Use a source query of at most 200 characters and a nonnegative integer offset."), "Source request arguments were rejected"),
+            (ValueError("PDF text unavailable: install Poppler pdftotext; no baseline updated"), "PDF text extraction is unavailable"),
+            (subprocess.CalledProcessError(1, secret), "PDF text extraction failed"),
+            (subprocess.TimeoutExpired(secret, 30), "PDF text extraction timed out"),
+            (ValueError("Unsupported source type; HTML or text-readable PDF required"), "Source format is unsupported"),
+            (ValueError("Empty, blocked, or challenge page; previous baseline preserved"), "Source page was empty or blocked"),
+            (ValueError("Source returned HTTP 403 " + secret), "Source could not be read"),
+            (ValueError(secret), "Source could not be read"),
+            (RuntimeError(secret), "Source could not be read"),
+        ]
+        for error, expected in cases:
+            with self.subTest(error=type(error).__name__, expected=expected):
+                self.assertEqual(a.tool_failure_summary("read_source", error), expected)
+        for name in [tool["function"]["name"] for tool in a.TOOLS] + ["propose_scholarship", secret]:
+            summary = a.tool_failure_summary(name, RuntimeError(secret))
+            self.assertNotIn("fixture-secret", summary)
+            self.assertNotIn("https://", summary)
+
+    def test_failed_source_read_records_safe_reason_and_can_finish_synthesis(self):
+        source = a.context(self.root, False)["routes"][0]["officialSourceUrl"]
+        answers = [
+            {"role": "assistant", "tool_calls": [{"id": "source_failure", "function": {"name": "read_source", "arguments": json.dumps({"url": source})}}]},
+            {"role": "assistant", "content": "The source could not be retrieved. Current eligibility remains UNKNOWN."},
+        ]
+        with closing(a.db(self.root)) as conn:
+            a.enqueue(conn, "Check this fictional source", "fixture-source-failure-0001")
+            job = conn.execute("SELECT * FROM jobs").fetchone()
+            with patch.object(a, "completion", side_effect=answers) as provider, patch.object(a, "fetch", side_effect=ValueError("Source returned HTTP 403")) as network:
+                a.process_job(self.root, conn, job, self.config)
+                self.assertEqual(provider.call_count, 2)
+                self.assertEqual(network.call_count, 1)
+                result = next(message for message in provider.call_args.args[2] if message["role"] == "tool")
+                self.assertEqual(json.loads(result["content"]), {"error": "Source returned HTTP 403"})
+        status = a.api(self.root, {})
+        self.assertEqual(status["jobs"][0]["status"], "DONE")
+        self.assertEqual(status["tools"][0]["summary"], "Source request returned HTTP 403")
+        self.assertEqual(status["messages"][-1]["meta"]["sources"], [])
+        self.assertIn("UNKNOWN", status["messages"][-1]["content"])
         self.assertFalse((self.root / "private/state.local.json").exists())
         self.assertFalse((self.root / "private/overlay.local.json").exists())
 

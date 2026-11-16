@@ -5,8 +5,8 @@ import { Badge, dateTime, External, Icon } from "./ui";
 import ScholarshipDraftsButton from "./scholarship-drafts";
 
 type Message = { id: number; role: "user" | "assistant"; content: string; jobId: string; createdAt: string; meta: { model?: string; kind?: string; sources?: { url: string; retrievedAt: string; kind: string }[] } };
-type Job = { id: string; kind: string; status: "QUEUED" | "RUNNING" | "DONE" | "FAILED"; error?: string; createdAt: string };
-type Conversation = { messages: Message[]; jobs: Job[]; tools: { jobId: string; name: string; summary: string }[]; settings: { configured: boolean; model: string; contextAllowed: boolean; dailyCallLimit: number; searchProvider: string; backgroundEnabled: boolean }; callsToday: number; workerSeenAt?: string; workerHealth?: { state: "OK" | "UNSEEN" | "NEEDS_ATTENTION" }; search: { state: string; message: string } };
+type Job = { id: string; kind: string; status: "QUEUED" | "RUNNING" | "DONE" | "FAILED"; error?: string; createdAt: string; updatedAt?: string };
+type Conversation = { messages: Message[]; jobs: Job[]; tools: { jobId: string; name: string; summary: string; createdAt?: string }[]; settings: { configured: boolean; model: string; contextAllowed: boolean; dailyCallLimit: number; searchProvider: string; backgroundEnabled: boolean }; callsToday: number; workerSeenAt?: string; workerHealth?: { state: "OK" | "UNSEEN" | "NEEDS_ATTENTION" }; search: { state: string; message: string } };
 const suggestions = ["Which application deadlines and tasks are due this week?", "Compare the tracked engineering routes and their scholarship outlooks.", "What evidence is needed before choosing a route?"];
 type ChatRoute = { id: string; institution: string; scholarshipName: string };
 
@@ -49,6 +49,10 @@ export default function ScholaChat({ route, embedded = false }: { route?: ChatRo
     }
   }, [endpoint, embedded, scrollToLatest]);
   const active = data?.jobs.find(j => j.status === "QUEUED" || j.status === "RUNNING");
+  const attemptStartedAt = active?.updatedAt ? Date.parse(active.updatedAt) : NaN;
+  const lastResearchStep = active?.status === "RUNNING" && Number.isFinite(attemptStartedAt)
+    ? data?.tools.find(tool => tool.jobId === active.id && !!tool.createdAt && Date.parse(tool.createdAt) >= attemptStartedAt)
+    : undefined;
   useEffect(() => { refresh().catch(e => setError(e.message)); }, [refresh]);
   useEffect(() => {
     const tick = () => { if (!document.hidden) refresh().catch(() => setOffline(true)); };
@@ -110,7 +114,7 @@ export default function ScholaChat({ route, embedded = false }: { route?: ChatRo
     {!data && !error && <div className="chat-loading" aria-label="Loading conversation"><div className="skeleton" /><div className="skeleton" /></div>}
     {data && !data.messages.length && <div className="chat-welcome"><span aria-hidden="true">✳</span><WelcomeHeading>{route ? "Scholarship research" : "Scholarship research assistant"}</WelcomeHeading><p>{route ? "Review requirements, funding, preparation and official sources for this scholarship. This conversation stays separate from general Schola." : "Compare scholarship routes, review requirements, or check official sources."}</p><div className="chat-suggestions">{prompts.map(s => <button key={s} onClick={() => { edit(s); input.current?.focus(); }}>{s}<Icon name="arrow" size={16} /></button>)}</div></div>}
     <div className="chat-messages" role="log" aria-label={route ? `Conversation with Schola about ${route.scholarshipName} at ${route.institution}` : "Conversation with Schola"} aria-live="polite" aria-relevant="additions">{data?.messages.map(message => <article key={message.id} className={`chat-message ${message.role}`}><header><strong>{message.role === "user" ? "User" : message.meta.kind === "source-review" ? "Schola · source review" : "Schola"}</strong><time dateTime={message.createdAt}>{dateTime(message.createdAt)}</time></header><MessageText text={message.content} />{!!message.meta.sources?.length && <details className="chat-sources"><summary>{message.meta.sources.length} source{message.meta.sources.length === 1 ? "" : "s"} consulted</summary>{message.meta.sources.map(source => <div key={source.url}><External href={source.url}>{new URL(source.url).hostname}</External><small>{source.kind} · {source.retrievedAt.slice(0, 10)}</small></div>)}</details>}</article>)}</div>
-    {active && <div className="chat-working" role="status"><span className="status-dot running" /><div><strong>{active.status === "QUEUED" ? "Message queued." : "Processing request."}</strong><p>{data?.tools.find(t => t.jobId === active.id)?.summary || (route ? "Loading context for this scholarship." : "Loading relevant project context.")} Processing continues after {embedded ? "this popup closes" : "this page closes"}.</p>{!workerOnline && <p>The assistant worker is offline. The message remains queued until the worker is available.</p>}</div></div>}
+    {active && <div className="chat-working" role="status"><span className="status-dot running" /><div><strong>{active.status === "QUEUED" ? "Message queued." : "Processing request."}</strong>{active.status === "QUEUED" ? <p>Waiting for the assistant worker.</p> : lastResearchStep ? <p>Last research step: {lastResearchStep.summary}</p> : <p>Research is in progress. Completed steps will appear here.</p>}<p>Processing continues after {embedded ? "this popup closes" : "this page closes"}.</p>{!workerOnline && <p>The assistant worker is offline. The saved request remains available.</p>}</div></div>}
     {latestFailed && <div className="chat-notice"><p>{latestFailed.error || "The saved request could not finish. Retry is available."}</p><button className="button secondary" disabled={sending || !!active || !data?.settings.configured} onClick={() => send(latestFailed)}><Icon name="refresh" size={15} />Retry saved message</button></div>}
     <div ref={bottom} className="chat-bottom" />
   </>;

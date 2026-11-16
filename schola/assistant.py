@@ -6,13 +6,18 @@ submits durable jobs with `api`; closing a browser does not cancel a reply.
 import argparse
 from contextlib import closing
 from datetime import datetime, timezone
+import errno
 import fcntl
 import hashlib
+from http.client import HTTPException
 import json
 import os
 from pathlib import Path
 import re
+import socket
 import sqlite3
+import ssl
+import subprocess
 import sys
 import time
 from urllib.error import HTTPError
@@ -575,6 +580,51 @@ class InvalidReply(ValueError):
     pass
 
 
+def tool_failure_summary(name, exc):
+    """Persist only safe categories, never exception text, URLs or arguments."""
+    if name != "read_source":
+        return {"get_briefing": "Current plan could not be read",
+                "search_catalogue": "Catalogue lookup could not finish",
+                "inspect_route": "Route evidence request could not finish",
+                "search_web": "Public search request could not finish",
+                "propose_scholarship": "Scholarship draft could not be saved",
+                "search_conversation": "Conversation lookup could not finish"}.get(name, "Research step could not finish")
+    if isinstance(exc, TimeoutError):
+        return "Source request timed out"
+    if isinstance(exc, ssl.SSLError):
+        return "Source secure connection failed"
+    if isinstance(exc, (socket.gaierror, socket.herror)):
+        return "Source address lookup failed"
+    if (isinstance(exc, (ConnectionError, HTTPException)) or
+            isinstance(exc, OSError) and exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.ENETDOWN)):
+        return "Source connection failed"
+    if isinstance(exc, subprocess.TimeoutExpired):
+        return "PDF text extraction timed out"
+    if isinstance(exc, subprocess.CalledProcessError):
+        return "PDF text extraction failed"
+    message = str(exc) if isinstance(exc, ValueError) else ""
+    http = re.fullmatch(r"Source returned HTTP ([1-5][0-9]{2})", message)
+    if http:
+        return "Source request returned HTTP " + http[1]
+    return {
+        "Source exceeded read deadline": "Source request timed out",
+        "Use a public source without private links or credentials.": "Source request rejected by the URL policy",
+        "Only public HTTP(S) source URLs are allowed": "Source request rejected by the URL policy",
+        "Source resolves to a nonpublic address": "Source request rejected by the URL policy",
+        "Use an exact catalogue link, search result or returned PDF URL. Invented paths/parameters are not fetched.": "Source URL was not among the available links",
+        "This source redirected to an unsupported destination. Review it manually.": "Source redirect rejected by the URL policy",
+        "This specialist source redirected outside the selected institution. Review it manually.": "Source redirect left the selected institution",
+        "Tool arguments must be an object.": "Source request arguments were rejected",
+        "Use a source query of at most 200 characters and a nonnegative integer offset.": "Source request arguments were rejected",
+        "PDF text unavailable: install Poppler pdftotext; no baseline updated": "PDF text extraction is unavailable",
+        "Unsupported source type; HTML or text-readable PDF required": "Source format is unsupported",
+        "Empty, blocked, or challenge page; previous baseline preserved": "Source page was empty or blocked",
+        "Source exceeds size limit": "Source exceeds the supported size limit",
+        "Source redirected without a destination": "Source redirects could not be followed",
+        "Source exceeded redirect limit": "Source redirects could not be followed",
+    }.get(message, "Source could not be read")
+
+
 def run_tool(root, connection, config, data, name, args):
     if not isinstance(args, dict):
         raise ValueError("Tool arguments must be an object.")
@@ -883,7 +933,7 @@ def process_job(root, connection, job, config):
                 summary = "Search degraded; no completeness claim"
         except Exception as exc:
             result = model_safe({"error": str(exc)[:350] if isinstance(exc, ValueError) else f"Source/tool unavailable ({type(exc).__name__}); no rule updated."}, config)
-            summary = "Tool unavailable; uncertainty retained"
+            summary = tool_failure_summary(name, exc)
         used.append(name)
         connection.execute("INSERT INTO tools(job_id,name,summary,created_at,route_id) VALUES(?,?,?,?,?)", (job["id"], name[:80], summary, now(), route_id))
         return result

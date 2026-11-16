@@ -1,5 +1,19 @@
 # Handoff
 
+## Schola research status clarity — 2026-11-16
+
+Implementation baseline: `db5269e`. Deployed web build: `-t6Mu4Ur6Xjl3n2AFsBFP`. A completed failed tool step previously appeared directly under Processing request, making a continuing job look stalled. Every tool exception also left the same generic stored summary, so earlier failures cannot be diagnosed retrospectively from that row alone.
+
+The running status now labels the latest completed step as **Last research step**, with the background-processing notice in a separate paragraph. Queued jobs show a waiting state. Tool timestamps must belong to the current RUNNING attempt, so explicit retries do not display stale failure summaries from an earlier attempt. Missing timestamps use a neutral progress message. Drafts, sending, scope and polling keep their existing behavior.
+
+New failed steps persist only safe reason categories, including exact source HTTP status, timeouts, TLS/address/connection failures, unavailable source links, rejected arguments and PDF extraction limits. Summaries contain no raw exception body, source URL, arguments or credentials. The existing sanitized model tool-result error, source provenance, budgets and explicit-retry behavior remain unchanged. No old tool rows or answers were rewritten, and this release does not establish the causes of the earlier failed reads or make unavailable websites accessible.
+
+Validation: isolated `npm ci`, `npm run check` (124 Python tests with 11 optional-runtime skips; 22 Node tests), production build, emitted-build privacy review (457 text files) and fictional HTTP checks passed. All 124 Python tests also passed without skips in the actual research environment with the pinned SQLite runtime and ResourceWarnings treated as errors. The regression covers a failed HTTP 403 read followed by successful synthesis, one fetch without an automatic retry, a DONE job, preserved UNKNOWN and no source attribution or plan mutation. Safe-summary checks include secret-bearing exception text and malformed HTTP messages. A read-only diff review found no actionable issues.
+
+Browser fixtures verified a current HTTP failure, queued retry, a new running attempt with stale old tools hidden, and a later timeout summary. Desktop and 320px viewport checks showed no overflow or browser errors; no model request or real conversation was used as a test. The ignored code-only graph was rebuilt without model calls.
+
+Deployment waited for zero active jobs and an idle scan, switched the tested web build and reloaded the idle worker. Workspace/conversation/job/call records, configuration and source-monitor fingerprints matched before and after; authenticated dashboard values matched, unauthenticated APIs remained 401, both stores and verified local recovery were healthy, and both timers remained active. The prior build and assistant source remain in the ignored deployment vault for rollback. No schema, model setting or access-control change was needed.
+
 ## UI navigation performance — 2026-11-16
 
 Implementation baseline: `bc99395`. Deployed web build: `rJahPZ8_dyfaWWsdxgnmN`. Page switching and opening scholarships were the reported slow paths. The existing Next.js/React UI and Python/SQLite storage remain in place.
