@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { ApplicationGuide, AppState, Brick, CalendarEvent, Dashboard, InboxItem, Milestone, Overlay, Profile, Route, ScholarshipOutlook, SourceNote, Task, WatchState } from "./schema";
+import type { ApplicationGuide, AppState, Brick, CalendarEvent, Dashboard, Evaluation, InboxItem, Milestone, Overlay, Profile, Route, ScholarshipOutlook, SourceNote, Task, WatchState } from "./schema";
 import { requireAccess } from "./access";
 
 const run = promisify(execFile);
@@ -31,15 +31,28 @@ export async function saveWorkspace(workspace: WorkspaceSnapshot, changes: Parti
   if (value.error) throw Object.assign(new Error(value.error), { conflict: !!value.conflict });
 }
 
-export async function python<T>(module: string, payload: unknown): Promise<T> {
+async function jsonProcess<T>(executable: string, args: string[], payload: unknown, failureMessage: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {
-    const child = execFile(/* turbopackIgnore: true */ process.env.SCHOLA_PYTHON || "python3", ["-m", module], { cwd: root, maxBuffer: 32 * 1024 * 1024, timeout: 15000 }, (error, stdout) => {
-      if (error) { reject(new Error("Schola could not evaluate this request. Check the local Python runtime; no eligibility was inferred.")); return; }
+    const child = execFile(/* turbopackIgnore: true */ executable, args, { cwd: root, maxBuffer: 32 * 1024 * 1024, timeout: 15000 }, (error, stdout) => {
+      if (error) { reject(new Error(failureMessage)); return; }
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error("Schola returned an invalid result.")); }
     });
     child.stdin?.on("error", () => {});
     child.stdin?.end(JSON.stringify(payload));
   });
+}
+
+export async function python<T>(module: string, payload: unknown): Promise<T> {
+  return jsonProcess<T>(process.env.SCHOLA_PYTHON || "python3", ["-m", module], payload,
+    "Schola could not evaluate this request. Check the local Python runtime; no eligibility was inferred.");
+}
+
+export async function evaluateScenarios(payload: { routes: Route[]; overlays: Overlay[]; profile: Profile; sat: number; cap: number }): Promise<Evaluation[]> {
+  const executable = process.env.STUDAB27_EVALUATOR_BIN;
+  if (!executable) return python<Evaluation[]>("schola.evaluator", payload);
+  if (!path.isAbsolute(executable)) throw new Error("The scenario evaluator requires an absolute executable path.");
+  return jsonProcess<Evaluation[]>(executable, [], payload,
+    "The scenario evaluator could not complete this request. No eligibility was inferred.");
 }
 
 export async function baseData() {

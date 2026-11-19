@@ -9,6 +9,7 @@ from pathlib import Path
 import shutil
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -57,8 +58,29 @@ def main():
             last_headers.update({k.lower(): v for k, v in response_headers.items()})
             return json.loads(content) if "application/json" in response_headers.get("Content-Type", "") else content
 
+        server_env = {**os.environ, "NEXT_TELEMETRY_DISABLED": "1", "STUDAB27_DEMO": "0", "STUDAB27_CONFIG_PATH": str(scratch / "private/schola.local.json")}
+        evaluator = os.environ.get("STUDAB27_EVALUATOR_BIN")
+        if evaluator:
+            # Prove that the selected backend is used and failures do not fall back.
+            wrapper = scratch / "evaluator-check"
+            wrapper.write_text(f'''#!{sys.executable}
+from pathlib import Path
+import os
+import sys
+directory = Path(__file__).parent
+(directory / "evaluator-used").touch()
+if (directory / "evaluator-fail").exists():
+    print("FICTIONAL_BACKEND_DIAGNOSTIC", file=sys.stderr)
+    raise SystemExit(1)
+if (directory / "evaluator-invalid").exists():
+    print("FICTIONAL_INVALID_OUTPUT")
+    raise SystemExit(0)
+os.execv({evaluator!r}, [{evaluator!r}])
+''')
+            wrapper.chmod(0o700)
+            server_env["STUDAB27_EVALUATOR_BIN"] = str(wrapper)
         log = (scratch / "server.log").open("w")
-        server = subprocess.Popen(["node", str(root / "node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", str(port)], cwd=scratch, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, "NEXT_TELEMETRY_DISABLED": "1", "STUDAB27_DEMO": "0", "STUDAB27_CONFIG_PATH": str(scratch / "private/schola.local.json")})
+        server = subprocess.Popen(["node", str(root / "node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", str(port)], cwd=scratch, stdout=log, stderr=subprocess.STDOUT, env=server_env)
         try:
             for attempt in range(80):
                 if server.poll() is not None: raise AssertionError("Temporary app server exited")
@@ -153,9 +175,29 @@ def main():
             inbox = request()["inbox"]
             request(value={"action": "triage", "id": inbox[0]["id"], "status": "TRIAGED"})
             assert request()["inbox"][0]["status"] == "TRIAGED"
+            before_scenario = request()
             scenario = request(value={"action": "simulate", "sat": 1560, "cap": 8})
             assert {e["routeId"] for e in scenario["evaluations"]} == expected_routes
-            assert request()["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 5
+            expected_scenario = subprocess.run([sys.executable, "-m", "schola.evaluator"], cwd=root,
+                input=json.dumps({**{key: before_scenario[key] for key in ("routes", "overlays", "profile")}, "sat": 1560, "cap": 8}),
+                text=True, capture_output=True, check=True, timeout=15)
+            assert scenario["evaluations"] == json.loads(expected_scenario.stdout), "Scenario backend differs from the reference"
+            after_scenario = request()
+            for key in ("profile", "overlays", "state", "milestones", "inbox"):
+                assert after_scenario[key] == before_scenario[key], "Read-only scenario changed workspace data"
+            assert after_scenario["profile"]["snapshot"]["maxFamilyContributionIdrMPerMonth"] == 5
+            if evaluator:
+                assert (scratch / "evaluator-used").exists(), "Selected scenario backend was not used"
+                for flag in ("evaluator-fail", "evaluator-invalid"):
+                    failure_flag = scratch / flag
+                    failure_flag.touch()
+                    failure = request(value={"action": "simulate", "sat": 1560, "cap": 8}, expect=400)
+                    assert "error" in failure and "FICTIONAL" not in failure["error"]
+                    failure_flag.unlink()
+                assert request(value={"action": "simulate", "sat": 1560, "cap": 8}) == scenario
+                after_failure = request()
+                for key in ("profile", "overlays", "state", "milestones", "inbox"):
+                    assert after_failure[key] == before_scenario[key], "Failed evaluator changed workspace data"
             request(value={"action": "simulate", "sat": 900, "cap": 8}, expect=400)
             request(value={"action": "task", "id": "sat-registration", "command": "done"}, headers={"Origin": "https://example.com"}, expect=403)
             request(headers={"Host": "example.com"}, expect=403)

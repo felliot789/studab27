@@ -20,3 +20,7 @@ __pycache__/
 
 # The dependency lockfile is generated and adds no useful architecture context.
 /package-lock.json
+
+# Rust dependency/build output is not application source.
+/rust/evaluator/target/
+/rust/evaluator/Cargo.lock

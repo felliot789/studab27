@@ -2,6 +2,12 @@
 
 Read [PRODUCT.md](../PRODUCT.md) for the current product direction and [REPO_MAP.md](REPO_MAP.md) for implementation locations. These records explain choices; they do not record the owner's scholarship selections. Update an entry when its decision changes, with the reason and date.
 
+## Rust begins with an opt-in read-only evaluator
+
+**Adopted: 2026-11-19 at the owner's request.** Trial Rust for the deterministic budget, curriculum, graduation and advisory SAT scenario evaluator, retaining the existing JSON contract, evidence limits and exact decimal comparisons. The web server selects the executable only when `STUDAB27_EVALUATOR_BIN` is configured with an absolute path. The default scenario and dashboard backends remain Python. A selected Rust failure is explicit; no silent backend fallback occurs.
+
+Keep the frontend, SQLite stores, private-data boundaries and Schola worker in place while evaluating this slice. Compatibility checks and a paired process benchmark precede any wider migration. This changes the earlier decision against trying another language for calculations into a bounded experiment; it does not claim a whole-app speedup or authorize a live deployment. See [the Rust trial](RUST_TRIAL.md).
+
 ## Navigation payloads follow the visible view
 
 **Adopted: 2026-11-16.** Keep the existing Next.js/React UI and Python/SQLite storage. Page navigation previously serialized the entire dashboard, including unrelated scholarship research and calendar evidence. Project request-local data for each view before sending it to the browser, retain complete records for hidden scholarship tabs and calendar prerequisites, and load secondary screen code on demand. Scoped refreshes use the same projection; full exports and the default dashboard API keep their existing contracts. Combine Python derivation into one invocation rather than rewriting fast calculations in another language. Private reads remain authenticated, dynamic and uncached across requests.

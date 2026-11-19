@@ -21,3 +21,6 @@ __pycache__/
 /artifacts/
 *.log
 .DS_Store
+
+# Rust trial build output; keep Cargo.lock versioned.
+/rust/evaluator/target/

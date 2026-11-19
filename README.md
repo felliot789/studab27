@@ -36,6 +36,10 @@ These build commands assume this checkout is not serving a running production in
 
 Always use the npm launch scripts or the installed service: they supply the runtime-only configuration path and verified app-only SQLite library. Production start requires that runtime. For an existing vault, follow the [migration runbook](docs/DATABASE.md#migration-and-deployment-runbook) before exposing the new release. Directly launching Next without it fails closed. A configured workspace requires a password, including on localhost. A fresh demo without local configuration accepts loopback hosts only. Private data access also checks the session independently of Next's Proxy.
 
+## Rust backend trial
+
+An optional Rust implementation of the read-only scenario evaluator can be built and compared with the Python reference using `npm run check:rust`. It does not change the default backend. See the [trial scope, benchmark and isolated web checks](docs/RUST_TRIAL.md).
+
 ## Finding your work
 
 | Place | What lives here |
@@ -204,7 +208,7 @@ Snapshots contain plaintext credentials and documents, protected by 0700/0600 pe
 - **Briefing:** the five initial task templates are followed by specific document steps, checks for active routes, and near-term personal milestone checks. At most three are shown. Done, snooze, replacement, and route decisions require explicit user actions. Snooze lasts 24 hours; replacement moves a task behind other work. Completed tasks can return to the queue. The focus timer uses the current clock, survives navigation within the tab, and never completes a task automatically.
 - **Catalogue:** search and filter by country, private strategy, budget estimate, and scholarship outlook. Each route links to its permanent page for requirements, source notes, funding terms, dates, private plans, and human-checked program rules.
 - **Gates:** curriculum and graduation checks remain unknown without an explicitly recorded program-specific, current-cycle source. The budget check compares a conservative range or an itemized monthly cost minus coverage against the profile cap. An overlapping range stays unknown. Missing data is never zero. Upfront arrival cash is separate and can still make a route unsustainable.
-- **Simulator:** scenario SAT and budget controls recalculate the same Python evaluator used elsewhere. Advisory SAT targets are not admission thresholds. The simulator never changes the saved profile and never treats unknown rules as an unlocked scholarship.
+- **Simulator:** scenario SAT and budget controls recalculate the planning gates through Python by default, with an [opt-in Rust implementation](docs/RUST_TRIAL.md) available for comparison. Advisory SAT targets are not admission thresholds. The simulator never changes the saved profile and never treats unknown rules as an unlocked scholarship.
 - **Watchtower:** bounded HTML/PDF fetches, SHA-256 of normalized text, source snapshots, diffs, and visible errors. First fetch establishes a baseline. Failed fetches retain the last good hash. Changed text does not automatically establish a new deadline or eligibility rule. Inbox links are never fetched automatically.
 
 Scholarship benefits, requirements, and deadlines in the original catalogue are **unverified seed claims**. Scoped official-source checks are stored separately in `data/public/source_verifications.json`, including the corrected UBC international-award deadline and the uncertain PoliTO testing transition. A checked deadline does not verify every other claim in that route. No applications are submitted. Award-specific restrictions on AI-created content, including Pearson's, must be respected.

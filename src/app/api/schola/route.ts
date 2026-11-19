@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { baseData, loadDashboard, python, readJson, root, saveWorkspace, serialized, vault } from "@/lib/storage";
-import { type AppState, type Dashboard, type Evaluation, type InboxItem, type Task } from "@/lib/schema";
+import { baseData, evaluateScenarios, loadDashboard, python, readJson, root, saveWorkspace, serialized, vault } from "@/lib/storage";
+import { type AppState, type Dashboard, type InboxItem, type Task } from "@/lib/schema";
 import { isoDate, number, object, text, validateOverlay, validateProfile, validateRequirementProgress } from "@/lib/validation";
 import { jsonBody, IMPORT_MAX_BYTES } from "@/lib/request-body";
 import { isWorkspaceView, projectDashboard } from "@/lib/dashboard-view";
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       const base = await baseData();
       const sat = number(input.sat, 1350, 1560), cap = number(input.cap, 0, 100);
       if (!Number.isInteger(sat)) throw new Error("SAT score must be a whole number.");
-      return NextResponse.json({ evaluations: await python<Evaluation[]>("schola.evaluator", { routes: base.routes, profile: base.profile, overlays: base.overlays, sat, cap }) });
+      return NextResponse.json({ evaluations: await evaluateScenarios({ routes: base.routes, profile: base.profile, overlays: base.overlays, sat, cap }) });
     }
     return await serialized(async () => {
       const base = await baseData();

@@ -1,5 +1,21 @@
 # Handoff
 
+## Rust scenario evaluator trial — 2026-11-19
+
+Baseline: `2dd9fd8`; task branch: `codex/rust-core-trial`. A Rust implementation now covers the read-only budget, curriculum, graduation and advisory SAT scenario evaluator. POST `/api/schola` with `action: "simulate"` selects it only through an absolute `STUDAB27_EVALUATOR_BIN` runtime path. An unset variable retains Python. A selected backend failure is explicit, with no silent fallback. The dashboard, workspace stores, Schola worker, source retrieval, frontend and SQLite schemas retain their existing implementations. See [trial scope and commands](RUST_TRIAL.md).
+
+The typed Rust input preserves the application's numeric/evidence contracts, decimal arithmetic, month-based graduation uncertainty and Unicode text handling. It accepts no filenames or network targets and reads only bounded stdin. Invalid input produces a generic error without partial JSON or echoed payload. Arbitrary-size integer literals beyond the application's validated number bounds are outside the supported trial interface.
+
+Validation: `npm run check` passed (124 Python tests with 11 optional-runtime skips; 22 Node tests, TypeScript, public-data and documentation-link checks). `npm run check:rust` passed formatting, six Rust unit tests, a locked release build, 89 parity scenarios / 290 route evaluations across all 68 public routes, and 23 safe invalid-input rejections. Clippy passed with warnings denied. Independent review found no remaining actionable issues and checked 3,000 additional fictional decimal-boundary cases.
+
+A separate staging checkout passed dependency installation, production build, emitted-build privacy review (457 text files) and fictional HTTP checks with both the default Python and selected Rust backend. The selected-backend check proves invocation, forces a process failure and invalid JSON, and verifies safe errors, no fallback and unchanged profile/plans/state/milestones/inbox. The existing sessions, exact origins, CSRF and protected export/import checks passed. No real workspace or model request was used.
+
+The paired CLI benchmark used an identical 456,950-byte public fixture, three warmups and 40 alternating fresh-process samples per implementation: Python median 24.817 ms / p95 25.403 ms; Rust median 2.770 ms / p95 2.861 ms. This includes process startup and JSON work; it establishes neither a whole-app nor a phone speedup. The trial retains a per-request process boundary.
+
+The first staging build compiled but exited on Next.js's security reminder; the repeat completed with the warning retained. `npm audit` confirms pre-existing moderate advisories [GHSA-mfr8-8qww-v76h](https://github.com/advisories/GHSA-mfr8-8qww-v76h) and [GHSA-vc7v-qv4w-wrv8](https://github.com/advisories/GHSA-vc7v-qv4w-wrv8) for the pinned Next.js 16.4.3. Both list 16.4.5 as patched; audit recommends 16.4.6. Upgrade to a patched release before a planned deployment. Source inspection found no `use cache` directives, `unstable_cache` calls or enabled Cache Components; this was not an exploit test. Framework dependencies were not changed by this trial.
+
+Production was not switched: the live build fingerprint and web/worker PIDs matched before/after, and both services remained active. No configuration, schema, model setting, deployment or worker restart was needed. Remaining work: decide whether to expand the Rust backend after reviewing this slice; physical-phone profiling and Android installation remain separate work.
+
 ## Personal-use purpose — 2026-11-16
 
 Baseline: `9f02295`. README and PRODUCT headers now explicitly state that StudAb27 supports the owner's personal scholarship journey, with no marketing, sales, or monetization goals. The owner is the sole intended user. Development priorities follow personal usefulness, privacy, reliability, and manageable upkeep.

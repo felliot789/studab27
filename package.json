@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "python3 -m unittest discover -s tests && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/*.test.mjs",
     "check": "npm run typecheck && npm test && python3 scripts/validate-data.py && python3 scripts/check-docs.py && sh scripts/check-privacy.sh",
+    "check:rust": "cargo fmt --manifest-path rust/evaluator/Cargo.toml -- --check && cargo test --locked --manifest-path rust/evaluator/Cargo.toml && cargo build --locked --release --manifest-path rust/evaluator/Cargo.toml && python3 scripts/check-rust-evaluator.py",
     "map": "graphify extract . --code-only --no-cluster --max-workers 2 && graphify cluster-only . --no-label",
     "watchtower": "python3 -m schola.watcher"
   },
