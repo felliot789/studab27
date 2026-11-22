@@ -4,6 +4,7 @@ import { APPLICATION_STATUSES, label, type Overlay } from "@/lib/schema";
 import { dateLabel, eventDay, upcomingEvents } from "@/lib/calendar";
 import { checklistProgress, PURSUIT_HELP, PURSUIT_LABELS, pursuitLevel, trackedRoutes, type PursuitGroup } from "@/lib/tracker";
 import { Badge, CountryLabel, Icon, PageHeading, type Action, type ViewProps } from "./ui";
+import { ScholaFindingBanner } from "./schola-sessions";
 
 export function PursuitControls({ overlay, act, busy }: { overlay: Overlay; act: Action; busy: boolean }) {
   return <div className="pursuit-controls">
@@ -21,6 +22,7 @@ export default function Tracker({ data, act, busy }: ViewProps) {
   const upcoming = upcomingEvents(data.calendarEvents, data.overlays);
   return <>
     <PageHeading title="Scholarship tracker" extra={<Link className="button secondary" href="/scholarships?browse=1"><Icon name="plus" size={17} />Add scholarship</Link>}>Application checklists, progress, and deadlines.</PageHeading>
+    <ScholaFindingBanner />
     {!!routes.length && <p className="tracker-intro">{routes.length} scholarship{routes.length === 1 ? "" : "s"} tracked.</p>}
     {(["FOCUS", "SECONDARY", "BACKUP", "UNSET"] as PursuitGroup[]).map(group => {
       const members = routes.filter(route => pursuitLevel(data.overlays.find(o => o.routeId === route.id)!) === group);

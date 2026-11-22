@@ -30,6 +30,34 @@
 .page-heading p { font-size: 14px; line-height: 1.75; margin-top: 14px; }
 .schola-drafts-entry { margin: 0 0 22px; }
 .schola-drafts-entry p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+.schola-sessions { margin-bottom: 16px; }
+.schola-sessions summary, .schola-activity summary { color: var(--ink); font-size: 13px; cursor: pointer; }
+.schola-start-form { display: grid; gap: 8px; margin-bottom: 6px; }
+.schola-start-form textarea { width: 100%; min-height: 60px; font-size: 16px; }
+.schola-start-form .button { justify-self: start; }
+.schola-session-list { list-style: none; }
+.schola-session-list li { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--line); }
+.schola-session-list a { color: var(--accent); font-size: 13px; overflow-wrap: anywhere; }
+.schola-session-list a:hover { text-decoration: underline; }
+.schola-session-back { align-self: flex-start; margin-bottom: 12px; }
+.schola-session-heading > div, .schola-session-heading > div > div { min-width: 0; }
+.schola-session-heading h1 { font-size: 25px; overflow-wrap: anywhere; }
+.schola-session-heading .chat-glyph, .schola-session-heading .badge { flex-shrink: 0; }
+.schola-stop { margin-top: 10px; }
+.schola-activity { margin-bottom: 12px; }
+.schola-activity ol { list-style: decimal; padding-left: 24px; }
+.schola-activity li { padding: 10px 0; }
+.schola-activity li + li { border-top: 1px solid var(--line); }
+.schola-activity time, .schola-activity small { display: block; margin-top: 4px; }
+.schola-source-excerpt blockquote { margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.schola-source-excerpt time { display: block; }
+.schola-activity .chat-sources { margin-top: 0; }
+.schola-activity .chat-sources summary { font-size: 12px; color: var(--accent); }
+.schola-finding-banner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 18px; padding: 12px; margin-bottom: 24px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.schola-finding-banner strong { font-size: 13px; overflow-wrap: anywhere; }
+.schola-finding-banner small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+.schola-finding-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.schola-finding-actions .text-button { min-height: 44px; }
 .scholarship-drafts-dialog { width: min(670px, 100vw); }
 .scholarship-drafts, .draft-editor, .draft-fields { min-width: 0; }
 .draft-intro p { max-width: 70ch; }

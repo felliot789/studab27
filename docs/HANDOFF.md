@@ -1,5 +1,17 @@
 # Handoff
 
+## Steerable Schola investigations — 2026-11-23
+
+Baseline: `3ec57c8`. The isolated `codex/schola-research-sessions` branch repairs Tracker-to-Explore re-entry and adds a read-only research-session workflow. On request, Schola creates a session from a brief. Optional background reviews open or continue an investigation when a tracked source changes on a relevant deadline, funding, eligibility or return-obligation topic. Tracker links to unread background findings. General and scholarship chat keep their own histories.
+
+A redirect or stop durably ends the old direction. The worker checks the active job at model/tool boundaries and under the transaction that publishes a reply. Already completed source reads remain visible with provenance. The runtime skips exact repeated tool calls, removes unsupported citation links, and labels uncited answers as incomplete. Findings are advisory. Changes to tracker decisions, requirements and confirmed dates remain owner actions. See [decisions](DECISIONS.md) and [chat schema](DATABASE.md).
+
+The existing research runner was audited on seven isolated cases using public and fictional data. It discovered and read an official award page without a supplied URL, read a text PDF, and preserved conflicting or unsupported facts as unknown. One provider completion was empty and the job stayed retryable. Two follow-up probes steered a live model reply across fictional intakes and reopened the session with earlier excerpts and the corrected result. The first exposed a citation formatting issue. The repeat retained the correct citation after the fix. Across the baseline and probes there were 40 live provider attempts, including seven initial audit-instrumentation attempts. The routed response label was `gemini-4-hydrogen` in the corrected runs. Backend identity was not independently attested.
+
+Validation: `npm run check`, 128 Python tests in the research environment without skips, and an isolated production build passed. Authenticated HTTP checks exercised session scope, origin validation, re-open, idempotent redirect and stop. At 390px, Chromium returned from Tracker to Explore repeatedly with tracked data and passed delayed-refresh checks. A separate browser fixture verified the notification, active redirect, retained source excerpt, reload, stop and follow-up controls. Migration tests preserve v1 history and verify the backup.
+
+Production deployment is pending. The session store migrates chat schema v1 to v2 with a pre-migration backup. Use a compatible web and worker pair and finish existing jobs before migration. The isolated build still reports the pinned Next.js security advisory documented below. Recheck the framework before deploying. Session views show recent activity while older rows remain stored. Reviewable workspace writes and a rendered JavaScript reader remain separate milestones.
+
 ## Rust scenario evaluator trial — 2026-11-19
 
 Baseline: `2dd9fd8`; task branch: `codex/rust-core-trial`. A Rust implementation now covers the read-only budget, curriculum, graduation and advisory SAT scenario evaluator. POST `/api/schola` with `action: "simulate"` selects it only through an absolute `STUDAB27_EVALUATOR_BIN` runtime path. An unset variable retains Python. A selected backend failure is explicit, with no silent fallback. The dashboard, workspace stores, Schola worker, source retrieval, frontend and SQLite schemas retain their existing implementations. See [trial scope and commands](RUST_TRIAL.md).

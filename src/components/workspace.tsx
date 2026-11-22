@@ -29,20 +29,33 @@ const nav = [
   { id: "calendar", href: "/calendar", title: "Calendar", short: "Calendar", icon: "calendar" },
 ];
 
-export default function Workspace({ initial, view, routeId, initialTab, calendarRouteId }: { initial: Dashboard; view: View; routeId?: string; initialTab?: string; calendarRouteId?: string }) {
+type WorkspaceProps = { initial: Dashboard; view: View; routeId?: string; initialTab?: string; calendarRouteId?: string };
+
+export default function Workspace(props: WorkspaceProps) {
+  const { view, routeId, initialTab, calendarRouteId } = props;
+  return <WorkspaceScreen key={JSON.stringify([view, routeId, initialTab, calendarRouteId])} {...props} />;
+}
+
+function WorkspaceScreen({ initial, view, routeId, initialTab, calendarRouteId }: WorkspaceProps) {
   const router = useRouter();
-  const [data, setData] = useState(initial), [busy, setBusy] = useState(false), [vaultOpen, setVaultOpen] = useState(false), [moreOpen, setMoreOpen] = useState(false);
+  const [snapshot, setSnapshot] = useState({ initial, data: initial, request: 0 });
+  const [busy, setBusy] = useState(false), [vaultOpen, setVaultOpen] = useState(false), [moreOpen, setMoreOpen] = useState(false);
   const [toast, setToast] = useState<{ text: string; error: boolean } | null>(null);
   const saving = useRef(false);
-  useEffect(() => { setData(initial); }, [initial]);
+  const refreshSequence = useRef(0);
+  const data = snapshot.initial === initial ? snapshot.data : initial;
+  if (snapshot.initial !== initial) setSnapshot({ initial, data: initial, request: 0 });
   const refresh = useCallback(async () => {
+    const request = ++refreshSequence.current;
     const query = new URLSearchParams({ view });
     if (routeId) query.set("routeId", routeId);
     const response = await fetch(`/api/schola?${query}`, { cache: "no-store" });
     const value = await response.json();
     if (!response.ok) throw new Error(value.error || "Could not reload the workspace.");
-    setData(value);
-  }, [view, routeId]);
+    setSnapshot(current => current.initial === initial && request > current.request
+      ? { initial, data: value, request }
+      : current);
+  }, [initial, view, routeId]);
   useEffect(() => {
     if (view !== "watchtower" && !data.watch.running) return;
     const timer = setInterval(() => refresh().catch(() => setToast({ text: "Could not refresh source status. Displayed observations may be stale.", error: true })), 15000);

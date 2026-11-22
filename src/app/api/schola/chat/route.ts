@@ -21,7 +21,9 @@ async function assistant(payload: unknown): Promise<Record<string, unknown>> {
 export async function GET(request: NextRequest) {
   await requireAccess();
   try {
-    const value = await assistant({ action: "status", routeId: request.nextUrl.searchParams.get("routeId") });
+    const { searchParams } = request.nextUrl;
+    const scope = { routeId: searchParams.get("routeId"), sessionId: searchParams.get("sessionId") };
+    const value = await assistant({ action: searchParams.get("sessions") === "1" ? "sessions" : "status", ...scope });
     return NextResponse.json(value, { status: value.error ? 400 : 200 });
   } catch (error) { return NextResponse.json({ error: (error as Error).message }, { status: 503 }); }
 }

@@ -61,6 +61,24 @@ class ConversationDatabaseChecks(unittest.TestCase):
             self.assertEqual(connection.execute("PRAGMA journal_mode").fetchone()[0], "wal")
             self.assertEqual(connection.execute("SELECT content FROM messages").fetchone()[0], "Restored history")
 
+    def test_v1_upgrade_retains_existing_chat_and_creates_recovery_copy(self):
+        with closing(connect(self.path)) as connection:
+            for statement in a.CHAT_SCHEMA:
+                connection.execute(statement)
+            connection.execute("INSERT INTO jobs VALUES('existing-v1-chat','chat','Saved question','DONE',NULL,'old','old')")
+            connection.execute("INSERT INTO messages(role,content,job_id,created_at) VALUES('assistant','Saved answer','existing-v1-chat','old')")
+            connection.execute("PRAGMA user_version=1")
+        status = a.api(self.root, {})
+        self.assertEqual(status["messages"][0]["content"], "Saved answer")
+        self.assertEqual(a.api(self.root, {"action": "sessions"})["sessions"], [])
+        with closing(a.db(self.root)) as connection:
+            self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 2)
+            self.assertEqual(connection.execute("PRAGMA foreign_key_check").fetchall(), [])
+        [backup] = (self.root / "private/backups").glob("schola-schema-1-*.sqlite3")
+        with closing(connect(backup, readonly=True)) as connection:
+            self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 1)
+            self.assertEqual(connection.execute("SELECT content FROM messages").fetchone()[0], "Saved answer")
+
     def test_legacy_orphan_history_is_preserved_and_recovery_copy_is_complete(self):
         with closing(sqlite3.connect(self.path)) as connection:
             connection.executescript("""

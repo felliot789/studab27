@@ -37,13 +37,15 @@ Drafts and accepted additions are validated optional objects in `workspace_meta.
 | Table | Responsibility |
 | --- | --- |
 | `jobs` | Durable QUEUED → RUNNING → DONE/FAILED state. |
-| `job_scopes` | Specialist route for a job; absence means general Schola. |
+| `job_scopes` | Scholarship scope for a specialist or scoped investigation job. Absence means no scholarship scope. |
 | `messages`, `tools` | Conversation content and research provenance referencing jobs. Scope triggers prevent moving saved content between conversations. |
 | `calls`, `kv` | Nonnegative daily model-call counts and JSON worker/settings state. |
 | `retry_requests` | Explicit retry identifiers, making repeated delivery of the same retry safe. |
 | `legacy_job_references` | Archived placeholders preserving historic references to missing jobs; omitted from queues and retry. They do not claim a completed model answer. |
 
-Both databases use `PRAGMA user_version=1`, foreign keys, bounded busy waits and FULL synchronization. Writable use restores WAL mode after schema compatibility checks, including when opening a standalone recovery copy. Newer schemas are refused. Chat migration preserves legacy content and creates a consistent pre-migration database copy before rebuilding constrained tables.
+Chat schema v2 adds `research_sessions` (brief, origin, topic and unread state), `research_jobs` (session membership and stopped or redirected outcomes), and `research_findings` (source excerpts linked to completed tools). The v1 → v2 migration is additive and makes a consistent pre-migration chat backup. General and scholarship chat exclude research-session turns. Session and evidence records are included in full local recovery.
+
+The workspace remains at schema v1. Both databases use foreign keys, bounded busy waits and FULL synchronization. Writable use restores WAL mode after schema compatibility checks, including when opening a standalone recovery copy. Newer schemas are refused. Chat migration preserves legacy content and creates a consistent pre-migration database copy before rebuilding constrained tables.
 
 ## Reads, writes and limits
 

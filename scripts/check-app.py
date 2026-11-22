@@ -286,7 +286,7 @@ os.execv({evaluator!r}, [{evaluator!r}])
             password, salt = "fictional-http-password", "1234567890abcdef1234567890abcdef"
             access = {"enabled": True, "origins": [origin, "https://workspace.example:9443", "https://workspace.example:10000"], "sessionSecret": "fictional-session-secret-for-http-tests", "passwordSalt": salt, "passwordHash": hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=32768, r=8, p=1, maxmem=64*1024*1024).hex()}
             (scratch / "private/schola.local.json").write_text(json.dumps({"access": access, "llm": {"baseUrl": "http://127.0.0.1:1/v1", "model": "fixture", "apiKey": "fictional-fixture-key"}, "search": {"provider": "disabled"}}))
-            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", scholarship_api):
+            for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", "/api/schola/chat?sessions=1", scholarship_api):
                 request(route, expect=401)
             request(scholarship_api, {"action": "save", "id": draft_id, "revision": accepted["draft"]["revision"], "fields": fields}, expect=401)
             request("/api/session", {"password": "incorrect"}, expect=401)
@@ -304,6 +304,26 @@ os.execv({evaluator!r}, [{evaluator!r}])
             assert [m["content"] for m in request("/api/schola/chat", headers=chat_headers)["messages"]] == ["Fictional general question"]
             assert request("/api/schola/chat?routeId=" + quote(data["routes"][1]["id"]), headers=chat_headers)["messages"] == []
             request("/api/schola/chat", {**scoped_message, "routeId": data["routes"][1]["id"]}, headers=chat_headers, expect=400)
+            new_session = {"action": "start-session", "message": "Compare fictional deadlines", "id": "fixture-investigation"}
+            request("/api/schola/chat", new_session, expect=401)
+            opened = request("/api/schola/chat", new_session, headers=chat_headers, expect=202)
+            session_id = opened["sessionId"]
+            session_url = "/api/schola/chat?sessionId=" + quote(session_id)
+            request(session_url, expect=401)
+            steer = {"action": "steer-session", "sessionId": session_id, "message": "Use fictional intake B", "id": "fixture-investigation-steer"}
+            request("/api/schola/chat", steer, headers={**chat_headers, "Origin": "https://attacker.invalid"}, expect=403)
+            redirected = request("/api/schola/chat", steer, headers=chat_headers, expect=202)
+            assert request("/api/schola/chat", steer, headers=chat_headers, expect=202)["jobId"] == redirected["jobId"]
+            session = request(session_url, headers=chat_headers)
+            assert [job["status"] for job in session["jobs"]] == ["QUEUED", "SUPERSEDED"]
+            assert [m["content"] for m in session["messages"]] == [new_session["message"], steer["message"]]
+            assert request("/api/schola/chat?sessions=1", headers=chat_headers)["sessions"][0]["id"] == session_id
+            assert [m["content"] for m in request("/api/schola/chat", headers=chat_headers)["messages"]] == ["Fictional general question"]
+            request(session_url + "&routeId=" + quote(rid), headers=chat_headers, expect=400)
+            request("/api/schola/chat", {"action": "stop-session", "sessionId": session_id,
+                                        "jobId": redirected["jobId"]}, headers=chat_headers, expect=202)
+            assert request(session_url, headers=chat_headers)["session"]["status"] == "STOPPED"
+            request("/schola?session=" + quote(session_id), headers=chat_headers)
             for route in ("/api/schola", "/api/schola/export", "/api/schola/chat", scholarship_api, "/schola"):
                 request(route, headers={"Cookie": cookie})
             request(headers={"Cookie": "studab27-session=forged"}, expect=401)
